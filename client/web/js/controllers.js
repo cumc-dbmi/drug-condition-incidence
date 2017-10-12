@@ -1,21 +1,7 @@
 angular.module('controllers', [])
 
-    // Directive for range horizontal bar chart, pass in chart options
+// Directive for range horizontal bar chart, pass in chart options
     .directive('hcChart', function () {
-        return {
-            restrict: 'E',
-            template: '<div></div>',
-            scope: {
-                options: '='
-            },
-            link: function (scope, element) {
-                Highcharts.chart(element[0], scope.options);
-            }
-        };
-    })
-
-    // Directive for box plot chart, pass in chart options
-    .directive('hcBoxchart', function () {
         return {
             restrict: 'E',
             template: '<div></div>',
@@ -31,16 +17,12 @@ angular.module('controllers', [])
     .controller('ohdsiInformerCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$location',
         function ($scope, ohdsiService, $timeout, $http, $location) {
             var vocabBaseUrl = "http://api.ohdsi.org/WebAPI/vocabulary/1PCT";
-        
+
             $scope.chartOptions = function () {
                 return chartOptions;
             };
             var chartOptions = null;
 
-            $scope.boxChartOptions = function () {
-                return boxChartOptions;
-            };
-            var boxChartOptions = null;
             $scope.view = "main";
 
             $scope.timeAtRisk = 365;
@@ -73,20 +55,30 @@ angular.module('controllers', [])
             $scope.formatDecimal = function (d) {
                 return Math.round(+d * 1000) / 1000;
             };
-
+            //var chartWidth= $("#rangechart").width();
             var onGetIncidentRate = function (success) {
-                $scope.incidenceRate = success;
+                $scope.incidenceRateSource = success;
+
+                var proportionsData = [];
+                $.each($scope.incidenceRateSource, function (index, value) {
+                    var series = {
+                        x: Math.round(value.incidence_proportion * 10000) / 10000,
+                        y: 1,
+                        name: value.source_short_name
+                    };
+                    proportionsData.push(series);
+                });
+
                 chartOptions =
                     {
                         chart: {
-                            type: 'columnrange',
-                            inverted: true,
-                            height: 220,
+                            type: 'scatter',
                             width: 900,
+                            height: 220,
                             marginRight: 100,
+                            marginLeft: 100,
                             borderColor: '#f39c12',
                             borderWidth: 2
-
                         },
                         title: {
                             text: 'Incidence Proportion'
@@ -94,99 +86,68 @@ angular.module('controllers', [])
                         subtitle: {
                             text: 'Risk of ' + $scope.outcome.name + ' with ' + $scope.treatment.name
                         },
-                        rangeSelector: {
-                            selected: 1
-                        },
                         xAxis: {
-                            categories: [$scope.outcome.name]
-                        },
-                        yAxis: {
                             title: {
+                                enabled: true,
                                 text: 'Incidence Proportion'
                             },
                             min: 0,
-                            max: 1
-                        },
-                        tooltip: {
-                            //valueSuffix: '%'
-                        },
-
-                        legend: {
-                            enabled: false
-                        },
-                        series: [{
-                            name: 'Incidence Proportion',
-                            data: [[$scope.incidenceRate.incidence_proportion_range_low,
-                                $scope.incidenceRate.incidence_proportion_range_high]]
-                        }]
-                    };
-
-            };
-
-            var onGetIncidentRateSource = function (success) {
-                $scope.incidenceRateSource = success;
-                boxChartOptions =
-                    {
-                        chart: {
-                            type: 'boxplot',
-                            inverted: true,
-                            width: 900,
-                            marginRight: 100,
-                            borderColor: '#f39c12',
-                            borderWidth: 2
-
-                        },
-                        title: {
-                            text: 'Incidence Proportions From Different Sources'
-                        },
-                        subtitle: {
-                            text: 'Risk of ' + $scope.outcome.name + ' with ' + $scope.treatment.name
-                        },
-                        xAxis: {
-                            categories: [$scope.incidenceRateSource.source_short_name],
-                            title: {text: 'Source Name'}
+                            max: 1,
+                            tickInterval: 0.1,
+                            gridLineColor: 'rgb(204, 214, 235)',
+                            gridLineWidth: 1
                         },
                         yAxis: {
                             title: {
-                                text: 'Incidence Proportion ( % )'
+                                text: [$scope.outcome.name]
                             },
-                            min: 0,
-                            max: 1
+                            visible: false
                         },
                         legend: {
                             enabled: false
                         },
-                        series: [{
-                            name: 'Incidence Proportion',
-                            data: [[$scope.incidenceRateSource.incidence_proportion]],
-                            tooltip: {
-                                headerFormat: '<em>Incidence Proportion {point.key}</em><br/>'
-                            }
-                        },
-                            {
-                                name: 'Outlier',
-                                color: Highcharts.getOptions().colors[0],
-                                type: 'scatter',
-                                data: [ // x, y positions where 0 is the first category
-                                    [$scope.incidenceRateSource.incidence_proportion]
-                                ],
+
+                        plotOptions: {
+                            scatter: {
                                 marker: {
-                                    fillColor: 'white',
-                                    lineWidth: 1,
-                                    lineColor: Highcharts.getOptions().colors[0]
+                                    radius: 5,
+                                    states: {
+                                        hover: {
+                                            enabled: true,
+                                            lineColor: 'rgb(100,100,100)'
+                                        }
+                                    }
+                                },
+                                states: {
+                                    hover: {
+                                        marker: {
+                                            enabled: false
+                                        }
+                                    }
                                 },
                                 tooltip: {
-                                    pointFormat: 'Incidence Proportion: {point.y}'
+                                    headerFormat: '<b>{series.name}</b><br>',
+                                    pointFormat: '{point.x}'
                                 }
-                            }]
+                            }
+                        },
+                        series: [{data: proportionsData}]
+                        //[{
+                        //name: '',
+                        //color: 'rgba(119, 152, 191, .5)',
+                        //data: proportionsData
+                        //}]
+
                     };
 
             };
+
 
             $scope.showTable = function (treatment, outcome, timeAtRisk) {
                 $scope.setView('table');
                 $scope.evidence = [];
                 $scope.incidenceRate = [];
+                $scope.incidenceRateSource = [];
 
                 var obj = {};
                 obj.CONCEPT_ID = [];
@@ -204,33 +165,28 @@ angular.module('controllers', [])
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         ohdsiService.getIncidentRate($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
-                            .then(onGetIncidentRate, function (error) {
+                            .then(function (success) {
+
+                                $scope.incidenceRate = success;
 
                             })
                     },
                     error: function () {
                         ohdsiService.getIncidentRate($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
-                            .then(onGetIncidentRate, function (error) {
+                            .then(function (success) {
+
+                                $scope.incidenceRate = success;
 
                             })
                     }
                 });
-            };
 
-            $scope.showTableSource = function (treatment, outcome, timeAtRisk) {
-                $scope.setView('table');
-                $scope.incidenceRateSource = [];
-                $.ajax({
-                    success: function (data) {
-                        ohdsiService.getIncidentRateSource($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
-                            .then(onGetIncidentRateSource, function (error) {
-                                //$scope.incidenceRateSource = success;
-                            })
-                    },
-                    error: function () {
+                ohdsiService.getIncidentRateSource($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
+                    .then(onGetIncidentRate, function (error) {
+                        //$scope.incidenceRateSource = success;
 
-                    }
-                });
+                    });
+                //var evidence = ohdsiService.getEvidence(treatment, outcome, comparator);
             };
 
             $scope.medicationClicked = function (item) {
