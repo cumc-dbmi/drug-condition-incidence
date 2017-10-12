@@ -46,6 +46,8 @@ class IncidenceTest(unittest.TestCase):
             response_data = json.loads(response.data)
             self.assertTrue('incidence_proportion_range_high' in response_data)
             self.assertTrue('incidence_proportion_range_low' in response_data)
+            self.assertTrue('source_details' in response_data)
+            self.assertTrue(type(response_data['source_details']) is list)
 
     def test_serialize_obj(self):
         import decimal

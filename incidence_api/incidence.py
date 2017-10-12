@@ -90,7 +90,7 @@ def incidence_rate(drug_concept_id, outcome_concept_id, time_at_risk_id):
     return None
 
 
-def incidence_rate_source(drug_concept_id, outcome_concept_id, time_at_risk_id):
+def incidence_rate_source_details(drug_concept_id, outcome_concept_id, time_at_risk_id):
     """
     Given a drug concept_id and condition_concept_id, return incidence_proportion_range_low and
     incidence_proportion_range_high
@@ -119,17 +119,20 @@ def incidence_rate_endpoint():
     drug_concept_id = request.args.get('drug_concept_id', type=int)
     outcome_concept_id = request.args.get('outcome_concept_id', type=int)
     time_at_risk_id = request.args.get('time_at_risk_id', type=int)
-    results = incidence_rate(drug_concept_id, outcome_concept_id, time_at_risk_id)
-    response_body = json.dumps(results, default=serialize_obj)
+    incidence_rate_results = incidence_rate(drug_concept_id, outcome_concept_id, time_at_risk_id)
+    incidence_rate_results['source_details'] = incidence_rate_source_details(drug_concept_id,
+                                                                             outcome_concept_id,
+                                                                             time_at_risk_id)
+    response_body = json.dumps(incidence_rate_results, default=serialize_obj)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 
 
-@app.route("/incidence_rate_source", methods=['GET'])
+@app.route("/incidence_rate_source_details", methods=['GET'])
 def incidence_rate_source_endpoint():
     drug_concept_id = request.args.get('drug_concept_id', type=int)
     outcome_concept_id = request.args.get('outcome_concept_id', type=int)
     time_at_risk_id = request.args.get('time_at_risk_id', type=int)
-    results = incidence_rate_source(drug_concept_id, outcome_concept_id, time_at_risk_id)
+    results = incidence_rate_source_details(drug_concept_id, outcome_concept_id, time_at_risk_id)
     response_body = json.dumps(results, default=serialize_obj)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 
