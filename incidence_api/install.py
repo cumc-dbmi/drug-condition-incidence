@@ -19,7 +19,7 @@ if __name__ == '__main__':
     from sys import platform
 
     install(_all_)
-    if platform == 'windows':
+    if platform == 'win32':
         install(windows)
     if platform.startswith('linux'):
         install(linux)
