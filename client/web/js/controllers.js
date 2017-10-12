@@ -103,7 +103,27 @@ angular.module('controllers', [])
                             max: 1,
                             tickInterval: 0.1,
                             gridLineColor: 'rgb(204, 214, 235)',
-                            gridLineWidth: 1
+                            gridLineWidth: 1,
+                            plotLines: [{
+                                value: roundNumber($scope.incidenceRate.incidence_proportion_range_high),
+                                color: 'red',
+                                width: 1,
+                                label: {
+                                    text: 'high',
+                                    align: 'center',
+                                    rotation: 0
+                                }
+                            },
+                            {
+                                value: roundNumber($scope.incidenceRate.incidence_proportion_range_low),
+                                color: 'red',
+                                width: 1,
+                                label: {
+                                    text: 'low',
+                                    align: 'center',
+                                    rotation: 0
+                                }
+                            }]
                         },
                         yAxis: {
                             title: {
