@@ -21,7 +21,8 @@ DRUG_CONDITION_QUERY = """
 SELECT DISTINCT condition_concept_id, 
   condition 
 FROM [incidence_rate].[dbo].[drug_condition_filtered] 
-WHERE ingredient_concept_id IN (%s)"""
+WHERE ingredient_concept_id = (%s)
+ORDER BY condition"""
 
 INCIDENCE_RATE_QUERY_OLD = """
 SELECT DISTINCT c.concept_name, 
@@ -55,7 +56,9 @@ SELECT source_short_name,
 FROM [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full]
 WHERE drug_concept_id = %(drug_concept_id)s 
 AND outcome_concept_id = %(outcome_concept_id)s  
-AND time_at_risk_id = %(time_at_risk_id)d"""
+AND time_at_risk_id = %(time_at_risk_id)s
+AND cohort_type = 'First diagnosis of'
+ORDER BY incidence_proportion DESC"""
 
 
 def drug_condition(drug_concept_ids):
