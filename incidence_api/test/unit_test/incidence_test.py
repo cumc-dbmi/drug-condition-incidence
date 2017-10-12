@@ -47,5 +47,11 @@ class IncidenceTest(unittest.TestCase):
             self.assertTrue('incidence_proportion_range_high' in response_data)
             self.assertTrue('incidence_proportion_range_low' in response_data)
 
+    def test_serialize_obj(self):
+        import decimal
+        d = decimal.Decimal ('0.00099123')
+        result = incidence.serialize_obj(d)
+        self.assertTrue('0.001' == result)
+
     def tearDown(self):
         pass

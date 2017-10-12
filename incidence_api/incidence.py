@@ -12,7 +12,7 @@ engine = create_engine(settings.conn_str)
 
 def serialize_obj(obj):
     if isinstance(obj, decimal.Decimal):
-        return str(obj)
+        return str(round(obj, 4))
     raise TypeError("Object of type '%s' is not JSON serializable" % type(obj).__name__)
 
 
