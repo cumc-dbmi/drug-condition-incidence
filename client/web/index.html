@@ -89,7 +89,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-9 main-content" ng-show="view === 'table'">
+    <div class="col-xs-12 main-content" ng-show="view === 'table'">
         <div class="row" style="margin-top:20px">
             <div class="col-xs-12">
                 <button class="btn btn-primary" ng-click="setView('main')">&laquo; Back</button>
@@ -103,6 +103,7 @@
                     {{incidenceRate.incidence_proportion_range_low | number : 4}} and
                     {{incidenceRate.incidence_proportion_range_high | number : 4}}
                     of patients during the 1 year after exposure start</h4>
+                <br><br>
             </div>
 
             <div class="col-xs-2">
