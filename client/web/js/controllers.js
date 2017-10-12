@@ -16,6 +16,7 @@ angular.module('controllers', [])
 
     .controller('ohdsiInformerCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$location',
         function ($scope, ohdsiService, $timeout, $http, $location) {
+            var MarkerSymbol = 'square';
             var vocabBaseUrl = "http://api.ohdsi.org/WebAPI/vocabulary/1PCT";
 
             $scope.chartOptions = function () {
@@ -56,15 +57,22 @@ angular.module('controllers', [])
                 return Math.round(+d * 1000) / 1000;
             };
             //var chartWidth= $("#rangechart").width();
+            var roundNumber = function (n) {
+                return Math.round(n * 10000) / 10000;
+            };
+
             var onGetIncidentRate = function (success) {
-                $scope.incidenceRateSource = success;
+                $scope.incidenceRate = success;
+                $scope.incidenceRateSource = success['source_details'];
 
                 var proportionsData = [];
                 $.each($scope.incidenceRateSource, function (index, value) {
                     var series = {
-                        x: Math.round(value.incidence_proportion * 10000) / 10000,
-                        y: 1,
-                        name: value.source_short_name
+                        data: [[roundNumber(value.incidence_proportion), 1]],
+                        name: value.source_short_name,
+                        marker: {
+                            symbol: MarkerSymbol
+                        }
                     };
                     proportionsData.push(series);
                 });
@@ -106,7 +114,6 @@ angular.module('controllers', [])
                         legend: {
                             enabled: false
                         },
-
                         plotOptions: {
                             scatter: {
                                 marker: {
@@ -131,15 +138,8 @@ angular.module('controllers', [])
                                 }
                             }
                         },
-                        series: [{data: proportionsData}]
-                        //[{
-                        //name: '',
-                        //color: 'rgba(119, 152, 191, .5)',
-                        //data: proportionsData
-                        //}]
-
+                        series: proportionsData
                     };
-
             };
 
 
@@ -165,28 +165,13 @@ angular.module('controllers', [])
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         ohdsiService.getIncidentRate($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
-                            .then(function (success) {
-
-                                $scope.incidenceRate = success;
-
-                            })
+                            .then(onGetIncidentRate)
                     },
                     error: function () {
                         ohdsiService.getIncidentRate($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
-                            .then(function (success) {
-
-                                $scope.incidenceRate = success;
-
-                            })
+                            .then(onGetIncidentRate)
                     }
                 });
-
-                ohdsiService.getIncidentRateSource($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
-                    .then(onGetIncidentRate, function (error) {
-                        //$scope.incidenceRateSource = success;
-
-                    });
-                //var evidence = ohdsiService.getEvidence(treatment, outcome, comparator);
             };
 
             $scope.medicationClicked = function (item) {
