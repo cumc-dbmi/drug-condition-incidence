@@ -61,12 +61,11 @@ AND cohort_type = 'First diagnosis of'
 ORDER BY incidence_proportion DESC"""
 
 
-def drug_condition(drug_concept_ids):
+def drug_condition(drug_concept_id):
     """
-    Given a list of drug concept_id, return associated conditions as list of dict
+    Given a drug concept_id, return associated conditions as list of dict
     """
-    drug_concept_id_params = ','.join(map(str, drug_concept_ids))
-    q = DRUG_CONDITION_QUERY % drug_concept_id_params
+    q = DRUG_CONDITION_QUERY % drug_concept_id
     items = engine.execute(q)
     rows = []
     for item in items:
@@ -108,8 +107,8 @@ def incidence_rate_source_details(drug_concept_id, outcome_concept_id, time_at_r
 
 @app.route("/drug_condition", methods=['GET'])
 def drug_condition_endpoint():
-    concept_ids = request.args.getlist('drug_concept_ids', type=int)
-    results = drug_condition(concept_ids)
+    concept_id = request.args.get('drug_concept_id', type=int)
+    results = drug_condition(concept_id)
     response_body = json.dumps(results)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 

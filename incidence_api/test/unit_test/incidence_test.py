@@ -17,13 +17,13 @@ class IncidenceTest(unittest.TestCase):
 
     def test_drug_condition(self):
         expected_count = 109
-        result = incidence.drug_condition([SIMVASTATIN_DRUG_1_ING_CONCEPT_ID])
+        result = incidence.drug_condition(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
         actual_count = len(result)
         self.assertEqual(expected_count, actual_count)
 
     def test_drug_condition_endpoint(self):
         with incidence.app.test_client() as c:
-            data = dict(drug_concept_ids=[SIMVASTATIN_DRUG_1_ING_CONCEPT_ID])
+            data = dict(drug_concept_id=SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
             response = c.get('/drug_condition', query_string=data, content_type=APPLICATION_JSON_CONTENT_TYPE)
             response_data = json.loads(response.data)
             expected = 109
