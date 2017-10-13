@@ -27,8 +27,8 @@ angular.module('controllers', [])
             $scope.view = "main";
 
             $scope.timeAtRisk = 365;
-            $scope.outcome = {name: 'Mass of skin', code: '4183953'};
-            $scope.treatment = {name: 'Simvastatin', code: '1539403'};
+            //$scope.outcome = {name: 'Mass of skin', code: '4183953'};
+            //$scope.treatment = {name: 'Simvastatin', code: '1539403'};
             $scope.comparator = {};
             $scope.patient = {
                 id: 1
@@ -162,6 +162,10 @@ angular.module('controllers', [])
                     };
             };
 
+            $scope.callShowTable = function (condition) {
+                $scope.setOutcome (condition.condition, condition.condition_concept_id);
+                $scope.showTable();
+            }
 
             $scope.showTable = function (treatment, outcome, timeAtRisk) {
                 $scope.setView('table');
@@ -171,7 +175,6 @@ angular.module('controllers', [])
                 var obj = {};
                 obj.CONCEPT_ID = [];
                 obj.CONCEPT_ID.push(parseInt($scope.treatment.code, 10));
-                //obj.CONCEPT_ID.push(parseInt($('#compSelect').val(), 10));
                 obj.VOCABULARY_ID = ["RxNorm"];
                 //obj.CONCEPT_CLASS_ID = ["Ingredient"];
                 obj.CONCEPT_CLASS_ID = ['Clinical Drug', 'Quant Branded Drug', 'Branded Drug'];
@@ -196,6 +199,7 @@ angular.module('controllers', [])
              $scope.showCondition = function (treatment) {
                  $scope.setView('condition');
                  $scope.evidence = [];
+                 $scope.outcome = {};
 
                  ohdsiService.getEvidence($scope.treatment.code)
                      .then(function (success) {
