@@ -16,7 +16,7 @@ class IncidenceTest(unittest.TestCase):
         super(IncidenceTest, self).setUp()
 
     def test_drug_condition(self):
-        expected_count = 109
+        expected_count = 25
         result = incidence.drug_condition(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
         actual_count = len(result)
         self.assertEqual(expected_count, actual_count)

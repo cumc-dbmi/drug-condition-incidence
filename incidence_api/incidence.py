@@ -20,7 +20,8 @@ APPLICATION_JSON_CONTENT_TYPE = 'application/json'
 DRUG_CONDITION_QUERY = """
 SELECT DISTINCT condition_concept_id, 
   condition 
-FROM [incidence_rate].[dbo].[drug_condition_filtered] 
+FROM [incidence_rate].[dbo].[drug_condition_filtered] d
+JOIN [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full] f ON d.condition_concept_id = f.outcome_concept_id
 WHERE ingredient_concept_id = (%s)
 ORDER BY condition"""
 
