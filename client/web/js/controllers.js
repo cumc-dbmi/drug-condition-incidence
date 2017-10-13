@@ -42,6 +42,10 @@ angular.module('controllers', [])
                 $scope.view = v;
             };
 
+            $scope.reloadPage = function(){
+                location.reload();
+            }
+
             $scope.clear = function () {
                 $scope.outcome = {};
                 $scope.treatment = {};

@@ -93,7 +93,7 @@
     <div class="col-xs-12 main-content" ng-show="view === 'table'">
         <div class="row" style="margin-top:20px">
             <div class="col-xs-12">
-                <button class="btn btn-primary" ng-click="setView('main')">&laquo; Back</button>
+                <button class="btn btn-primary" ng-click="reloadPage()">&laquo; Back</button>
             </div>
             <div class="col-xs-12">
                 <h1>Risk of {{outcome.name}} with {{treatment.name}}</h1>
@@ -152,7 +152,7 @@
     <div class="col-xs-12 main-content" ng-show="view === 'condition'">
         <div class="row" style="margin-top:20px">
             <div class="col-xs-12">
-                <button class="btn btn-primary" ng-click="setView('main');">&laquo; Back</button>
+                <button class="btn btn-primary" ng-click="reloadPage()">&laquo; Back</button>
             </div>
 
             <div class="col-xs-1">
