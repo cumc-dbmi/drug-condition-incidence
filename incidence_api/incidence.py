@@ -18,12 +18,17 @@ def serialize_obj(obj):
 
 APPLICATION_JSON_CONTENT_TYPE = 'application/json'
 DRUG_CONDITION_QUERY = """
+WITH condition_with_result AS 
+(SELECT f.outcome_concept_id, f.drug_concept_id 
+FROM [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full] f 
+WHERE time_at_risk_id = 365 AND cohort_type = 'First diagnosis of')
 SELECT DISTINCT condition_concept_id, 
-  condition 
+  condition,
+  IIF(f.drug_concept_id IS NULL, 0, 1) AS has_results
 FROM [incidence_rate].[dbo].[drug_condition_filtered] d
-JOIN [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full] f 
+LEFT JOIN condition_with_result f
   ON d.condition_concept_id = f.outcome_concept_id AND d.ingredient_concept_id = f.drug_concept_id
-WHERE ingredient_concept_id = (%s) AND time_at_risk_id = 365 AND cohort_type = 'First diagnosis of'
+WHERE ingredient_concept_id = (%s)
 ORDER BY condition"""
 
 INCIDENCE_RATE_QUERY_OLD = """
