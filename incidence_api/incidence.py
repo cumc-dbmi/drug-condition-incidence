@@ -21,8 +21,9 @@ DRUG_CONDITION_QUERY = """
 SELECT DISTINCT condition_concept_id, 
   condition 
 FROM [incidence_rate].[dbo].[drug_condition_filtered] d
-JOIN [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full] f ON d.condition_concept_id = f.outcome_concept_id
-WHERE ingredient_concept_id = (%s)
+JOIN [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full] f 
+  ON d.condition_concept_id = f.outcome_concept_id AND d.ingredient_concept_id = f.drug_concept_id
+WHERE ingredient_concept_id = (%s) AND time_at_risk_id = 365 AND cohort_type = 'First diagnosis of'
 ORDER BY condition"""
 
 INCIDENCE_RATE_QUERY_OLD = """
