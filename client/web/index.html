@@ -158,21 +158,16 @@
             <div class="col-xs-1">
             </div>
             <div class="col-xs-10" style="margin-top:20px">
-                <h1>Condition List From Product Label</h1><br><br>
                 <table class="table table-striped table-hover ">
                     <thead>
                     <tr>
-                        <th>Condition</th>
-                        <th>Lowest Incidence Proportion</th>
-                        <th>Highest Incidence Proportion</th>
+                        <th><h2>Condition List From Product Label</h2></th>
                     </tr>
                     </thead>
                     <tbody>
 
                     <tr ng-repeat="r in evidence | limitTo:itemsLimit track by $index">
                         <td><a href="" ng-click="callShowTable(r)" target="_blank">{{r.condition}}</a></td>
-                        <td>{{r.incidence_proportion_range_low | number : 4}}</td>
-                        <td>{{r.incidence_proportion_range_high | number : 4}}</td>
                     </tr>
                     </tbody>
                 </table>
