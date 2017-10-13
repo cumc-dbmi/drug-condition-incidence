@@ -38,4 +38,16 @@ angular.module('services', [])
                 });
             return deferred.promise;
         };
+
+         this.getEvidence = function (targetId) {
+            var deferred = $q.defer();
+            var url = baseUrl + "/drug_condition?"
+                + 'drug_concept_id=' + targetId
+            $http.get(url)
+                .then(function (resp) {
+                    deferred.resolve(resp.data);
+                }, function (err) {
+                });
+            return deferred.promise;
+        };
     }]);
