@@ -26,7 +26,7 @@ class IncidenceTest(unittest.TestCase):
             data = dict(drug_concept_id=SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
             response = c.get('/drug_condition', query_string=data, content_type=APPLICATION_JSON_CONTENT_TYPE)
             response_data = json.loads(response.data)
-            expected = 109
+            expected = 40
             self.assertTrue(type(response_data) is list)
             self.assertTrue(len(response_data) == expected)
 

@@ -19,27 +19,14 @@ def serialize_obj(obj):
 APPLICATION_JSON_CONTENT_TYPE = 'application/json'
 DRUG_CONDITION_QUERY = """
 SELECT DISTINCT condition_concept_id, 
-  condition 
+  condition,
+  f.incidence_proportion_range_low,
+  f.incidence_proportion_range_high 
 FROM [incidence_rate].[dbo].[drug_condition_filtered] d
-JOIN [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full] f 
+JOIN [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_overall] f 
   ON d.condition_concept_id = f.outcome_concept_id AND d.ingredient_concept_id = f.drug_concept_id
-WHERE ingredient_concept_id = (%s) AND time_at_risk_id = 365 AND cohort_type = 'First diagnosis of'
+WHERE ingredient_concept_id = (%s) AND time_at_risk_id = 365
 ORDER BY condition"""
-
-INCIDENCE_RATE_QUERY_OLD = """
-SELECT DISTINCT c.concept_name, 
-  num_persons_prior_outcome, 
-  num_persons_at_risk, 
-  num_persons_post_365d,
-pt_365d,ip_365d, ir_365d
-FROM [ohdsi_west_pending].[results].[IR_exposure_outcome_summary] s
-JOIN [ohdsi_west_pending].[results].[IR_cohort_definition] d 
-  ON s.outcome_cohort_definition_id = d.cohort_definition_id
-JOIN [ohdsi_west_pending].[dbo].[concept] c 
-  ON d.concept_id = c.concept_id
-WHERE s.ip_365d IS NOT NULL 
-AND s.target_cohort_definition_id = (%s)
-ORDER BY s.ip_365d desc"""
 
 INCIDENCE_RATE_QUERY = """
 SELECT TOP 1 
