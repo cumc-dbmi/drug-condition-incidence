@@ -111,7 +111,8 @@ angular.module('controllers', [])
                             plotLines: [{
                                 value: roundNumber($scope.incidenceRate.incidence_proportion_range_high),
                                 color: 'red',
-                                width: 1,
+                                width: 2,
+                                dashStyle: 'shortdot',
                                 label: {
                                     text: 'high',
                                     align: 'center',
@@ -121,7 +122,8 @@ angular.module('controllers', [])
                             {
                                 value: roundNumber($scope.incidenceRate.incidence_proportion_range_low),
                                 color: 'red',
-                                width: 1,
+                                width: 2,
+                                dashStyle: 'shortdot',
                                 label: {
                                     text: 'low',
                                     align: 'center',
