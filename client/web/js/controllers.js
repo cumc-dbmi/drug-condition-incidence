@@ -165,7 +165,6 @@ angular.module('controllers', [])
 
             $scope.showTable = function (treatment, outcome, timeAtRisk) {
                 $scope.setView('table');
-                $scope.evidence = [];
                 $scope.incidenceRate = [];
                 $scope.incidenceRateSource = [];
 
@@ -193,6 +192,25 @@ angular.module('controllers', [])
                     }
                 });
             };
+
+             $scope.showCondition = function (treatment) {
+                 $scope.setView('condition');
+                 $scope.evidence = [];
+
+                 ohdsiService.getEvidence($scope.treatment.code)
+                     .then(function (success) {
+                         $scope.evidence = success;
+                     }, function (error) {
+                     })
+
+                 $scope.pagesShown = 1;
+                 $scope.pageSize = 10; // load 5 items at once
+                 $scope.itemsLimit = $scope.pageSize * $scope.pagesShown;
+                 $scope.loadMoreItems = function () {
+                     $scope.pagesShown++;
+                     $scope.itemsLimit = $scope.pageSize * $scope.pagesShown;
+                 };
+             };
 
             $scope.medicationClicked = function (item) {
                 $scope.treatment.name = item.resource.medicationCodeableConcept.coding[0].display;
