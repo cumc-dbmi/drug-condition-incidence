@@ -9,9 +9,11 @@ HTML5 front-end for incidence rate project
 		npm install -g grunt-cli
 
 ## Deployment
- * Install project dependencies (this will download and setup dependencies such as d3 into a `node_modules` directory) 
+ * Install project dependencies (this will download and setup dependencies such as angular into a `node_modules` directory) 
 		
 		npm install
+
+ * Create a file `config.json` (see `_config.json` for reference)
 
  * Create distributable (this bundles all static assets together in the `dist` directory)
 

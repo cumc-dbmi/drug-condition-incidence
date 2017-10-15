@@ -1,4 +1,4 @@
-angular.module('controllers', [])
+angular.module('controllers', ['config'])
 
 // Directive for range horizontal bar chart, pass in chart options
     .directive('hcChart', function () {
@@ -14,10 +14,9 @@ angular.module('controllers', [])
         };
     })
 
-    .controller('ohdsiInformerCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$location',
-        function ($scope, ohdsiService, $timeout, $http, $location) {
+    .controller('ohdsiInformerCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$location', 'VocabBaseUrl',
+        function ($scope, ohdsiService, $timeout, $http, $location, VocabBaseUrl) {
             var MarkerSymbol = 'square';
-            var vocabBaseUrl = "http://api.ohdsi.org/WebAPI/vocabulary/1PCT";
 
             $scope.chartOptions = function () {
                 return chartOptions;
@@ -186,7 +185,7 @@ angular.module('controllers', [])
                 obj.CONCEPT_CLASS_ID = ['Clinical Drug', 'Quant Branded Drug', 'Branded Drug'];
 
                 $.ajax({
-                    url: vocabBaseUrl + "/relatedconcepts",
+                    url: VocabBaseUrl + "/relatedconcepts",
                     dataType: "json",
                     type: "POST",
                     data: JSON.stringify(obj),
@@ -257,7 +256,7 @@ angular.module('controllers', [])
                     obj.VOCABULARY_ID = ["ATC"];
                     obj.CONCEPT_CLASS_ID = ["ATC 3rd", "ATC 4th", "ATC 2nd"];
                     $.ajax({
-                        url: vocabBaseUrl + "/relatedconcepts",
+                        url: VocabBaseUrl + "/relatedconcepts",
                         dataType: "json",
                         type: "POST",
                         data: JSON.stringify(obj),
@@ -285,7 +284,7 @@ angular.module('controllers', [])
 
                     $.ajax({
 
-                        url: vocabBaseUrl + "/search/",
+                        url: VocabBaseUrl + "/search/",
                         dataType: "json",
                         type: "POST",
                         data: JSON.stringify(obj),
@@ -324,7 +323,7 @@ angular.module('controllers', [])
                     obj.CONCEPT_CLASS_ID = ["Clinical Finding"];
 
                     $.ajax({
-                        url: vocabBaseUrl + "/search/",
+                        url: VocabBaseUrl + "/search/",
                         dataType: "json",
                         type: "POST",
                         data: JSON.stringify(obj),

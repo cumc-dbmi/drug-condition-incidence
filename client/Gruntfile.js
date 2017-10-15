@@ -1,15 +1,26 @@
 module.exports = function (grunt) {
 
+    checkConfig();
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        ngconstant: {
+            options: {
+                dest: 'web/js/config.js',
+                name: 'config'
+            },
+            dist: {
+                constants: 'config.json'
+            }
+        },
         jshint: {
             all: ['index.js', 'web/js/**/*.js']
         },
         watch: {
             express: {
-                files: ['web/**/*'],
-                tasks: ['concat', 'copy', 'express:dev'],
+                files: ['web/**/*', 'config.json'],
+                tasks: ['ngconstant', 'concat', 'copy', 'express:dev'],
                 options: {
                     spawn: false,
                 },
@@ -59,6 +70,28 @@ module.exports = function (grunt) {
         }
     });
 
+    function checkConfig() {
+        if (!grunt.file.exists('config.json')) {
+            grunt.fail.warn('The file `config.json` was not found. Unable to build app.');
+        }
+
+        var config = grunt.file.readJSON('config.json');
+
+        if (!grunt.file.exists('_config.json')) {
+            grunt.log.warn('The file `_config.json` was not found. Unable to verify configuration.');
+        } else {
+            var _config = grunt.file.readJSON('_config.json');
+            var message = 'The file `config.json` is not valid. Here is an example for reference:\n' +
+                JSON.stringify(_config, null, '\t');
+            for (var key in _config) {
+                if (!config.hasOwnProperty(key)) {
+                    grunt.fail.warn(message);
+                }
+            }
+        }
+    }
+
+    grunt.loadNpmTasks('grunt-ng-constant');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
@@ -66,7 +99,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-express-server');
 
     // Default task(s).
-    grunt.registerTask('dist', ['concat', 'copy', 'express', 'watch']);
+    grunt.registerTask('dist', ['ngconstant', 'concat', 'copy', 'watch']);
 
     grunt.registerTask('default', ['jshint']);
 

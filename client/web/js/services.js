@@ -1,11 +1,10 @@
-angular.module('services', [])
-    .service('ohdsiService', ['$http', '$q', function ($http, $q) {
+angular.module('services', ['config'])
+    .service('ohdsiService', ['$http', '$q', 'ApiBaseUrl', function ($http, $q, ApiBaseUrl) {
         var self = this;
-        var baseUrl = "http://localhost:5000";
 
         this.getIncidentRate = function (targetId, outcomeId, timeAtRisk) {
             var deferred = $q.defer();
-            var url = baseUrl + "/incidence_rate?"
+            var url = ApiBaseUrl + "/incidence_rate?"
                 + 'drug_concept_id=' + targetId
                 + '&outcome_concept_id=' + outcomeId
                 + '&time_at_risk_id=' + timeAtRisk;
@@ -20,7 +19,7 @@ angular.module('services', [])
         this.getIncidentRateSource = function (targetId, outcomeId, timeAtRisk) {
             var deferred = $q.defer();
             var res = [];
-            var url = baseUrl + "/incidence_rate_source?"
+            var url = ApiBaseUrl + "/incidence_rate_source?"
                 + 'drug_concept_id=' + targetId
                 + '&outcome_concept_id=' + outcomeId
                 + '&time_at_risk_id=' + timeAtRisk;
@@ -41,7 +40,7 @@ angular.module('services', [])
 
          this.getEvidence = function (targetId) {
             var deferred = $q.defer();
-            var url = baseUrl + "/drug_condition?"
+            var url = ApiBaseUrl + "/drug_condition?"
                 + 'drug_concept_id=' + targetId
             $http.get(url)
                 .then(function (resp) {
