@@ -18,20 +18,25 @@ module.exports = function (grunt) {
             all: ['index.js', 'web/js/**/*.js']
         },
         watch: {
-            express: {
-                files: ['web/**/*', 'config.json'],
-                tasks: ['ngconstant', 'concat', 'copy', 'express:dev'],
+            dist: {
+                files: [
+                    'web/**/*',
+                    /* prevent circular dependency */
+                    'config.json', '!web/js/config.js'
+                ],
+                tasks: ['ngconstant', 'concat', 'copy'],
                 options: {
-                    spawn: false,
-                },
-            },
-        },
-        express: {
-            dev: {
-                options: {
-                    script: 'index.js'
+                    spawn: false
                 }
-            },
+            }
+        },
+        connect: {
+            server: {
+                options: {
+                    port: 3000,
+                    base: 'dist'
+                }
+            }
         },
         concat: {
             'dist/<%= pkg.name %>.css': [
@@ -96,11 +101,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     // Default task(s).
     grunt.registerTask('build', ['ngconstant', 'concat', 'copy']);
-    grunt.registerTask('dist', ['ngconstant', 'concat', 'copy', 'watch']);
+    grunt.registerTask('dist', ['ngconstant', 'concat', 'copy', 'connect:server', 'watch:dist']);
 
     grunt.registerTask('default', ['jshint']);
 

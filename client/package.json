@@ -7,7 +7,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-contrib-concat": "1.0.1",
     "grunt-contrib-copy": "1.0.0",
-    "grunt-express-server": "0.5.3",
+    "grunt-contrib-connect": "^1.0.2",
     "grunt-ng-constant": "^2.0.1"
   },
   "dependencies": {
@@ -17,7 +17,6 @@
     "bootstrap": "^3.3.7",
     "chart.js": "2.3.x",
     "d3": "^4.7.3",
-    "express": "^4.14.0",
     "highcharts": "^6.0.1",
     "jquery": "^3.1.1",
     "jquery-ui": "^1.12.1",
