@@ -99,6 +99,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-express-server');
 
     // Default task(s).
+    grunt.registerTask('build', ['ngconstant', 'concat', 'copy']);
     grunt.registerTask('dist', ['ngconstant', 'concat', 'copy', 'watch']);
 
     grunt.registerTask('default', ['jshint']);
