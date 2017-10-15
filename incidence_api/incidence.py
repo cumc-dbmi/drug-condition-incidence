@@ -1,97 +1,20 @@
 import decimal
+import json
+
 from flask import Flask, request, Response
 from flask_cors import CORS
-from sqlalchemy import create_engine
-import json
-import settings
+
+from db import drug_condition, incidence_rate, incidence_rate_source_details
 
 app = Flask(__name__)
 CORS(app)
-engine = create_engine(settings.conn_str)
+APPLICATION_JSON_CONTENT_TYPE = 'application/json'
 
 
 def serialize_obj(obj):
     if isinstance(obj, decimal.Decimal):
         return str(round(obj, 4))
     raise TypeError("Object of type '%s' is not JSON serializable" % type(obj).__name__)
-
-
-APPLICATION_JSON_CONTENT_TYPE = 'application/json'
-DRUG_CONDITION_QUERY = """
-SELECT DISTINCT condition_concept_id, 
-  condition,
-  f.incidence_proportion_range_low,
-  f.incidence_proportion_range_high 
-FROM [incidence_rate].[dbo].[drug_condition_filtered] d
-JOIN [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_overall] f 
-  ON d.condition_concept_id = f.outcome_concept_id AND d.ingredient_concept_id = f.drug_concept_id
-WHERE ingredient_concept_id = (%s) AND time_at_risk_id = 365
-ORDER BY condition"""
-
-INCIDENCE_RATE_QUERY = """
-SELECT TOP 1 
-  incidence_proportion_range_low, 
-  incidence_proportion_range_high 
-FROM [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_overall]
-WHERE drug_concept_id = %(drug_concept_id)s 
-AND outcome_concept_id = %(outcome_concept_id)s  
-AND time_at_risk_id = %(time_at_risk_id)s"""
-
-INCIDENCE_RATE_SOURCE_QUERY = """
-SELECT source_short_name, 
-  source_country, 
-  incidence_proportion, 
-  incidence_rate 
-FROM [incidence_rate].[dbo].[IR_all_exposure_outcome_summary_full]
-WHERE drug_concept_id = %(drug_concept_id)s 
-AND outcome_concept_id = %(outcome_concept_id)s  
-AND time_at_risk_id = %(time_at_risk_id)s
-AND cohort_type = 'First diagnosis of'
-ORDER BY incidence_proportion DESC"""
-
-
-def drug_condition(drug_concept_id):
-    """
-    Given a drug concept_id, return associated conditions as list of dict
-    """
-    q = DRUG_CONDITION_QUERY % drug_concept_id
-    items = engine.execute(q)
-    rows = []
-    for item in items:
-        row = dict(zip(item.keys(), item))
-        rows.append(row)
-    return rows
-
-
-def incidence_rate(drug_concept_id, outcome_concept_id, time_at_risk_id):
-    """
-    Given a drug concept_id and condition_concept_id, return incidence_proportion_range_low and
-    incidence_proportion_range_high
-    """
-    params = {'drug_concept_id': drug_concept_id, 'outcome_concept_id': outcome_concept_id,
-              'time_at_risk_id': time_at_risk_id}
-    q = INCIDENCE_RATE_QUERY % params
-    items = engine.execute(q)
-    for item in items:
-        row = dict(zip(item.keys(), item))
-        return row
-    return None
-
-
-def incidence_rate_source_details(drug_concept_id, outcome_concept_id, time_at_risk_id):
-    """
-    Given a drug concept_id and condition_concept_id, return incidence_proportion_range_low and
-    incidence_proportion_range_high
-    """
-    params = {'drug_concept_id': drug_concept_id, 'outcome_concept_id': outcome_concept_id,
-              'time_at_risk_id': time_at_risk_id}
-    q = INCIDENCE_RATE_SOURCE_QUERY % params
-    items = engine.execute(q)
-    rows = []
-    for item in items:
-        row = dict(zip(item.keys(), item))
-        rows.append(row)
-    return rows
 
 
 @app.route("/drug_condition", methods=['GET'])

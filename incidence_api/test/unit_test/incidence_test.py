@@ -1,6 +1,7 @@
 import json
 import unittest
 
+from incidence_api import db
 from incidence_api import incidence
 from incidence_api.incidence import APPLICATION_JSON_CONTENT_TYPE
 
@@ -16,8 +17,8 @@ class IncidenceTest(unittest.TestCase):
         super(IncidenceTest, self).setUp()
 
     def test_drug_condition(self):
-        expected_count = 1
-        result = incidence.drug_condition(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
+        expected_count = 40
+        result = db.drug_condition(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
         actual_count = len(result)
         self.assertEqual(expected_count, actual_count)
 
@@ -31,8 +32,8 @@ class IncidenceTest(unittest.TestCase):
             self.assertTrue(len(response_data) == expected)
 
     def test_incidence_rate(self):
-        result = incidence.incidence_rate(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID, SWOLLEN_CONDITION_CONCEPT_ID,
-                                          TIME_AT_RISK_ID_365)
+        result = db.incidence_rate(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID, SWOLLEN_CONDITION_CONCEPT_ID,
+                                   TIME_AT_RISK_ID_365)
         self.assertTrue(type(result) is dict)
         self.assertTrue('incidence_proportion_range_high' in result)
         self.assertTrue('incidence_proportion_range_low' in result)
@@ -51,7 +52,7 @@ class IncidenceTest(unittest.TestCase):
 
     def test_serialize_obj(self):
         import decimal
-        d = decimal.Decimal ('0.00099123')
+        d = decimal.Decimal('0.00099123')
         result = incidence.serialize_obj(d)
         self.assertTrue('0.001' == result)
 
