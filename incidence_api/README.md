@@ -11,6 +11,7 @@ Backend REST API with the endpoints described below
  * [virtualenv](https://virtualenv.pypa.io/en/stable/installation/) (optional, but highly recommended)
 
 ## Installation
+ * Create a file `settings.py` (see examples in `_settings.py`)
  * If using virtualenv, activate the environment:
  
        source /path/to/venv/bin/activate
@@ -20,6 +21,5 @@ Backend REST API with the endpoints described below
        python install.py
 
 ## Running
-Create a file `settings.py` (see examples in `_settings.py`) and then run:
 
       python incidence.py
