@@ -40,3 +40,13 @@ a {
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
+
+.github-fork-ribbon.right-top:before {
+    background-color: #f80;
+}
+
+.github-fork-ribbon.right-top:before,
+.github-fork-ribbon.right-top:after {
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+}
