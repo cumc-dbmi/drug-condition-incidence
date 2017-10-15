@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy import text
 
-from incidence_api import settings
-from incidence_api.db_util import determine_dialect
+import settings
+from db_util import determine_dialect
 
 ENGINE = create_engine(settings.conn_str)
 DIALECT = determine_dialect(settings.conn_str)
