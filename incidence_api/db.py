@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+from sqlalchemy import text
 
 from incidence_api import settings
 from incidence_api.db_util import determine_dialect
@@ -45,7 +46,7 @@ def execute(q, ps=None):
     if settings.schema is not None:
         if DIALECT == 'postgresql':
             connection.execute('SET search_path TO ' + settings.schema)
-    return connection.execute(q, ps)
+    return connection.execute(text(q), **ps)
 
 
 def drug_condition(drug_concept_id):
