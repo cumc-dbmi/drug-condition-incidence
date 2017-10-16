@@ -21,7 +21,7 @@ def serialize_obj(obj):
 def drug_condition_endpoint():
     concept_id = request.args.get('drug_concept_id', type=int)
     results = drug_condition(concept_id)
-    response_body = json.dumps(results)
+    response_body = json.dumps(results, default=serialize_obj)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 
 
