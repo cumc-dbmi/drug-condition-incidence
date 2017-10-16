@@ -32,7 +32,11 @@ INCIDENCE_RATE_SOURCE_QUERY = """
 SELECT source_short_name, 
   source_country, 
   incidence_proportion, 
-  incidence_rate 
+  incidence_rate,
+  CASE
+	WHEN requires_full_time_at_risk = 1  THEN 'Yes'
+	ELSE 'No'
+  END as requires_full_time_at_risk 
 FROM IR_all_exposure_outcome_summary_full
 WHERE drug_concept_id = :drug_concept_id 
 AND outcome_concept_id = :outcome_concept_id  
