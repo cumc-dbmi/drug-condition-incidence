@@ -17,7 +17,7 @@ class IncidenceTest(unittest.TestCase):
         super(IncidenceTest, self).setUp()
 
     def test_drug_condition(self):
-        expected_count = 40
+        expected_count = 85
         result = db.drug_condition(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
         actual_count = len(result)
         self.assertEqual(expected_count, actual_count)
@@ -27,7 +27,7 @@ class IncidenceTest(unittest.TestCase):
             data = dict(drug_concept_id=SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
             response = c.get('/drug_condition', query_string=data, content_type=APPLICATION_JSON_CONTENT_TYPE)
             response_data = json.loads(response.data)
-            expected = 40
+            expected = 85
             self.assertTrue(type(response_data) is list)
             self.assertTrue(len(response_data) == expected)
 

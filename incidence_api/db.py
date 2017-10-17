@@ -17,6 +17,7 @@ JOIN IR_all_exposure_outcome_summary_overall f
   ON d.condition_concept_id = f.outcome_concept_id 
   AND d.ingredient_concept_id = f.drug_concept_id
 WHERE ingredient_concept_id = :drug_concept_id AND time_at_risk_id = 365
+AND cohort_type = 'First diagnosis of'
 ORDER BY condition"""
 
 INCIDENCE_RATE_QUERY = """
@@ -26,7 +27,8 @@ SELECT
 FROM IR_all_exposure_outcome_summary_overall
 WHERE drug_concept_id = :drug_concept_id
 AND outcome_concept_id = :outcome_concept_id  
-AND time_at_risk_id = :time_at_risk_id"""
+AND time_at_risk_id = :time_at_risk_id
+AND cohort_type = 'First diagnosis of'"""
 
 INCIDENCE_RATE_SOURCE_QUERY = """
 SELECT source_short_name, 
