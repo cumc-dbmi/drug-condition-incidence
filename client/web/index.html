@@ -178,8 +178,8 @@
             <div class="col-xs-5">
             </div>
             <div class="col-xs-2">
-                Showing {{itemsLimit}} items of {{evidence.length}}<br><br>
-                <button class="btn btn-warning btn-block" ng-click="loadMoreItems()">
+                Showing {{evidence.length < 100 ? evidence.length : currentCounter }} items of {{evidence.length}}<br><br>
+                <button class="btn btn-warning btn-block" ng-disabled="evidence.length < 100" ng-click="loadMoreItems()">
                     Load More
                 </button>
             </div>

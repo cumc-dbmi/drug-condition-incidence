@@ -213,11 +213,20 @@ angular.module('controllers', ['config'])
                      })
 
                  $scope.pagesShown = 1;
-                 $scope.pageSize = 10; // load 5 items at once
+                 $scope.pageSize = 100; // load 100 items at once
+                 $scope.currentCounter = 100;
                  $scope.itemsLimit = $scope.pageSize * $scope.pagesShown;
+
                  $scope.loadMoreItems = function () {
                      $scope.pagesShown++;
                      $scope.itemsLimit = $scope.pageSize * $scope.pagesShown;
+
+                     if ($scope.evidence.length > $scope.itemsLimit) {
+                         $scope.currentCounter = $scope.itemsLimit;
+                     } else if ($scope.evidence.length < $scope.itemsLimit){
+                         $scope.currentCounter = $scope.evidence.length;
+                     }
+
                  };
              };
 
