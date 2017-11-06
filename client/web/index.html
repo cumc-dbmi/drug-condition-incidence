@@ -154,6 +154,10 @@
             </div>
             <div class="col-xs-10" style="margin-top:20px">
                 <h2>Condition List From Product Label</h2><br>
+                <div ng-hide="evidence.length!=0">
+                    <h3>Product label not found for the selected drug!</h3><br>
+                </div>
+                <div ng-show="evidence.length>0">
                 <table class="table table-striped table-hover ">
                     <thead>
                     <tr>
@@ -171,6 +175,7 @@
                     </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
             <div class="col-xs-1">
             </div>
