@@ -23,6 +23,11 @@ angular.module('controllers', ['config'])
             };
             var chartOptions = null;
 
+            $scope.chartOptionsZoom = function () {
+                return chartOptionsZoom;
+            };
+            var chartOptionsZoom = null;
+
             $scope.view = "main";
 
             $scope.timeAtRisk = 365;
@@ -88,8 +93,9 @@ angular.module('controllers', ['config'])
                             height: 220,
                             marginRight: 100,
                             marginLeft: 100,
-                            borderColor: '#f39c12',
-                            borderWidth: 2
+                            zoomType: 'x'
+                            //borderColor: '#f39c12',
+                            //borderWidth: 2
                         },
                         title: {
                             text: 'Incidence Proportion'
@@ -165,6 +171,95 @@ angular.module('controllers', ['config'])
                         },
                         series: proportionsData
                     };
+
+                chartOptionsZoom =
+                    {
+                        chart: {
+                            type: 'scatter',
+                            width: 900,
+                            height: 200,
+                            marginRight: 100,
+                            marginLeft: 100,
+                            zoomType: 'x'
+                            //borderColor: '#f39c12',
+                            //borderWidth: 2
+                        },
+                        title: {
+                            text: ''
+                        },
+                        subtitle: {
+                            text: document.ontouchstart === undefined ?
+                            'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                        },
+                        xAxis: {
+                            title: {
+                                enabled: true,
+                                text: 'Incidence Proportion'
+                            },
+                            min: 0,
+                            //max: 1,
+                            //tickInterval: 0.1,
+                            gridLineColor: 'rgb(204, 214, 235)',
+                            gridLineWidth: 1,
+                            plotLines: [{
+                                value: roundNumber($scope.incidenceRate.incidence_proportion_range_high),
+                                color: 'red',
+                                width: 2,
+                                dashStyle: 'shortdot',
+                                label: {
+                                    text: 'high',
+                                    align: 'center',
+                                    rotation: 0
+                                }
+                            },
+                            {
+                                value: roundNumber($scope.incidenceRate.incidence_proportion_range_low),
+                                color: 'red',
+                                width: 2,
+                                dashStyle: 'shortdot',
+                                label: {
+                                    text: 'low',
+                                    align: 'center',
+                                    rotation: 0
+                                }
+                            }]
+                        },
+                        yAxis: {
+                            title: {
+                                text: [$scope.outcome.name]
+                            },
+                            visible: false
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        plotOptions: {
+                            scatter: {
+                                marker: {
+                                    radius: 5,
+                                    states: {
+                                        hover: {
+                                            enabled: true,
+                                            lineColor: 'rgb(100,100,100)'
+                                        }
+                                    }
+                                },
+                                states: {
+                                    hover: {
+                                        marker: {
+                                            enabled: false
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    headerFormat: '<b>{series.name}</b><br>',
+                                    pointFormat: '{point.x}'
+                                }
+                            }
+                        },
+                        series: proportionsData
+                    };
+
             };
 
             $scope.callShowTable = function (condition) {

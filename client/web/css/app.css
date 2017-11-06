@@ -34,6 +34,12 @@ a {
     color: #FFFFFF;
 }
 
+#rangechart {
+height: 450px;
+width: 920px;
+border: 2px solid #f39c12;
+}
+
 [ng\:cloak], [ng-cloak], .ng-cloak {
     display: none !important;
 }
