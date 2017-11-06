@@ -2,7 +2,7 @@ angular.module('services', ['config'])
     .service('ohdsiService', ['$http', '$q', 'ApiBaseUrl', function ($http, $q, ApiBaseUrl) {
         var self = this;
 
-        this.getIncidentRate = function (targetId, outcomeId, timeAtRisk) {
+        self.getIncidentRate = function (targetId, outcomeId, timeAtRisk) {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/incidence_rate?"
                 + 'drug_concept_id=' + targetId
@@ -12,11 +12,12 @@ angular.module('services', ['config'])
                 .then(function (resp) {
                     deferred.resolve(resp.data);
                 }, function (err) {
+                    console.log(err);
                 });
             return deferred.promise;
         };
 
-        this.getIncidentRateSource = function (targetId, outcomeId, timeAtRisk) {
+        self.getIncidentRateSource = function (targetId, outcomeId, timeAtRisk) {
             var deferred = $q.defer();
             var res = [];
             var url = ApiBaseUrl + "/incidence_rate_source?"
@@ -34,19 +35,82 @@ angular.module('services', ['config'])
                     }
                     deferred.resolve(res);
                 }, function (err) {
+                    console.log(err);
                 });
             return deferred.promise;
         };
 
-         this.getEvidence = function (targetId) {
+        var drugCache = {};
+
+        self.getEvidence = function (drugConceptId) {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/drug_condition?"
-                + 'drug_concept_id=' + targetId
-            $http.get(url)
-                .then(function (resp) {
-                    deferred.resolve(resp.data);
-                }, function (err) {
-                });
+                + 'drug_concept_id=' + drugConceptId;
+            if (drugCache.hasOwnProperty(drugConceptId)) {
+                deferred.resolve(drugCache[drugConceptId]);
+            } else {
+                $http.get(url)
+                    .then(function (resp) {
+                        drugCache[drugConceptId] = resp.data;
+                        deferred.resolve(resp.data);
+                    }, function (err) {
+                        console.log(err);
+                    });
+            }
             return deferred.promise;
         };
+    }])
+
+
+    .service('vocabularyService', ['$http', '$q', 'VocabBaseUrl', function ($http, $q, VocabBaseUrl) {
+        var self = this;
+
+        function concept2option(concept) {
+            return {
+                label: concept.CONCEPT_NAME,
+                value: concept.CONCEPT_ID + ""
+            };
+        }
+
+        var searchCache = {};
+
+        self.search = function (searchData) {
+            var deferred = $q.defer();
+            var key = JSON.stringify(searchData);
+            if (searchCache.hasOwnProperty(key)){
+                deferred.resolve(searchCache[key]);
+            } else {
+                $http.post(VocabBaseUrl + '/search', searchData)
+                .then(function (response) {
+                    var result = $.map(response.data, concept2option);
+                    deferred.resolve(result);
+                });
+            }
+            return deferred.promise;
+        };
+
+        var conceptCache = {};
+
+        self.concept = function (conceptId) {
+            var deferred = $q.defer();
+            if (conceptCache.hasOwnProperty(conceptId)){
+                deferred.resolve(conceptCache[conceptId]);
+            } else {
+                $http.get(VocabBaseUrl + '/concept/' + conceptId)
+                .then(function (response) {
+                    conceptCache[conceptId] = response.data;
+                    deferred.resolve(response.data);
+                });
+            }
+            return deferred.promise;
+        };
+
+        self.relatedConcepts = function (data) {
+            return $http.post(VocabBaseUrl + '/relatedconcepts', data)
+                .then(function (response) {
+                    return $.map(response.data, concept2option);
+                });
+        };
+
     }]);
+
