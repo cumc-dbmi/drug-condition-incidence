@@ -1,5 +1,5 @@
 {
-"name": "seir",
+  "name": "seir",
   "version": "0.1.0",
   "devDependencies": {
     "grunt": "^1.0.1",
@@ -11,6 +11,8 @@
     "grunt-ng-constant": "^2.0.1"
   },
   "dependencies": {
+    "@uirouter/angularjs": "^1.0.10",
+    "@uirouter/core": "^5.0.11",
     "angular": "^1.6.3",
     "angular-animate": "^1.6.3",
     "bloodhound": "^1.0.0",

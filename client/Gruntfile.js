@@ -50,6 +50,8 @@ module.exports = function (grunt) {
                 'web/vendor/highcharts-more.js',
                 'web/vendor/exporting.js',
                 'node_modules/angular/angular.min.js',
+                'node_modules/@uirouter/core/_bundles/ui-router-core.min.js',
+                'node_modules/@uirouter/angularjs/release/ui-router-angularjs.js',
                 'node_modules/angular-animate/angular-animate.min.js',
                 'node_modules/jquery-ui-dist/jquery-ui.min.js',
                 'node_modules/bootstrap/dist/js/bootstrap.min.js',
@@ -69,6 +71,12 @@ module.exports = function (grunt) {
                         cwd: 'web/img',
                         src: '*',
                         dest: 'dist/img'
+                    },
+                    {
+                        expand: true,
+                        cwd: 'web/templates',
+                        src: '*',
+                        dest: 'dist/templates'
                     }
                 ]
             }

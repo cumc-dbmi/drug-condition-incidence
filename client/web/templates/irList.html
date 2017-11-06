@@ -1,0 +1,51 @@
+<div class="col-xs-12">
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12">
+            <h1>Risk of {{outcome.name}} with {{treatment.name}}</h1>
+            <!--<p align="center">Baseline incidence of {{outcome.name}} in males aged 60-70 on {{comparator.name}} is
+              3 events per 1000 persons every year. The incidence of insomnia in all males aged 60-70 is 2.1 events per 1000 person year.</p>-->
+            <!--<h3><p align="center">Baseline incidence of {{outcome.name}} on {{treatment.name}} is 3 events per 1000 persons every year.</p></h3>-->
+            <h4>Amongst patients initiating {{treatment.name}}, onset of {{outcome.name}} occurs in between
+                {{incidenceRate.incidence_proportion_range_low | number : 4}} and
+                {{incidenceRate.incidence_proportion_range_high | number : 4}}
+                of patients during the 1 year after exposure start</h4>
+            <br><br>
+        </div>
+        <div class="col-xs-2">
+        </div>
+        <div class="col-xs-8" id="rangechart" ng-if="chartOptions()">
+            <hc-chart options="chartOptions()">Range Bar Chart</hc-chart><br>
+            <hc-chart options="chartOptionsZoom()">Range Bar Chart Zoomed</hc-chart>
+        </div>
+        <div class="col-xs-2">
+        </div>
+    </div>
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-10" style="margin-top:20px">
+            <table class="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Country</th>
+                    <th>Condition</th>
+                    <th>Incidence Proportion</th>
+                    <th>Requires Full Time At Risk</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="r in incidenceRateSource | limitTo:itemsLimit track by $index">
+                    <td>{{r.source_short_name}}</td>
+                    <td>{{r.source_country}}</td>
+                    <td>{{outcome.name}}</td>
+                    <td>{{r.incidence_proportion | number : 4}}</td>
+                    <td>{{r.requires_full_time_at_risk}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-1">
+        </div>
+    </div>
+</div>
