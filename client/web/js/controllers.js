@@ -39,7 +39,10 @@ angular.module('controllers', [])
             };
 
             $scope.clear();
-            $state.go('app.home');
+
+            if($state.current.name == 'app') {
+                $state.go('app.home');
+            }
         }
     ])
 
@@ -98,8 +101,8 @@ angular.module('controllers', [])
         }])
 
 
-    .controller('ConditionsByDrugCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$state',
-        function ($scope, ohdsiService, $timeout, $http, $state) {
+    .controller('ConditionsByDrugCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$state', 'vocabularyService',
+        function ($scope, ohdsiService, $timeout, $http, $state, vocabularyService) {
             $scope.pagesShown = 1;
             $scope.pageSize = 100; // load 100 items at once
             $scope.currentCounter = 100;
@@ -115,17 +118,17 @@ angular.module('controllers', [])
                 }
             };
 
-            ohdsiService.getEvidence($state.params.drugConceptId).then(
-                function (data) {
-                    $scope.evidence = data;
-                },
-                function (error) {
-                    console.log(error);
-                });
+            vocabularyService.concept($state.params.drugConceptId).then(function(data){
+                $scope.setTreatment(data.CONCEPT_NAME, data.CONCEPT_ID);
+            });
+
+            ohdsiService.getEvidence($state.params.drugConceptId).then(function(data) {
+                $scope.evidence = data;
+            });
         }])
 
-    .controller('IrListCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$state', 'vocabularyService',
-        function ($scope, ohdsiService, $timeout, $http, $state, vocabularyService) {
+    .controller('IrListCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$state', '$q', 'vocabularyService',
+        function ($scope, ohdsiService, $timeout, $http, $state, $q, vocabularyService) {
             console.log('IrListCtrl');
             $scope.incidenceRate = [];
             $scope.incidenceRateSource = [];
@@ -245,9 +248,18 @@ angular.module('controllers', [])
                 };
             };
 
-            vocabularyService.concept($state.params.conditionConceptId).then(function(data){
+            var p1 = vocabularyService.concept($state.params.drugConceptId).then(function(data){
+                $scope.setTreatment(data.CONCEPT_NAME, data.CONCEPT_ID);
+            });
+            var p2 = vocabularyService.concept($state.params.conditionConceptId).then(function(data){
                 $scope.setOutcome(data.CONCEPT_NAME, data.CONCEPT_ID);
+            });
+            var ps = [p1, p2];
+
+            // Get incidence rates after treatment and outcome have resolved
+            $q.all(ps).then(function(){
                 ohdsiService.getIncidentRate($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
                             .then(onGetIncidentRate)
-            });
+            })
+
         }]);
