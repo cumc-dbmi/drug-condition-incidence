@@ -21,7 +21,7 @@
             </a>
             <a ng-if="!!outcome.code"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug.condition({ drugConceptId: treatment.code })">
+               ui-sref="app.drug_condition({ drugConceptId: treatment.code, conditionConceptId: outcome.code })">
                 Go &raquo;
             </a>
         </div>
