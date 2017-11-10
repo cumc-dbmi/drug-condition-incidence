@@ -176,7 +176,7 @@ angular.module('controllers', [])
                     chart: {
                         type: 'scatter',
                         width: 900,
-                        height: 220,
+                        height: 230,
                         marginRight: 100,
                         marginLeft: 100,
                         zoomType: 'x',
