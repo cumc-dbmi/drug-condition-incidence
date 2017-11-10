@@ -92,8 +92,8 @@ angular.module('controllers', ['config'])
                             width: 900,
                             height: 220,
                             marginRight: 100,
-                            marginLeft: 100,
-                            zoomType: 'x'
+                            marginLeft: 100
+                            //zoomType: 'x'
                             //borderColor: '#f39c12',
                             //borderWidth: 2
                         },
@@ -110,7 +110,7 @@ angular.module('controllers', ['config'])
                             },
                             min: 0,
                             max: 1,
-                            tickInterval: 0.1,
+                            //tickInterval: 0.1,
                             gridLineColor: 'rgb(204, 214, 235)',
                             gridLineWidth: 1,
                             plotLines: [{
