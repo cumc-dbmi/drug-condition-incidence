@@ -17,6 +17,11 @@ angular.module('controllers', [])
     .controller('AppCtrl', ['$scope', '$state',
         function($scope, $state){
             console.log('app');
+
+            $scope.reloadPage = function() {
+                window.location = window.location.href.split("#")[0];
+            };
+
             $scope.clear = function () {
                 $scope.outcome = {};
                 $scope.treatment = {};
