@@ -59,6 +59,27 @@ angular.module('services', ['config'])
             }
             return deferred.promise;
         };
+
+        self.getConditionList = function (drugConceptId) {
+            var deferred = $q.defer();
+            var res = [];
+            var url = ApiBaseUrl + "/condition_list?"
+                + 'drug_concept_id=' + drugConceptId;
+            $http.get(url)
+                .then(function (resp) {
+                    //console.log(resp);
+                    if (resp.data && resp.data.length > 0) {
+                        for (var i = 0; i < resp.data.length; i++) {
+                            var item = resp.data[i];
+                            res.push(item);
+                        }
+                    }
+                    deferred.resolve(res);
+                }, function (err) {
+                    console.log(err);
+                });
+            return deferred.promise;
+        };
     }])
 
 

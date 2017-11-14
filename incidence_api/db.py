@@ -20,6 +20,14 @@ WHERE ingredient_concept_id = :drug_concept_id AND time_at_risk_id = 365
 AND cohort_type = 'First diagnosis of'
 ORDER BY condition"""
 
+CONDITION_LIST_QUERY = """
+SELECT DISTINCT outcome_concept_id_str,
+  outcome_concept_name
+FROM IR_all_exposure_outcome_summary_overall f
+WHERE drug_concept_id = :drug_concept_id AND time_at_risk_id = 365
+AND cohort_type = 'First diagnosis of'
+ORDER BY outcome_concept_name"""
+
 INCIDENCE_RATE_QUERY = """
 SELECT
   incidence_proportion_range_low, 
@@ -67,6 +75,17 @@ def drug_condition(drug_concept_id):
         rows.append(row)
     return rows
 
+def condition_list(drug_concept_id):
+    """
+    Given a drug concept_id, return associated distinct conditions as list of dict
+    """
+    params = {'drug_concept_id': drug_concept_id}
+    items = execute(CONDITION_LIST_QUERY, params)
+    rows = []
+    for item in items:
+        row = dict(zip(item.keys(), item))
+        rows.append(row)
+    return rows
 
 def incidence_rate(drug_concept_id, outcome_concept_id, time_at_risk_id):
     """
