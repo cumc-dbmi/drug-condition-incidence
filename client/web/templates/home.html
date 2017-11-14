@@ -8,8 +8,9 @@
             <h4>Which drug are you interested in?</h4>
             <input id="treatmentName" class="form-control" ng-model="treatment.name"/>
             <h4>Which condition are you interested in?</h4>
-            <input id="outcomeName" class="form-control" ng-model="outcome.name"
-                   placeholder="Leave blank for conditions on product label"/>
+            <input id="outcomeName" class="form-control" auto-complete ui-items="conditionList" ng-model="outcome.name"
+                   placeholder="Leave blank for conditions on product label">
+
         </div>
     </div>
     <div ng-if="treatment.code && treatment.code !== ''" class="row buttons-section">

@@ -31,6 +31,7 @@ angular.module('controllers', [])
                 $scope.evidence = [];
                 $scope.incidenceRate = [];
                 $scope.incidenceRateSource = [];
+                $scope.conditionList = [];
             };
 
             $scope.setTreatment = function (name, code) {
@@ -80,26 +81,21 @@ angular.module('controllers', [])
                 select: function (event, ui) {
                     $('#treatmentName').val(ui.item.label);
                     $scope.setTreatment(ui.item.label, ui.item.value);
-                    $scope.lookupComparator();
+                    //$scope.lookupComparator();
+                    ohdsiService.getConditionList($scope.treatment.code).then(function (data) {
+                        $scope.conditionList = data;
+                    });
                     $("#outcomeName").focus();
                     return false;
                 }
             });
 
             $("#outcomeName").autocomplete({
-                source: function (request, response) {
-                    var data = {
-                        QUERY: request.term,
-                        VOCABULARY_ID: ['SNOMED'],
-                        CONCEPT_CLASS_ID: ['Clinical Finding']
-                    };
-                    vocabularyService.search(data).then(response);
-                },
+                source: $scope.conditionList,
                 minLength: 5,
                 select: function (event, ui) {
                     $('#outcomeName').val(ui.item.label);
                     $scope.setOutcome(ui.item.label, ui.item.value);
-                    $scope.lookupComparator();
                     return false;
                 }
             });
