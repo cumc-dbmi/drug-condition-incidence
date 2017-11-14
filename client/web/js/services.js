@@ -2,6 +2,13 @@ angular.module('services', ['config'])
     .service('ohdsiService', ['$http', '$q', 'ApiBaseUrl', function ($http, $q, ApiBaseUrl) {
         var self = this;
 
+        function result2option(result_item) {
+            return {
+                label: result_item.outcome_concept_name,
+                value: result_item.outcome_concept_id_str
+            };
+        }
+
         self.getIncidentRate = function (targetId, outcomeId, timeAtRisk) {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/incidence_rate?"
@@ -74,6 +81,7 @@ angular.module('services', ['config'])
                             res.push(item);
                         }
                     }
+                    res = $.map(res, result2option);
                     deferred.resolve(res);
                 }, function (err) {
                     console.log(err);
