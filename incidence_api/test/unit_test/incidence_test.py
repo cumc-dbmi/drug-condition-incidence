@@ -22,6 +22,12 @@ class IncidenceTest(unittest.TestCase):
         actual_count = len(result)
         self.assertEqual(expected_count, actual_count)
 
+    def test_condition_list(self):
+        expected_count = 16138
+        result = db.condition_list(SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
+        actual_count = len(result)
+        self.assertEqual(expected_count, actual_count)
+
     def test_drug_condition_endpoint(self):
         with incidence.app.test_client() as c:
             data = dict(drug_concept_id=SIMVASTATIN_DRUG_1_ING_CONCEPT_ID)
