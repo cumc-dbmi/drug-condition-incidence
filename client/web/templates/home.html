@@ -6,23 +6,32 @@
         <h3>How often do patients get a condition after starting a drug?</h3>
         <div class="col-xs-offset-3 col-xs-6">
             <h4>Which drug are you interested in?</h4>
-            <input id="treatmentName" class="form-control" ng-model="treatment.name"/>
+            <input type="text"
+                   class="form-control"
+                   ng-model="treatment"
+                   typeahead-min-length="5"
+                   typeahead-on-select="selectDrug($item, $model, $label)"
+                   typeahead-editable="false"
+                   uib-typeahead="drug as drug.CONCEPT_NAME for drug in searchDrugs($viewValue)">
             <h4>Which condition are you interested in?</h4>
-            <input id="outcomeName" class="form-control" auto-complete ui-items="conditionList" ng-model="outcome.name"
+            <input type="text"
+                   class="form-control"
+                   ng-model="outcome"
+                   typeahead-editable="false"
+                   uib-typeahead="condition as condition.outcome_concept_name for condition in conditionList | filter:$viewValue | limitTo:10"
                    placeholder="Leave blank for conditions on product label">
-
         </div>
     </div>
-    <div ng-if="treatment.code && treatment.code !== ''" class="row buttons-section">
+    <div ng-if="!!treatment" class="row buttons-section">
         <div class="col-xs-offset-4 col-xs-2">
-            <a ng-if="!!!outcome.code"
+            <a ng-if="!!!outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug({ drugConceptId: treatment.code })">
+               ui-sref="app.drug({ drugConceptId: treatment.CONCEPT_ID })">
                 Go &raquo;
             </a>
-            <a ng-if="!!outcome.code"
+            <a ng-if="!!outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug_condition({ drugConceptId: treatment.code, conditionConceptId: outcome.code })">
+               ui-sref="app.drug_condition({ drugConceptId: treatment.CONCEPT_ID, conditionConceptId: outcome.outcome_concept_id_str })">
                 Go &raquo;
             </a>
         </div>

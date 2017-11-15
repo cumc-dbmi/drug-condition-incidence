@@ -23,25 +23,13 @@ angular.module('controllers', [])
             };
 
             $scope.clear = function () {
-                $scope.outcome = {};
-                $scope.treatment = {};
-                $scope.comparator = {};
-                $scope.comparators = [];
+                $scope.outcome = null;
+                $scope.treatment = null;
                 $scope.patFilter = "";
                 $scope.evidence = [];
                 $scope.incidenceRate = [];
                 $scope.incidenceRateSource = [];
                 $scope.conditionList = [];
-            };
-
-            $scope.setTreatment = function (name, code) {
-                $scope.treatment.name = name;
-                $scope.treatment.code = code;
-            };
-
-            $scope.setOutcome = function (name, code) {
-                $scope.outcome.name = name;
-                $scope.outcome.code = code;
             };
 
             $scope.clear();
@@ -55,50 +43,19 @@ angular.module('controllers', [])
     .controller('HomeCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$state', 'vocabularyService',
         function ($scope, ohdsiService, $timeout, $http, $state, vocabularyService) {
             console.log('home');
-
-            $scope.lookupComparator = function () {
-                if ($scope.treatment.code && $scope.treatment.code.length > 0) {
-                    var conditionConceptId = parseInt($scope.treatment.code);
-                    var data = {
-                        CONCEPT_ID: [conditionConceptId],
-                        VOCABULARY_ID: ["ATC"],
-                        CONCEPT_CLASS_ID: ["ATC 3rd", "ATC 4th", "ATC 2nd"]
-                    };
-                    //vocabularyService.relatedConcepts(data);
-                }
-            };
-
-            $("#treatmentName").autocomplete({
-                source: function (request, response) {
-                    var data = {
-                        QUERY: request.term,
+            $scope.searchDrugs = function(searchTerm) {
+                var data = {
+                        QUERY: searchTerm,
                         VOCABULARY_ID: ['RxNorm'],
                         CONCEPT_CLASS_ID: ['Ingredient', 'Brand Name']
                     };
-                    vocabularyService.search(data).then(response);
-                },
-                minLength: 5,
-                select: function (event, ui) {
-                    $('#treatmentName').val(ui.item.label);
-                    $scope.setTreatment(ui.item.label, ui.item.value);
-                    //$scope.lookupComparator();
-                    ohdsiService.getConditionList($scope.treatment.code).then(function (data) {
+                return vocabularyService.search(data);
+            };
+            $scope.selectDrug = function(item, model, label) {
+                ohdsiService.getConditionList($scope.treatment.CONCEPT_ID).then(function (data) {
                         $scope.conditionList = data;
                     });
-                    $("#outcomeName").focus();
-                    return false;
-                }
-            });
-
-            $("#outcomeName").autocomplete({
-                source: $scope.conditionList,
-                minLength: 5,
-                select: function (event, ui) {
-                    $('#outcomeName').val(ui.item.label);
-                    $scope.setOutcome(ui.item.label, ui.item.value);
-                    return false;
-                }
-            });
+            };
         }])
 
 
@@ -120,7 +77,7 @@ angular.module('controllers', [])
             };
 
             vocabularyService.concept($state.params.drugConceptId).then(function(data){
-                $scope.setTreatment(data.CONCEPT_NAME, data.CONCEPT_ID);
+                $scope.treatment = data;
             });
 
             ohdsiService.getEvidence($state.params.drugConceptId).then(function(data) {
@@ -180,7 +137,7 @@ angular.module('controllers', [])
                         text: 'Incidence Proportion'
                     },
                     subtitle: {
-                        text: 'Risk of ' + $scope.outcome.name + ' with ' + $scope.treatment.name
+                        text: 'Risk of ' + $scope.outcome.CONCEPT_NAME + ' with ' + $scope.treatment.CONCEPT_NAME
                     },
                     xAxis: {
                         title: {
@@ -217,7 +174,7 @@ angular.module('controllers', [])
                     },
                     yAxis: {
                         title: {
-                            text: [$scope.outcome.name]
+                            text: [$scope.outcome.CONCEPT_NAME]
                         },
                         visible: false
                     },
@@ -301,7 +258,7 @@ angular.module('controllers', [])
                         },
                         yAxis: {
                             title: {
-                                text: [$scope.outcome.name]
+                                text: [$scope.outcome.CONCEPT_NAME]
                             },
                             visible: false
                         },
@@ -337,16 +294,16 @@ angular.module('controllers', [])
             };
 
             var p1 = vocabularyService.concept($state.params.drugConceptId).then(function(data){
-                $scope.setTreatment(data.CONCEPT_NAME, data.CONCEPT_ID);
+                $scope.treatment = data;
             });
             var p2 = vocabularyService.concept($state.params.conditionConceptId).then(function(data){
-                $scope.setOutcome(data.CONCEPT_NAME, data.CONCEPT_ID);
+                $scope.outcome = data;
             });
             var ps = [p1, p2];
 
             // Get incidence rates after treatment and outcome have resolved
             $q.all(ps).then(function(){
-                ohdsiService.getIncidentRate($scope.treatment.code, $scope.outcome.code, $scope.timeAtRisk)
+                ohdsiService.getIncidentRate($scope.treatment.CONCEPT_ID, $scope.outcome.CONCEPT_ID, $scope.timeAtRisk)
                             .then(onGetIncidentRate)
             })
 

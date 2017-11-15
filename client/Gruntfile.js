@@ -55,6 +55,8 @@ module.exports = function (grunt) {
                 'node_modules/angular-animate/angular-animate.min.js',
                 'node_modules/jquery-ui-dist/jquery-ui.min.js',
                 'node_modules/bootstrap/dist/js/bootstrap.min.js',
+                'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
+                'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
                 'node_modules/d3/build/d3.min.js',
                 'web/js/**/*.js'
             ]
