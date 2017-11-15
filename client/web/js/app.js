@@ -1,7 +1,7 @@
 console.log("Welcome to OHDSI Side Effect Incidence Rate Application!");
 
 angular.module("ohdsiInformerApp",
-    ["ui.router", "ngAnimate", "services", "directives", "controllers"])
+    ["ui.router", "ngAnimate", "ui.bootstrap", "services", "directives", "controllers"])
 
 .config(function ($stateProvider) {
     var appState = {

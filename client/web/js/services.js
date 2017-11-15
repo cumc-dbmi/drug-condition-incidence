@@ -2,13 +2,6 @@ angular.module('services', ['config'])
     .service('ohdsiService', ['$http', '$q', 'ApiBaseUrl', function ($http, $q, ApiBaseUrl) {
         var self = this;
 
-        function result2option(result_item) {
-            return {
-                label: result_item.outcome_concept_name,
-                value: result_item.outcome_concept_id_str
-            };
-        }
-
         self.getIncidentRate = function (targetId, outcomeId, timeAtRisk) {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/incidence_rate?"
@@ -69,20 +62,11 @@ angular.module('services', ['config'])
 
         self.getConditionList = function (drugConceptId) {
             var deferred = $q.defer();
-            var res = [];
             var url = ApiBaseUrl + "/condition_list?"
                 + 'drug_concept_id=' + drugConceptId;
             $http.get(url)
-                .then(function (resp) {
-                    //console.log(resp);
-                    if (resp.data && resp.data.length > 0) {
-                        for (var i = 0; i < resp.data.length; i++) {
-                            var item = resp.data[i];
-                            res.push(item);
-                        }
-                    }
-                    res = $.map(res, result2option);
-                    deferred.resolve(res);
+                .then(function (response) {
+                    deferred.resolve(response.data);
                 }, function (err) {
                     console.log(err);
                 });
@@ -93,14 +77,6 @@ angular.module('services', ['config'])
 
     .service('vocabularyService', ['$http', '$q', 'VocabBaseUrl', function ($http, $q, VocabBaseUrl) {
         var self = this;
-
-        function concept2option(concept) {
-            return {
-                label: concept.CONCEPT_NAME,
-                value: concept.CONCEPT_ID + ""
-            };
-        }
-
         var searchCache = {};
 
         self.search = function (searchData) {
@@ -111,8 +87,7 @@ angular.module('services', ['config'])
             } else {
                 $http.post(VocabBaseUrl + '/search', searchData)
                 .then(function (response) {
-                    var result = $.map(response.data, concept2option);
-                    deferred.resolve(result);
+                    deferred.resolve(response.data);
                 });
             }
             return deferred.promise;
@@ -137,7 +112,7 @@ angular.module('services', ['config'])
         self.relatedConcepts = function (data) {
             return $http.post(VocabBaseUrl + '/relatedconcepts', data)
                 .then(function (response) {
-                    return $.map(response.data, concept2option);
+                    return response.data;
                 });
         };
 

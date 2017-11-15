@@ -1,11 +1,11 @@
 <div class="col-xs-12">
     <div class="row" style="margin-top:20px">
         <div class="col-xs-12">
-            <h1>Risk of {{outcome.name}} with {{treatment.name}}</h1>
+            <h1>Risk of {{outcome.CONCEPT_NAME}} with {{treatment.CONCEPT_NAME}}</h1>
             <!--<p align="center">Baseline incidence of {{outcome.name}} in males aged 60-70 on {{comparator.name}} is
               3 events per 1000 persons every year. The incidence of insomnia in all males aged 60-70 is 2.1 events per 1000 person year.</p>-->
             <!--<h3><p align="center">Baseline incidence of {{outcome.name}} on {{treatment.name}} is 3 events per 1000 persons every year.</p></h3>-->
-            <h4>Amongst patients initiating {{treatment.name}}, onset of {{outcome.name}} occurs in between
+            <h4>Amongst patients initiating {{treatment.CONCEPT_NAME}}, onset of {{outcome.CONCEPT_NAME}} occurs in between
                 {{incidenceRate.incidence_proportion_range_low | number : 4}} and
                 {{incidenceRate.incidence_proportion_range_high | number : 4}}
                 of patients during the 1 year after exposure start</h4>
@@ -37,7 +37,7 @@
                 <tr ng-repeat="r in incidenceRateSource | limitTo:itemsLimit track by $index">
                     <td>{{r.source_short_name}}</td>
                     <td>{{r.source_country}}</td>
-                    <td>{{outcome.name}}</td>
+                    <td>{{outcome.CONCEPT_NAME}}</td>
                     <td>{{r.incidence_proportion | number : 4}}</td>
                     <td>{{r.requires_full_time_at_risk}}</td>
                 </tr>
