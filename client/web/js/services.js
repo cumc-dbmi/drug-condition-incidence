@@ -60,6 +60,20 @@ angular.module('services', ['config'])
             return deferred.promise;
         };
 
+        var drugListCache = {};
+
+        self.getDrugList = function () {
+            var deferred = $q.defer();
+            var url = ApiBaseUrl + "/drug_list";
+            $http.get(url)
+                .then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (err) {
+                    console.log(err);
+                });
+            return deferred.promise;
+        };
+
         self.getConditionList = function (drugConceptId) {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/condition_list?"

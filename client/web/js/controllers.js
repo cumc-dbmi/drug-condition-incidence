@@ -29,6 +29,7 @@ angular.module('controllers', [])
                 $scope.evidence = [];
                 $scope.incidenceRate = [];
                 $scope.incidenceRateSource = [];
+                $scope.drugList = [];
                 $scope.conditionList = [];
             };
 
@@ -43,16 +44,13 @@ angular.module('controllers', [])
     .controller('HomeCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$state', 'vocabularyService',
         function ($scope, ohdsiService, $timeout, $http, $state, vocabularyService) {
             console.log('home');
-            $scope.searchDrugs = function(searchTerm) {
-                var data = {
-                        QUERY: searchTerm,
-                        VOCABULARY_ID: ['RxNorm'],
-                        CONCEPT_CLASS_ID: ['Ingredient', 'Brand Name']
-                    };
-                return vocabularyService.search(data);
-            };
+
+            ohdsiService.getDrugList().then(function (data) {
+                   $scope.drugList = data;
+               });
+
             $scope.selectDrug = function(item, model, label) {
-                ohdsiService.getConditionList($scope.treatment.CONCEPT_ID).then(function (data) {
+                ohdsiService.getConditionList($scope.treatment.drug_concept_id).then(function (data) {
                         $scope.conditionList = data;
                     });
             };
@@ -97,12 +95,8 @@ angular.module('controllers', [])
             $scope.chartOptions = function() {
                 return chartOptions;
             };
-            $scope.chartOptionsZoom = function () {
-                return chartOptionsZoom;
-            };
 
             var MarkerSymbol = 'square';
-            var chartOptionsZoom = null;
             var chartOptions = null;
 
             var roundNumber = function (n) {

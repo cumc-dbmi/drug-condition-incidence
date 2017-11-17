@@ -20,6 +20,14 @@ WHERE ingredient_concept_id = :drug_concept_id AND time_at_risk_id = 365
 AND cohort_type = 'First diagnosis of'
 ORDER BY condition"""
 
+DRUG_LIST_QUERY = """
+SELECT DISTINCT drug_concept_id,
+  drug_concept_name
+FROM IR_all_exposure_outcome_summary_overall f
+WHERE time_at_risk_id = 365
+AND cohort_type = 'First diagnosis of'
+ORDER BY drug_concept_name"""
+
 CONDITION_LIST_QUERY = """
 SELECT DISTINCT outcome_concept_id_str,
   outcome_concept_name
@@ -69,6 +77,18 @@ def drug_condition(drug_concept_id):
     """
     params = {'drug_concept_id': drug_concept_id}
     items = execute(DRUG_CONDITION_QUERY, params)
+    rows = []
+    for item in items:
+        row = dict(zip(item.keys(), item))
+        rows.append(row)
+    return rows
+
+def drug_list():
+    """
+    Return distinct drugs as list of dict
+    """
+    params = {}
+    items = execute(DRUG_LIST_QUERY, params)
     rows = []
     for item in items:
         row = dict(zip(item.keys(), item))

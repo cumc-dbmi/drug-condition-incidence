@@ -4,7 +4,7 @@ import json
 from flask import Flask, request, Response
 from flask_cors import CORS
 
-from db import drug_condition, condition_list, incidence_rate, incidence_rate_source_details
+from db import drug_condition, drug_list, condition_list, incidence_rate, incidence_rate_source_details
 
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +21,12 @@ def serialize_obj(obj):
 def drug_condition_endpoint():
     concept_id = request.args.get('drug_concept_id', type=int)
     results = drug_condition(concept_id)
+    response_body = json.dumps(results, default=serialize_obj)
+    return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
+
+@app.route("/drug_list", methods=['GET'])
+def drug_list_endpoint():
+    results = drug_list()
     response_body = json.dumps(results, default=serialize_obj)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 
