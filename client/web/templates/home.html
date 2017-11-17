@@ -10,13 +10,9 @@
                    class="form-control"
                    ng-model="appModel.treatment"
                    typeahead-min-length="5"
-                   typeahead-editable="false"
                    typeahead-on-select="selectDrug($item, $model, $label)"
-                   uib-typeahead="drug as drug.CONCEPT_NAME for drug in searchDrugs($viewValue)"
-                   typeahead-no-results="noResultsDrug">
-            <div ng-show="noResultsDrug" class="text-warning">
-                No drugs match the search term entered
-            </div>
+                   typeahead-editable="false"
+                   uib-typeahead="drug as drug.drug_concept_name for drug in drugList | filter:$viewValue | limitTo:10">
             <h4>Which condition are you interested in?</h4>
             <input type="text"
                    class="form-control"
@@ -35,12 +31,12 @@
         <div class="col-xs-offset-4 col-xs-2">
             <a ng-if="!!!appModel.outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug({ drugConceptId: appModel.treatment.CONCEPT_ID })">
+               ui-sref="app.drug({ drugConceptId: appModel.treatment.drug_concept_id })">
                 Go &raquo;
             </a>
             <a ng-if="!!appModel.outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.CONCEPT_ID, conditionConceptId: appModel.outcome.outcome_concept_id_str })">
+               ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.drug_concept_id, conditionConceptId: appModel.outcome.outcome_concept_id_str })">
                 Go &raquo;
             </a>
         </div>
