@@ -21,15 +21,12 @@ AND cohort_type = 'First diagnosis of'
 ORDER BY condition"""
 
 DRUG_LIST_QUERY = """
-SELECT DISTINCT drug_concept_id,
-  drug_concept_name
-FROM IR_all_exposure_outcome_summary_overall f
-WHERE time_at_risk_id = 365
-AND cohort_type = 'First diagnosis of'
-ORDER BY drug_concept_name"""
+SELECT *
+FROM drug_list
+"""
 
 CONDITION_LIST_QUERY = """
-SELECT DISTINCT outcome_concept_id_str,
+SELECT DISTINCT outcome_concept_id,
   outcome_concept_name
 FROM IR_all_exposure_outcome_summary_overall f
 WHERE drug_concept_id = :drug_concept_id AND time_at_risk_id = 365
