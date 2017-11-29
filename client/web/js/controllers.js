@@ -23,13 +23,14 @@ angular.module('controllers', [])
             };
 
             $scope.clear = function () {
-                $scope.outcome = null;
-                $scope.treatment = null;
+                // We use an object as the model to enable access by child states. When used, the dot
+                // (i.e. in appModel.treatment) distinguishes the model as belonging to parent state.
+                // See https://stackoverflow.com/a/27699798
+                $scope.appModel = {treatment: null, outcome: null, conditionList: null};
                 $scope.patFilter = "";
                 $scope.evidence = [];
                 $scope.incidenceRate = [];
                 $scope.incidenceRateSource = [];
-                $scope.conditionList = [];
             };
 
             $scope.clear();
@@ -52,8 +53,8 @@ angular.module('controllers', [])
                 return vocabularyService.search(data);
             };
             $scope.selectDrug = function(item, model, label) {
-                ohdsiService.getConditionList($scope.treatment.CONCEPT_ID).then(function (data) {
-                        $scope.conditionList = data;
+                ohdsiService.getConditionList($scope.appModel.treatment.CONCEPT_ID).then(function (data) {
+                        $scope.appModel.conditionList = data;
                     });
             };
         }])
@@ -77,7 +78,7 @@ angular.module('controllers', [])
             };
 
             vocabularyService.concept($state.params.drugConceptId).then(function(data){
-                $scope.treatment = data;
+                $scope.appModel.treatment = data;
             });
 
             ohdsiService.getEvidence($state.params.drugConceptId).then(function(data) {
@@ -213,7 +214,7 @@ angular.module('controllers', [])
             };
 
             var p1 = vocabularyService.concept($state.params.drugConceptId).then(function(data){
-                $scope.treatment = data;
+                $scope.appModel.treatment = data;
             });
             var p2 = vocabularyService.concept($state.params.conditionConceptId).then(function(data){
                 $scope.outcome = data;
@@ -222,7 +223,7 @@ angular.module('controllers', [])
 
             // Get incidence rates after treatment and outcome have resolved
             $q.all(ps).then(function(){
-                ohdsiService.getIncidentRate($scope.treatment.CONCEPT_ID, $scope.outcome.CONCEPT_ID, $scope.timeAtRisk)
+                ohdsiService.getIncidentRate($scope.appModel.treatment.CONCEPT_ID, $scope.outcome.CONCEPT_ID, $scope.timeAtRisk)
                             .then(onGetIncidentRate)
             })
 

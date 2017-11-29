@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="r in evidence | limitTo:itemsLimit track by $index">
-                    <td><a ui-sref="app.drug_condition({ drugConceptId: treatment.CONCEPT_ID, conditionConceptId: r.condition_concept_id })">{{r.condition}}</a></td>
+                    <td><a ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.CONCEPT_ID, conditionConceptId: r.condition_concept_id })">{{r.condition}}</a></td>
                     <td>{{r.incidence_proportion_range_low | number : 4}}</td>
                     <td>{{r.incidence_proportion_range_high | number : 4}}</td>
                 </tr>

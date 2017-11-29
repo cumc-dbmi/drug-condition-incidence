@@ -8,7 +8,7 @@
             <h4>Which drug are you interested in?</h4>
             <input type="text"
                    class="form-control"
-                   ng-model="treatment"
+                   ng-model="appModel.treatment"
                    typeahead-min-length="5"
                    typeahead-on-select="selectDrug($item, $model, $label)"
                    typeahead-editable="false"
@@ -16,22 +16,22 @@
             <h4>Which condition are you interested in?</h4>
             <input type="text"
                    class="form-control"
-                   ng-model="outcome"
+                   ng-model="appModel.outcome"
                    typeahead-editable="false"
-                   uib-typeahead="condition as condition.outcome_concept_name for condition in conditionList | filter:$viewValue | limitTo:10"
+                   uib-typeahead="condition as condition.outcome_concept_name for condition in appModel.conditionList | filter:$viewValue | limitTo:10"
                    placeholder="Leave blank for conditions on product label">
         </div>
     </div>
-    <div ng-if="!!treatment" class="row buttons-section">
+    <div ng-if="!!appModel.treatment" class="row buttons-section">
         <div class="col-xs-offset-4 col-xs-2">
-            <a ng-if="!!!outcome"
+            <a ng-if="!!!appModel.outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug({ drugConceptId: treatment.CONCEPT_ID })">
+               ui-sref="app.drug({ drugConceptId: appModel.treatment.CONCEPT_ID })">
                 Go &raquo;
             </a>
-            <a ng-if="!!outcome"
+            <a ng-if="!!appModel.outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug_condition({ drugConceptId: treatment.CONCEPT_ID, conditionConceptId: outcome.outcome_concept_id_str })">
+               ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.CONCEPT_ID, conditionConceptId: appModel.outcome.outcome_concept_id_str })">
                 Go &raquo;
             </a>
         </div>
