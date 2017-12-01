@@ -10,16 +10,25 @@
                    class="form-control"
                    ng-model="treatment"
                    typeahead-min-length="5"
-                   typeahead-on-select="selectDrug($item, $model, $label)"
                    typeahead-editable="false"
+                   typeahead-no-results="noResultsDrug"
+                   typeahead-on-select="selectDrug($item, $model, $label)"
                    uib-typeahead="drug as drug.CONCEPT_NAME for drug in searchDrugs($viewValue)">
+            <div ng-show="noResultsDrug">
+                    <h4>No results found!</h4>
+            </div>
             <h4>Which condition are you interested in?</h4>
             <input type="text"
                    class="form-control"
                    ng-model="outcome"
+                   typeahead-min-length="4"
                    typeahead-editable="false"
-                   uib-typeahead="condition as condition.outcome_concept_name for condition in conditionList | filter:$viewValue | limitTo:10"
+                   typeahead-no-results="noResultsCondition"
+                   uib-typeahead="condition as condition.outcome_concept_name for condition in conditionList | filter:$viewValue"
                    placeholder="Leave blank for conditions on product label">
+            <div ng-show="noResultsCondition">
+                    <h4>No results found!</h4>
+            </div>
         </div>
     </div>
     <div ng-if="!!treatment" class="row buttons-section">

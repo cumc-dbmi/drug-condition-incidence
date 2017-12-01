@@ -34,6 +34,11 @@ a {
     color: #FFFFFF;
 }
 
+ul {
+    height:250px;
+    overflow: auto;
+}
+
 [ng\:cloak], [ng-cloak], .ng-cloak {
     display: none !important;
 }
