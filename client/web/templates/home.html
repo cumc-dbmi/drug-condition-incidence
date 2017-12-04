@@ -12,9 +12,10 @@
                    typeahead-min-length="5"
                    typeahead-editable="false"
                    typeahead-on-select="selectDrug($item, $model, $label)"
-                   uib-typeahead="drug as drug.CONCEPT_NAME for drug in searchDrugs($viewValue)">
-            <div ng-show="noResultsDrug">
-                    <h4>No results found!</h4>
+                   uib-typeahead="drug as drug.CONCEPT_NAME for drug in searchDrugs($viewValue)"
+                   typeahead-no-results="noResultsDrug">
+            <div ng-show="noResultsDrug" class="text-warning">
+                No drugs match the search term entered
             </div>
             <h4>Which condition are you interested in?</h4>
             <input type="text"
@@ -24,10 +25,9 @@
                    typeahead-editable="false"
                    uib-typeahead="condition as condition.outcome_concept_name for condition in appModel.conditionList | filter:$viewValue"
                    typeahead-no-results="noResultsCondition"
-                   uib-typeahead="condition as condition.outcome_concept_name for condition in conditionList | filter:$viewValue"
                    placeholder="Leave blank for conditions on product label">
-            <div ng-show="noResultsCondition">
-                    <h4>No results found!</h4>
+            <div ng-show="noResultsCondition" class="text-warning">
+                No conditions match the search term entered
             </div>
         </div>
     </div>
