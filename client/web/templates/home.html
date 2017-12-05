@@ -11,7 +11,7 @@
                    ng-model="appModel.treatment"
                    typeahead-min-length="5"
                    typeahead-editable="false"
-                   uib-typeahead="drug as drug.drug_concept_name for drug in drugList | filter:$viewValue | limitTo:10"
+                   uib-typeahead="drug as drug.drug_concept_name for drug in drugList | filter:$viewValue"
                    typeahead-on-select="selectDrug($item, $model, $label)">
             <h4>Which condition are you interested in?</h4>
             <input type="text"
