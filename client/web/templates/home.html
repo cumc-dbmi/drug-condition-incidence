@@ -10,9 +10,9 @@
                    class="form-control"
                    ng-model="appModel.treatment"
                    typeahead-min-length="5"
-                   typeahead-on-select="selectDrug($item, $model, $label)"
                    typeahead-editable="false"
-                   uib-typeahead="drug as drug.drug_concept_name for drug in drugList | filter:$viewValue | limitTo:10">
+                   uib-typeahead="drug as drug.drug_concept_name for drug in drugList | filter:$viewValue | limitTo:10"
+                   typeahead-on-select="selectDrug($item, $model, $label)">
             <h4>Which condition are you interested in?</h4>
             <input type="text"
                    class="form-control"
@@ -36,7 +36,7 @@
             </a>
             <a ng-if="!!appModel.outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.drug_concept_id, conditionConceptId: appModel.outcome.outcome_concept_id_str })">
+               ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.drug_concept_id, conditionConceptId: appModel.outcome.outcome_concept_id })">
                 Go &raquo;
             </a>
         </div>

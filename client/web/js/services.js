@@ -60,8 +60,6 @@ angular.module('services', ['config'])
             return deferred.promise;
         };
 
-        var drugListCache = {};
-
         self.getDrugList = function () {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/drug_list";
