@@ -29,7 +29,6 @@ angular.module('controllers', [])
                 $scope.evidence = [];
                 $scope.incidenceRate = [];
                 $scope.incidenceRateSource = [];
-                $scope.drugList = [];
                 $scope.conditionList = [];
             };
 

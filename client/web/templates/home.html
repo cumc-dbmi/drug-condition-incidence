@@ -17,6 +17,7 @@
             <input type="text"
                    class="form-control"
                    ng-model="outcome"
+                   typeahead-min-length="4"
                    typeahead-editable="false"
                    uib-typeahead="condition as condition.outcome_concept_name for condition in conditionList | filter:$viewValue | limitTo:10"
                    placeholder="Leave blank for conditions on product label">
@@ -31,7 +32,7 @@
             </a>
             <a ng-if="!!outcome"
                class="btn btn-warning btn-block"
-               ui-sref="app.drug_condition({ drugConceptId: treatment.drug_concept_id, conditionConceptId: outcome.outcome_concept_id_str })">
+               ui-sref="app.drug_condition({ drugConceptId: treatment.drug_concept_id, conditionConceptId: outcome.outcome_concept_id })">
                 Go &raquo;
             </a>
         </div>
