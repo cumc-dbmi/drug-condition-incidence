@@ -52,3 +52,10 @@ ul {
     box-sizing: content-box;
     -webkit-box-sizing: content-box;
 }
+
+.ir-popover-toggle {
+    border-bottom: 1px dotted;
+}
+.ir-popover-toggle:hover {
+    cursor: help;
+}

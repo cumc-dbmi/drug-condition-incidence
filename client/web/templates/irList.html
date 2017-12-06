@@ -30,7 +30,13 @@
                     <th>Country</th>
                     <th>Condition</th>
                     <th>Incidence Proportion</th>
-                    <th>Requires Full Time At Risk</th>
+                    <th>
+                        <span uib-popover-template="'templates/time-at-risk-popover.html'"
+                           popover-is-open="showTimeAtRiskPopover" ng-click="showTimeAtRiskPopover = !showTimeAtRiskPopover"
+                           class="ir-popover-toggle">
+                            Requires Full Time At Risk
+                        </span>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
