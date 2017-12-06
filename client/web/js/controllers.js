@@ -26,15 +26,18 @@ angular.module('controllers', [])
                 // We use an object as the model to enable access by child states. When used, the dot
                 // (i.e. in appModel.treatment) distinguishes the model as belonging to parent state.
                 // See https://stackoverflow.com/a/27699798
-                $scope.appModel = {treatment: null, outcome: null, conditionList: null};
+                $scope.appModel = {treatment: null, outcome: null, conditionList: null, drugList: null};
                 $scope.patFilter = "";
                 $scope.evidence = [];
                 $scope.incidenceRate = [];
                 $scope.incidenceRateSource = [];
-                $scope.conditionList = [];
             };
 
             $scope.clear();
+
+            ohdsiService.getDrugList().then(function (data) {
+               $scope.appModel.drugList = data;
+           });
 
             if($state.current.name == 'app') {
                 $state.go('app.home');
@@ -46,17 +49,12 @@ angular.module('controllers', [])
         function ($scope, ohdsiService, $timeout, $http, $state, vocabularyService) {
             console.log('home');
 
-            ohdsiService.getDrugList().then(function (data) {
-                   $scope.drugList = data;
-               });
-
             $scope.selectDrug = function(item, model, label) {
                 ohdsiService.getConditionList($scope.appModel.treatment.drug_concept_id).then(function (data) {
                         $scope.appModel.conditionList = data;
                     });
             };
         }])
-
 
     .controller('ConditionsByDrugCtrl', ['$scope', 'ohdsiService', '$timeout', '$http', '$state', 'vocabularyService',
         function ($scope, ohdsiService, $timeout, $http, $state, vocabularyService) {
@@ -75,9 +73,10 @@ angular.module('controllers', [])
                 }
             };
 
-            vocabularyService.concept($state.params.drugConceptId).then(function(data){
-                $scope.appModel.treatment = data;
-            });
+            if (!$scope.appModel.treatment) {
+                var drugFilter = function(drug) { return drug.drug_concept_id = $state.params.drugConceptId; };
+                $scope.appModel.treatment = $scope.appModel.drugList.find(drugFilter);
+            }
 
             ohdsiService.getEvidence($state.params.drugConceptId).then(function(data) {
                 $scope.evidence = data;
@@ -207,12 +206,24 @@ angular.module('controllers', [])
                 };
             };
 
-            var p1 = vocabularyService.concept($state.params.drugConceptId).then(function(data){
-                $scope.appModel.treatment = data;
-            });
             var p2 = vocabularyService.concept($state.params.conditionConceptId).then(function(data){
                 $scope.outcome = data;
             });
+
+
+            if (!$scope.appModel.treatment) {
+                var drugFilter = function(drug) { return drug.drug_concept_id = $state.params.drugConceptId; };
+                $scope.appModel.treatment = $scope.appModel.drugList.find(drugFilter);
+            }
+
+            if (!$scope.appModel.outcome) {
+                var drugFilter = function(drug) { return drug.drug_concept_id = $state.params.drugConceptId; };
+                $scope.appModel.outcome = $scope.appModel.find(drugFilter);
+                ohdsiService.getConditionList($scope.appModel.treatment.drug_concept_id).then(function (data) {
+                    $scope.appModel.conditionList = data;
+                });
+            }
+
             var ps = [p1, p2];
 
             // Get incidence rates after treatment and outcome have resolved
