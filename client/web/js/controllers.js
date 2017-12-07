@@ -37,9 +37,23 @@ angular.module('controllers', [])
         }
     ])
 
-    .controller('HomeCtrl', ['$scope',
-        function ($scope) {
+    .controller('HomeCtrl', ['$scope', 'ohdsiService',
+        function ($scope, ohdsiService) {
             console.log('home');
+
+            $scope.selectDrug = function(item, model, label) {
+                ohdsiService.getConditionList($scope.appModel.treatment.drug_concept_id).then(function (data) {
+                        $scope.appModel.conditionList = data;
+                    });
+            };
+
+            // user may be coming back from splicer view
+            // this ensures same experience on this view
+            if ($scope.appModel.treatment) {
+                ohdsiService.getConditionList($scope.appModel.treatment.drug_concept_id).then(function (data) {
+                        $scope.appModel.conditionList = data;
+                    });
+            }
         }])
 
     .controller('ConditionsByDrugCtrl', ['$scope', 'treatment', 'conditionList',
