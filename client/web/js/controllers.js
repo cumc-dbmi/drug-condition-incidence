@@ -14,8 +14,8 @@ angular.module('controllers', [])
         };
     })
 
-    .controller('AppCtrl', ['$scope', '$state',
-        function($scope, $state){
+    .controller('AppCtrl', ['$scope', '$state', 'ohdsiService',
+        function($scope, $state, ohdsiService){
             console.log('app');
 
             $scope.reloadPage = function() {
@@ -80,6 +80,7 @@ angular.module('controllers', [])
 
             ohdsiService.getEvidence($state.params.drugConceptId).then(function(data) {
                 $scope.evidence = data;
+                $scope.appModel.conditionList = data;
             });
         }])
 
@@ -171,7 +172,7 @@ angular.module('controllers', [])
                     },
                     yAxis: {
                         title: {
-                            text: [$scope.outcome.CONCEPT_NAME]
+                            text: [$scope.appModel.outcome.outcome_concept_name]
                         },
                         visible: false
                     },
@@ -206,30 +207,23 @@ angular.module('controllers', [])
                 };
             };
 
-            var p2 = vocabularyService.concept($state.params.conditionConceptId).then(function(data){
-                $scope.outcome = data;
-            });
-
-
             if (!$scope.appModel.treatment) {
                 var drugFilter = function(drug) { return drug.drug_concept_id = $state.params.drugConceptId; };
                 $scope.appModel.treatment = $scope.appModel.drugList.find(drugFilter);
             }
 
-            if (!$scope.appModel.outcome) {
-                var drugFilter = function(drug) { return drug.drug_concept_id = $state.params.drugConceptId; };
-                $scope.appModel.outcome = $scope.appModel.find(drugFilter);
-                ohdsiService.getConditionList($scope.appModel.treatment.drug_concept_id).then(function (data) {
+            if (!$scope.appModel.conditionList) {
+                ohdsiService.getConditionList($state.params.drugConceptId).then(function (data) {
                     $scope.appModel.conditionList = data;
                 });
             }
 
-            var ps = [p1, p2];
+            if (!$scope.appModel.outcome) {
+                var outcomeFilter = function(outcome) { return outcome.outcome_concept_id = $state.params.conditionConceptId; };
+                $scope.appModel.outcome = $scope.appModel.conditionList.find(outcomeFilter);
+            }
 
-            // Get incidence rates after treatment and outcome have resolved
-            $q.all(ps).then(function(){
-                ohdsiService.getIncidentRate($scope.appModel.treatment.CONCEPT_ID, $scope.outcome.CONCEPT_ID, $scope.timeAtRisk)
-                            .then(onGetIncidentRate)
-            })
+            ohdsiService.getIncidentRate($state.params.drugConceptId, $state.params.conditionConceptId, $scope.timeAtRisk)
+                        .then(onGetIncidentRate)
 
         }]);

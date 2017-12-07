@@ -8,8 +8,8 @@ ENGINE = create_engine(settings.conn_str)
 DIALECT = determine_dialect(settings.conn_str)
 
 DRUG_CONDITION_QUERY = """
-SELECT DISTINCT condition_concept_id, 
-  condition,
+SELECT DISTINCT condition_concept_id AS outcome_concept_id, 
+  condition AS outcome_concept_name,
   f.incidence_proportion_range_low,
   f.incidence_proportion_range_high 
 FROM drug_condition_filtered d

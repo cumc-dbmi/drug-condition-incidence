@@ -3,7 +3,7 @@
         <div class="col-xs-1">
         </div>
         <div class="col-xs-10" style="margin-top:20px">
-            <h2>{{treatment.name}} Condition List From Product Label</h2><br>
+            <h2>{{appModel.treatment.drug_concept_name}} Condition List From Product Label</h2><br>
             <div ng-if="!!!evidence.length" class="alert alert-info">
                 <strong>Sorry!</strong> Product label not found for the selected drug.
             </div>
@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="r in evidence | limitTo:itemsLimit track by $index">
-                    <td><a ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.CONCEPT_ID, conditionConceptId: r.condition_concept_id })">{{r.condition}}</a></td>
+                    <td><a ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.drug_concept_id, conditionConceptId: r.outcome_concept_id })">{{r.outcome_concept_name}}</a></td>
                     <td>{{r.incidence_proportion_range_low | number : 4}}</td>
                     <td>{{r.incidence_proportion_range_high | number : 4}}</td>
                 </tr>
