@@ -60,6 +60,7 @@ angular.module('services', ['config'])
             return deferred.promise;
         };
 
+        // TODO cache this
         self.getDrugList = function () {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/drug_list";
@@ -72,6 +73,7 @@ angular.module('services', ['config'])
             return deferred.promise;
         };
 
+        // TODO cache this
         self.getConditionList = function (drugConceptId) {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/condition_list?"
