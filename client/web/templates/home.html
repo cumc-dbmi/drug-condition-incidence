@@ -12,7 +12,12 @@
                    typeahead-min-length="5"
                    typeahead-editable="false"
                    uib-typeahead="drug as drug.drug_concept_name for drug in appModel.drugList | filter:$viewValue"
+                   typeahead-no-results="noResultsDrug"
+                   placeholder="Enter generic drug name"
                    typeahead-on-select="selectDrug($item, $model, $label)">
+            <div ng-show="noResultsDrug" class="text-warning">
+                No drugs match the search term entered
+            </div>
             <h4>Which condition are you interested in?</h4>
             <input type="text"
                    class="form-control"
