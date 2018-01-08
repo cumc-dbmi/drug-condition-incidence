@@ -96,7 +96,7 @@ angular.module('controllers', [])
             var chartOptions = null;
 
             var roundNumber = function (n) {
-                return Math.round(n * 10000) / 10000;
+                return Math.round(n * 100) / 100;
             };
 
             var onGetIncidentRate = function (success) {
@@ -106,7 +106,7 @@ angular.module('controllers', [])
                 var proportionsData = [];
                 $.each($scope.incidenceRateSource, function (index, value) {
                     var series = {
-                        data: [[roundNumber(value.incidence_proportion), 1]],
+                        data: [[roundNumber(value.incidence_proportion * 100), 1]],
                         name: value.source_short_name,
                         marker: {
                             symbol: MarkerSymbol
@@ -127,7 +127,7 @@ angular.module('controllers', [])
                         borderWidth: 2
                     },
                     title: {
-                        text: 'Incidence Proportion'
+                        text: 'Incidence'
                     },
                     subtitle: {
                         text: document.ontouchstart === undefined ?
@@ -136,14 +136,14 @@ angular.module('controllers', [])
                     xAxis: {
                         title: {
                             enabled: true,
-                            text: 'Incidence Proportion'
+                            text: 'Percentage (%)'
                         },
                         min: 0,
-                        max: 1,
+                        max: 100,
                         gridLineColor: 'rgb(204, 214, 235)',
                         gridLineWidth: 1,
                         plotLines: [{
-                            value: roundNumber($scope.incidenceRate.incidence_proportion_range_high),
+                            value: roundNumber($scope.incidenceRate.incidence_proportion_range_high * 100),
                             color: 'red',
                             width: 2,
                             dashStyle: 'shortdot',
@@ -154,7 +154,7 @@ angular.module('controllers', [])
                             }
                         },
                             {
-                                value: roundNumber($scope.incidenceRate.incidence_proportion_range_low),
+                                value: roundNumber($scope.incidenceRate.incidence_proportion_range_low * 100),
                                 color: 'red',
                                 width: 2,
                                 dashStyle: 'shortdot',
