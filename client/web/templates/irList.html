@@ -26,8 +26,9 @@
                     <th>Country</th>
                     <th>Condition</th>
                     <th>Incidence (%)</th>
+                    <th>Patients at Risk</th>
                     <th>
-                        Requires Full Time At Risk
+                        Requires Full Time at Risk
                         <span uib-popover-template="'templates/time-at-risk-popover.html'"
                               popover-is-open="showTimeAtRiskPopover"
                               ng-click="showTimeAtRiskPopover = !showTimeAtRiskPopover"
@@ -41,6 +42,7 @@
                     <td>{{r.source_country}}</td>
                     <td>{{appModel.outcome.outcome_concept_name}}</td>
                     <td>{{r.incidence_proportion * 100 | number : 2}}</td>
+                    <td>{{r.num_persons_at_risk | number : fractionSize}}</td>
                     <td>{{r.requires_full_time_at_risk}}</td>
                 </tr>
                 </tbody>

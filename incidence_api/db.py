@@ -48,6 +48,7 @@ SELECT source_short_name,
   source_country, 
   incidence_proportion, 
   incidence_rate,
+  num_persons_at_risk,
   CASE
 	WHEN requires_full_time_at_risk = 1  THEN 'Yes'
 	ELSE 'No'
