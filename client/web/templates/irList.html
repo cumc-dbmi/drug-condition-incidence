@@ -9,16 +9,26 @@
                 {{incidenceRate.incidence_proportion_range_low * 100 | number : 2}}% to
                 {{incidenceRate.incidence_proportion_range_high * 100 | number : 2}}%
                 of patients during the 1 year after starting the drug</h4>
-            <br><br>
         </div>
-        <div class="col-xs-offset-1 col-xs-10" id="rangechart" ng-if="chartOptions()">
+        <div class="col-xs-offset-1 col-xs-10" style="margin-top:20px">
+            <b>Time at risk:</b>
+            <label class="btn btn-success">1 Day<input type="checkbox" ng-model="checkModel.day" class="badgebox"><span class="badge">&check;</span></label>
+            <label class="btn btn-success">1 Month<input type="checkbox" ng-model="checkModel.month" class="badgebox"><span class="badge">&check;</span></label>
+            <label class="btn btn-success">1 Year<input type="checkbox" ng-model="checkModel.year"class="badgebox"><span class="badge">&check;</span></label>
+            <label class="btn btn-success">9999?<input type="checkbox" ng-model="checkModel.all" class="badgebox"><span class="badge">&check;</span></label>
+            <b>Requires full time at risk:</b>
+            <label class="btn btn-info">Yes<input type="checkbox" ng-model="checkModel.yes" class="badgebox"><span class="badge">&check;</span></label>
+            <label class="btn btn-info">No<input type="checkbox" ng-model="checkModel.no" class="badgebox"><span class="badge">&check;</span></label>
+        </div>
+        <div class="col-xs-offset-1 col-xs-10" id="rangechart"  style="margin-top:20px" ng-if="chartOptions()">
             <hc-chart options="chartOptions()">Range Bar Chart</hc-chart>
         </div>
-    </div>
-    <div class="row" style="margin-top:20px">
         <div class="col-xs-1">
         </div>
-        <div class="col-xs-10" style="margin-top:20px">
+    </div>
+
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-offset-1 col-xs-10" style="margin-top:20px">
             <table class="table table-striped table-hover ">
                 <thead>
                 <tr>
@@ -27,6 +37,7 @@
                     <th>Condition</th>
                     <th>Incidence (%)</th>
                     <th>Patients at Risk</th>
+                    <th>Time at Risk</th>
                     <th>
                         Requires Full Time at Risk
                         <span uib-popover-template="'templates/time-at-risk-popover.html'"
@@ -37,12 +48,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="r in incidenceRateSource | limitTo:itemsLimit track by $index">
+                <tr ng-repeat="r in incidenceRateSource | timeAtRiskFilter:checkModel | limitTo:itemsLimit track by $index">
                     <td>{{r.source_short_name}}</td>
                     <td>{{r.source_country}}</td>
                     <td>{{appModel.outcome.outcome_concept_name}}</td>
                     <td>{{r.incidence_proportion * 100 | number : 2}}</td>
                     <td>{{r.num_persons_at_risk | number : fractionSize}}</td>
+                    <td>{{r.time_at_risk_id}}</td>
                     <td>{{r.requires_full_time_at_risk}}</td>
                 </tr>
                 </tbody>

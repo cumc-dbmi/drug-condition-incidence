@@ -49,6 +49,7 @@ SELECT source_short_name,
   incidence_proportion, 
   incidence_rate,
   num_persons_at_risk,
+  time_at_risk_id,
   CASE
 	WHEN requires_full_time_at_risk = 1  THEN 'Yes'
 	ELSE 'No'
@@ -56,7 +57,7 @@ SELECT source_short_name,
 FROM IR_all_exposure_outcome_summary_full
 WHERE drug_concept_id = :drug_concept_id 
 AND outcome_concept_id = :outcome_concept_id  
-AND time_at_risk_id = :time_at_risk_id
+--AND time_at_risk_id = :time_at_risk_id
 AND cohort_type = 'First diagnosis of'
 ORDER BY incidence_proportion DESC"""
 

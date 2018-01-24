@@ -14,6 +14,42 @@ angular.module('controllers', [])
         };
     })
 
+    .filter('timeAtRiskFilter', function() {
+        return function(items, checkModel) {
+            var filtered = [];
+
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if (checkModel.day && checkModel.yes && item.time_at_risk_id == 1 && item.requires_full_time_at_risk == 'Yes') {
+                    filtered.push(item);
+                }
+                if (checkModel.day && checkModel.no && item.time_at_risk_id == 1 && item.requires_full_time_at_risk == 'No') {
+                    filtered.push(item);
+                }
+                if (checkModel.month && checkModel.yes && item.time_at_risk_id == 30 && item.requires_full_time_at_risk == 'Yes') {
+                    filtered.push(item);
+                }
+                if (checkModel.month && checkModel.no && item.time_at_risk_id == 30 && item.requires_full_time_at_risk == 'No') {
+                    filtered.push(item);
+                }
+                if (checkModel.year && checkModel.yes && item.time_at_risk_id == 365 && item.requires_full_time_at_risk == 'Yes') {
+                    filtered.push(item);
+                }
+                if (checkModel.year && checkModel.no && item.time_at_risk_id == 365 && item.requires_full_time_at_risk == 'No') {
+                    filtered.push(item);
+                }
+                if (checkModel.all && checkModel.yes && item.time_at_risk_id == 9999 && item.requires_full_time_at_risk == 'Yes') {
+                    filtered.push(item);
+                }
+                if (checkModel.all && checkModel.no && item.time_at_risk_id == 9999 && item.requires_full_time_at_risk == 'No') {
+                    filtered.push(item);
+                }
+            }
+
+            return filtered;
+        }
+    })
+
     .controller('AppCtrl', ['$scope', '$state', 'drugList',
         function($scope, $state, drugList){
             console.log('app');
@@ -77,17 +113,28 @@ angular.module('controllers', [])
             };
         }])
 
-    .controller('IrListCtrl', ['$scope', 'ohdsiService', 'treatment', 'outcome',
-        function ($scope, ohdsiService, treatment, outcome) {
+    .controller('IrListCtrl', ['$scope', 'ohdsiService', 'treatment', 'outcome', '$filter',
+        function ($scope, ohdsiService, treatment, outcome, $filter) {
             console.log('IrListCtrl');
             $scope.appModel.treatment = treatment;
             $scope.appModel.outcome = outcome;
             $scope.incidenceRate = [];
             $scope.incidenceRateSource = [];
+            $scope.incidenceRateSourceFiltered = [];
             $scope.timeAtRisk = 365;
             $scope.formatDecimal = function (d) {
                 return Math.round(+d * 1000) / 1000;
             };
+
+            $scope.checkModel = {
+                 day: false,
+                 month: false,
+                 year: true,
+                 all: false,
+                 yes: true,
+                 no: true
+              };
+
             $scope.chartOptions = function() {
                 return chartOptions;
             };
@@ -102,9 +149,10 @@ angular.module('controllers', [])
             var onGetIncidentRate = function (success) {
                 $scope.incidenceRate = success;
                 $scope.incidenceRateSource = success['source_details'];
+                $scope.incidenceRateSourceFiltered = $filter('timeAtRiskFilter')($scope.incidenceRateSource, $scope.checkModel);
 
                 var proportionsData = [];
-                $.each($scope.incidenceRateSource, function (index, value) {
+                $.each($scope.incidenceRateSourceFiltered, function (index, value) {
                     var series = {
                         data: [[roundNumber(value.incidence_proportion * 100), 1]],
                         name: value.source_short_name,
