@@ -11,14 +11,20 @@
                 of patients during the 1 year after starting the drug</h4>
         </div>
         <div class="col-xs-offset-1 col-xs-10" style="margin-top:20px">
-            <b>Time at risk:</b>
-            <label class="btn btn-success">1 Day<input type="checkbox" ng-model="checkModel.day" class="badgebox"><span class="badge">&check;</span></label>
-            <label class="btn btn-success">1 Month<input type="checkbox" ng-model="checkModel.month" class="badgebox"><span class="badge">&check;</span></label>
-            <label class="btn btn-success">1 Year<input type="checkbox" ng-model="checkModel.year"class="badgebox"><span class="badge">&check;</span></label>
-            <label class="btn btn-success">9999?<input type="checkbox" ng-model="checkModel.all" class="badgebox"><span class="badge">&check;</span></label>
-            <b>Requires full time at risk:</b>
-            <label class="btn btn-info">Yes<input type="checkbox" ng-model="checkModel.yes" class="badgebox"><span class="badge">&check;</span></label>
-            <label class="btn btn-info">No<input type="checkbox" ng-model="checkModel.no" class="badgebox"><span class="badge">&check;</span></label>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#timeAtRisk">Select time at risk options</button>
+            <div id="timeAtRisk" class="collapse" style="margin:20px">
+                <label class="btn btn-success btn-sm">1 Month After Exposure<input type="checkbox" ng-model="checkModel.month" class="badgebox"><span class="badge">&check;</span></label>
+                <label class="btn btn-success btn-sm">1 Year After Exposure<input type="checkbox" ng-model="checkModel.year"class="badgebox"><span class="badge">&check;</span></label>
+                <label class="btn btn-success btn-sm">Exposure End<input type="checkbox" ng-model="checkModel.day" class="badgebox"><span class="badge">&check;</span></label>
+                <label class="btn btn-success btn-sm">Observation End<input type="checkbox" ng-model="checkModel.all" class="badgebox"><span class="badge">&check;</span></label>
+            </div>
+        </div>
+        <div class="col-xs-offset-1 col-xs-10" style="margin-top:10px">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#requiresFullTime">Select requires full time at risk options</button>
+            <div id="requiresFullTime" class="collapse" style="margin:20px">
+                <label class="btn btn-success btn-sm">Yes<input type="checkbox" ng-model="checkModel.yes" class="badgebox"><span class="badge">&check;</span></label>
+                <label class="btn btn-success btn-sm">No<input type="checkbox" ng-model="checkModel.no" class="badgebox"><span class="badge">&check;</span></label>
+            </div>
         </div>
         <div class="col-xs-offset-1 col-xs-10" id="rangechart"  style="margin-top:20px" ng-if="chartOptions()">
             <hc-chart options="chartOptions()">Range Bar Chart</hc-chart>
