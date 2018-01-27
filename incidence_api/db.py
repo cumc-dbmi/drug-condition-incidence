@@ -121,14 +121,14 @@ def incidence_rate(drug_concept_id, outcome_concept_id, time_at_risk_id):
     return None
 
 
-def incidence_rate_source_details(drug_concept_id, outcome_concept_id, time_at_risk_id):
+def incidence_rate_source_details(drug_concept_id, outcome_concept_id):
     """
     Given a drug concept_id and condition_concept_id, return incidence_proportion_range_low and
     incidence_proportion_range_high
     """
     params = {'drug_concept_id': drug_concept_id,
-              'outcome_concept_id': outcome_concept_id,
-              'time_at_risk_id': time_at_risk_id}
+              'outcome_concept_id': outcome_concept_id
+              }
     items = execute(INCIDENCE_RATE_SOURCE_QUERY, params)
     rows = []
     for item in items:
