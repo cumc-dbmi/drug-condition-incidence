@@ -17,13 +17,13 @@ angular.module('services', ['config'])
             return deferred.promise;
         };
 
-        self.getIncidentRateSource = function (targetId, outcomeId, timeAtRisk) {
+        self.getIncidentRateSource = function (targetId, outcomeId) {
             var deferred = $q.defer();
             var res = [];
             var url = ApiBaseUrl + "/incidence_rate_source?"
                 + 'drug_concept_id=' + targetId
-                + '&outcome_concept_id=' + outcomeId
-                + '&time_at_risk_id=' + timeAtRisk;
+                + '&outcome_concept_id=' + outcomeId;
+
             $http.get(url)
                 .then(function (resp) {
                     //console.log(resp);

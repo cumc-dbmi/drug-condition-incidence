@@ -57,7 +57,6 @@ SELECT source_short_name,
 FROM IR_all_exposure_outcome_summary_full
 WHERE drug_concept_id = :drug_concept_id 
 AND outcome_concept_id = :outcome_concept_id  
---AND time_at_risk_id = :time_at_risk_id
 AND cohort_type = 'First diagnosis of'
 ORDER BY incidence_proportion DESC"""
 
@@ -127,8 +126,7 @@ def incidence_rate_source_details(drug_concept_id, outcome_concept_id):
     incidence_proportion_range_high
     """
     params = {'drug_concept_id': drug_concept_id,
-              'outcome_concept_id': outcome_concept_id
-              }
+              'outcome_concept_id': outcome_concept_id}
     items = execute(INCIDENCE_RATE_SOURCE_QUERY, params)
     rows = []
     for item in items:
