@@ -22,6 +22,12 @@ class IncidenceTest(unittest.TestCase):
         actual_count = len(result)
         self.assertEqual(expected_count, actual_count)
 
+    def test_drug_list_brand(self):
+        expected_count = 9310
+        result = db.drug_list_brand()
+        actual_count = len(result)
+        self.assertEqual(expected_count, actual_count)
+
     def test_drug_list(self):
         expected_count = 2185
         result = db.drug_list()
