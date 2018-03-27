@@ -13,9 +13,9 @@
                    ng-model="appModel.treatment"
                    typeahead-min-length="5"
                    typeahead-editable="false"
-                   uib-typeahead="drug as drug.drug_concept_name for drug in appModel.drugList | filter:$viewValue"
+                   uib-typeahead="drug as drug.drug_concept_name for drug in appModel.drugListBrand | filter:$viewValue"
                    typeahead-no-results="noResultsDrug"
-                   placeholder="Enter generic drug name"
+                   placeholder="Enter drug name"
                    typeahead-on-select="selectDrug($item, $model, $label)">
             <div ng-show="noResultsDrug" class="text-warning">
                 No drugs match the search term entered

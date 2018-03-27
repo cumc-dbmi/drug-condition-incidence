@@ -20,6 +20,11 @@ WHERE ingredient_concept_id = :drug_concept_id AND time_at_risk_id = 365
 AND cohort_type = 'First diagnosis of'
 ORDER BY condition"""
 
+DRUG_LIST_BRAND_QUERY = """
+SELECT *
+FROM drug_list_all
+"""
+
 DRUG_LIST_QUERY = """
 SELECT *
 FROM drug_list
@@ -75,6 +80,18 @@ def drug_condition(drug_concept_id):
     """
     params = {'drug_concept_id': drug_concept_id}
     items = execute(DRUG_CONDITION_QUERY, params)
+    rows = []
+    for item in items:
+        row = dict(zip(item.keys(), item))
+        rows.append(row)
+    return rows
+
+def drug_list_brand():
+    """
+    Return distinct drugs including brand names as list of dict
+    """
+    params = {}
+    items = execute(DRUG_LIST_BRAND_QUERY, params)
     rows = []
     for item in items:
         row = dict(zip(item.keys(), item))

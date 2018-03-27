@@ -10,6 +10,10 @@ angular.module("ohdsiInformerApp",
         templateUrl: 'templates/app.html',
         controller: 'AppCtrl',
         resolve: {
+            drugListBrand: ['ohdsiService',
+                function(ohdsiService) {
+                    return ohdsiService.getDrugListBrand();
+                }],
             drugList: ['ohdsiService',
                 function(ohdsiService) {
                     return ohdsiService.getDrugList();

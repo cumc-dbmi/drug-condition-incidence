@@ -14,8 +14,8 @@ angular.module('controllers', [])
         };
     })
 
-    .controller('AppCtrl', ['$scope', '$state', 'drugList',
-        function($scope, $state, drugList){
+    .controller('AppCtrl', ['$scope', '$state', 'drugList', 'drugListBrand',
+        function($scope, $state, drugList, drugListBrand){
             console.log('app');
 
             $scope.reloadPage = function() {
@@ -26,7 +26,7 @@ angular.module('controllers', [])
                 // We use an object as the model to enable access by child states. When used, the dot
                 // (i.e. in appModel.treatment) distinguishes the model as belonging to parent state.
                 // See https://stackoverflow.com/a/27699798
-                $scope.appModel = {treatment: null, outcome: null, conditionList: null, drugList: drugList};
+                $scope.appModel = {treatment: null, outcome: null, conditionList: null, drugList: drugList, drugListBrand: drugListBrand};
             };
 
             $scope.clear();
@@ -44,6 +44,7 @@ angular.module('controllers', [])
             $scope.selectDrug = function(item, model, label) {
                 ohdsiService.getConditionList($scope.appModel.treatment.drug_concept_id).then(function (data) {
                         $scope.appModel.conditionList = data;
+                        $scope.appModel.drugName = $scope.appModel.treatment.drug_concept_name;
                     });
             };
 
@@ -52,12 +53,18 @@ angular.module('controllers', [])
             if ($scope.appModel.treatment) {
                 ohdsiService.getConditionList($scope.appModel.treatment.drug_concept_id).then(function (data) {
                         $scope.appModel.conditionList = data;
+                        $scope.appModel.drugName = $scope.appModel.treatment.drug_concept_name;
                     });
             }
         }])
 
     .controller('ConditionsByDrugCtrl', ['$scope', 'treatment', 'conditionList',
         function ($scope, treatment, conditionList) {
+            if ($scope.appModel.treatment) {
+                $scope.appModel.drugName = $scope.appModel.treatment.drug_concept_name;
+            } else {
+                $scope.appModel.drugName = null;
+            }
             $scope.appModel.treatment = treatment;
             $scope.appModel.conditionList = conditionList;
             $scope.evidence = conditionList;
@@ -80,6 +87,7 @@ angular.module('controllers', [])
     .controller('IrListCtrl', ['$scope', 'ohdsiService', 'treatment', 'outcome',
         function ($scope, ohdsiService, treatment, outcome) {
             console.log('IrListCtrl');
+            $scope.appModel.drugName = $scope.appModel.drugName;
             $scope.appModel.treatment = treatment;
             $scope.appModel.outcome = outcome;
             $scope.incidenceRate = [];
