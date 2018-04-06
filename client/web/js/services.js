@@ -61,6 +61,19 @@ angular.module('services', ['config'])
         };
 
         // TODO cache this
+        self.getDrugListBrand = function () {
+            var deferred = $q.defer();
+            var url = ApiBaseUrl + "/drug_list_brand";
+            $http.get(url)
+                .then(function (response) {
+                    deferred.resolve(response.data);
+                }, function (err) {
+                    console.log(err);
+                });
+            return deferred.promise;
+        };
+
+        // TODO cache this
         self.getDrugList = function () {
             var deferred = $q.defer();
             var url = ApiBaseUrl + "/drug_list";
