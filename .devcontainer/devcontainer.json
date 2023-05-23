@@ -1,0 +1,53 @@
+{
+	"name": "HowOftenProject",
+	// Use a Image, Dockerfile, Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"remoteEnv": {
+		"NODE_TLS_REJECT_UNAUTHORIZED": "0"
+	},
+	"image": "mcr.microsoft.com/azure-dev-cli-apps:latest",
+    // Features to add to the dev container. More info: https://containers.dev/features.
+	"containerEnv": {
+		"GITHUB_USER": "${localEnv:GITHUB_USER}",
+		"GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+		"DATABASE_USER": "${localEnv:DATABASE_USER}",
+		"DATABASE_PASSWORD": "${localEnv:DATABASE_USER}"
+	},
+	"features": {
+		"ghcr.io/wxw-matt/devcontainer-features/apt:latest": {
+			"clean_cache": true,
+			"local_mirror": true,
+			"packages": "vim telnet curl python2-minimal"
+        },
+		"ghcr.io/devcontainers-contrib/features/typescript:latest": {
+			"version": "latest"
+		},
+		"ghcr.io/wxw-matt/devcontainer-features/command_runner:latest": {
+			"command2": "curl -L 'https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-$(uname -s)-$(uname -m)' -o /usr/local/bin/docker-compose",
+			"command3": "chmod +x /usr/local/bin/docker-compose",
+			"command4": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh",
+			"command5": "export NVM_DIR='$([ -z '${XDG_CONFIG_HOME-}' ] && printf %s '${HOME}/.nvm' || printf %s '${XDG_CONFIG_HOME}/nvm')'"
+		}
+	},
+	"forwardPorts": [80,5000],
+	"onCreateCommand": "NODE_TLS_REJECT_UNAUTHORIZED=0",
+	"postCreateCommand": "npm -yes install -g grunt-cli && npm install -g live-server && curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output ~/get-pip.py && python2 ~/get-pip.py && python2 -m pip install virtualenv",
+	"postAttachCommand": "cd ${containerWorkspaceFolder}/client && grunt build && python2 -m virtualenv ${containerWorkspaceFolder}/incidence_api/venv && . ${containerWorkspaceFolder}/incidence_api/venv/bin/activate && python2 -m pip install -r ${containerWorkspaceFolder}/incidence_api/requirements.txt && python2 -m pip install pymssql==2.1.3",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"http.proxy": "http://bcp-new.cumc.columbia.edu:8080",
+				"http.proxyStrictSSL": false,
+				"extensions.autoUpdate": "true",
+				"extensions.autoCheckUpdates": "false",
+				"terminal.integrated.defaultProfile.linux": "bash"
+			}
+		},
+		"extensions": [
+		]
+	},
+	"runArgs": [ "--platform=linux/amd64",
+				 "--env-file", ".devcontainer/devcontainer.env",
+				 "-v", "/var/run/docker.sock:/var/run/docker.sock"
+	]
+}
+
