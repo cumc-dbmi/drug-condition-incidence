@@ -5,9 +5,9 @@
             //Extension no longer support python less than 3.7
             "name": "Launch Backend",
             "type": "python",
-            "python": "/workspaces/drug-condition-incidence/incidence_api/venv/bin/python2",
+            "python": "/workspaces/drug-condition-incidence/incidence-api/venv/bin/python2",
             "request": "launch",
-            "program": "/${workspaceFolder}/incidence_api/incidence.py",
+            "program": "/${workspaceFolder}/incidence-api/incidence.py",
             "console": "integratedTerminal",
             "justMyCode": true
         },

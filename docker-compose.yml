@@ -38,7 +38,7 @@ services:
   backend:
     container_name: howoften-backend
     image: cumc-dbmi/howoften-backend:latest
-    build: ./incidence_api
+    build: ./incidence-api
     restart: unless-stopped
     ipc: none
     read_only: true
@@ -47,5 +47,5 @@ services:
     #   DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence_api`)"
+      - "traefik.http.routers.howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence-api`)"
       - "traefik.http.routers.howoften-backend.entrypoints=web"

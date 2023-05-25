@@ -1,13 +1,23 @@
-import decimal
-import json
-
 from flask import Flask, request, Response
 from flask_cors import CORS
 
+import decimal
+import json
+
+
 from db import drug_condition, drug_list, condition_list, incidence_rate, incidence_rate_source_details
 
+# Configure the logging package from the logging ini file; defined as an environment variable
+#logging.config.fileConfig('/usr/app/config/logging.ini',
+#                          disable_existing_loggers=False)
+
+# Get a logger for our module
+#log = logging.getLogger(__name__)
+
+
 app = Flask(__name__)
-CORS(app)
+cors  = CORS(app)
+
 APPLICATION_JSON_CONTENT_TYPE = 'application/json'
 
 
@@ -24,11 +34,14 @@ def drug_condition_endpoint():
     response_body = json.dumps(results, default=serialize_obj)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 
+
 @app.route("/drug_list", methods=['GET'])
 def drug_list_endpoint():
+#    log.info('GET /drug_list')
     results = drug_list()
     response_body = json.dumps(results, default=serialize_obj)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
+
 
 @app.route("/condition_list", methods=['GET'])
 def condition_list_endpoint():
@@ -36,6 +49,7 @@ def condition_list_endpoint():
     results = condition_list(concept_id)
     response_body = json.dumps(results, default=serialize_obj)
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
+
 
 @app.route("/incidence_rate", methods=['GET'])
 def incidence_rate_endpoint():
@@ -60,5 +74,11 @@ def incidence_rate_source_endpoint():
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 
 
+@app.route("/ops/health", methods=['GET'])
+def ops_health():
+    print("Hello Health CHecker")
+    return Response(json.dumps("{\"status:\" \"up\"}", default=serialize_obj), mimetype=APPLICATION_JSON_CONTENT_TYPE)
+
+  
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')

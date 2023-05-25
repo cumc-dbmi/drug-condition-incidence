@@ -3,4 +3,4 @@
 ## Directory Structure
 
 * `client`: HTML5 app using angular
-* `incidence_api`: RESTful API using Python flask
+* `incidence-api`: RESTful API using Python flask

@@ -1,6 +1,7 @@
 from sys import platform
 import pip
 import db_util
+import subprocess
 
 _all_ = [
     'Flask==0.12.2',
@@ -34,11 +35,13 @@ def determine_db_pkg(conn_str):
             result = MSSQL_WIN32_PKG
         elif platform.startswith('linux'):
             result = MSSQL_LINUX_PKG
+        elif platform.startswith('darwin'):
+            result = MSSQL_LINUX_PKG
     elif dialect == 'postgresql':
         result = POSTGRES_PKG
     elif dialect in DB_PKG_DEFAULTS:
         result = DB_PKG_DEFAULTS[dialect]
-        print WARNING_DIALECT_FMT % (dialect, platform)
+        print(WARNING_DIALECT_FMT % (dialect, platform))
     else:
         raise EnvironmentError(CONN_STR_INVALID)
     return result
@@ -54,7 +57,8 @@ def install():
         raise EnvironmentError(CONN_STR_INVALID)
     to_install.extend([db_pkg])
     for package in to_install:
-        pip.main(['install', package])
+        subprocess.call(['pip', 'install', package])
+#        pip.main(['install', package])
 
 
 if __name__ == '__main__':
