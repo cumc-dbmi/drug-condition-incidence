@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+
+  traefik:
+    image: docker.io/library/traefik:v2.9.4@sha256:4c388f477f5b7aa48420694d90db0ecb96b4ecede60b9b7589c87858abf87b60
+    container_name: traefik
+    restart: unless-stopped
+    ipc: none
+    read_only: true
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    labels:
+      - "traefik.enable=true"
+    ports:
+      - "${HOWOFTEN_HOST}:80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  frontend:
+    container_name: howoften-frontend
+    image: cumc-dbmi/howoften-frontend:latest
+    build: ./client
+    restart: unless-stopped
+    ipc: none
+    privileged: false
+    environment:
+      API_URL: "http://${HOWOFTEN_HOST}/api/"
+    depends_on:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.howoften-frontend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.howoften-frontend.entrypoints=web"
+
+  backend:
+    container_name: howoften-backend
+    image: cumc-dbmi/howoften-backend:latest
+    build: ./incidence_api
+    restart: unless-stopped
+    ipc: none
+    read_only: true
+    privileged: false
+    # environment:
+    #   DATASOURCE_DRIVERCLASSNAME: org.postgresql.Driver
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence_api`)"
+      - "traefik.http.routers.howoften-backend.entrypoints=web"
