@@ -1,4 +1,4 @@
 {
-    "ApiBaseUrl": "/path/to/running/incidence_api",
+    "ApiBaseUrl": "/path/to/running/incidence-api",
     "VocabBaseUrl": "http://api.ohdsi.org/WebAPI/vocabulary/1PCT"
 }

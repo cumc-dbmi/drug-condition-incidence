@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: incidence-api
+    ports:
+    - "8085:5000"
+
+  backendproxy:
+    build: backend-proxy
+    ports:
+    - "8080:80"
+  
+  client:
+    build: client
+    ports:
+     - "80:80"
