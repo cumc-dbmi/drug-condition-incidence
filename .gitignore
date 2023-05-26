@@ -151,3 +151,7 @@ venv.bak/
 .mypy_cache/
 /client/config.json
 /client/web/js/config.js
+
+# VSCode
+.devcontainer/
+.vscode/
