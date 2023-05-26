@@ -1,7 +1,6 @@
 FROM nginx:1.10.1-alpine
 COPY dist/ /usr/share/nginx/html
 
-
 # LINKS
 # https://snyk.io/blog/best-practices-containerizing-python-docker/?_gl=1*15siglz*_ga*Mjc0NTgyMjQ4LjE2ODQ2ODQ5NDA.*_ga_X9SH3KP7B4*MTY4NDY4NDk4NC4xLjEuMTY4NDY4NTAzMS4wLjAuMA..
 
