@@ -2,14 +2,21 @@ services:
   backend:
     build: incidence-api
     ports:
-    - "8085:5000"
+      - "8085:5000"
+    environment:
+      - DATASOURCE_USERNAME
+      - DATASOURCE_PASSWORD
+      - DATASOURCE_HOSTNAME
+      - DATASOURCE_PORT
+      - DATASOURCE_SCHEMA
+      - DATASOURCE_DATABASE
 
   backendproxy:
     build: backend-proxy
     ports:
-    - "8080:80"
+      - "8080:80" 
   
   client:
     build: client
     ports:
-     - "80:80"
+      - "80:80"
