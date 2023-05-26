@@ -77,7 +77,7 @@ def incidence_rate_source_endpoint():
 @app.route("/ops/health", methods=['GET'])
 def ops_health():
     print("Hello Health CHecker")
-    return Response(json.dumps("{\"status:\" \"up\"}", default=serialize_obj), mimetype=APPLICATION_JSON_CONTENT_TYPE)
+    return Response(json.dumps({"status": "up"}), mimetype="application/json")
 
   
 if __name__ == "__main__":
