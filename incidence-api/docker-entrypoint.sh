@@ -40,7 +40,7 @@ ping_database_server() {
     # If the server is reachable
     if [ "$?" -eq 0 ]
     then
-      echo "DATASOURCE CHECK: Server is up. Starting API server..."
+      echo "DATASOURCE CHECK: Server is up.."
       echo ""
       return 0
     else
@@ -78,7 +78,14 @@ print_datasource_info
 
 ping_database_server
 
-python2 ./incidence.py
+python ./incidence.py
+
+# Start Gunicorn
+#echo "================================================"
+#echo "Starting app with Gunicorn"
+#source venv/bin/activate && python2 -m pip install gunicorn && 
+#echo $(ls -lrt /usr/app/venv/bin |grep gunicorn) 
+#/usr/app/venv/bin/gunicorn --bind :5000 --workers 3 --access-logfile --error-logfile - incidence:app
 
 echo ""
 echo "Application Stopped"

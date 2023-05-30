@@ -8,4 +8,4 @@ database = os.environ['DATASOURCE_DATABASE']
 schema = os.environ['DATASOURCE_SCHEMA']
 conn_str = 'mssql+pymssql://{username}:{password}@{hostname}:{port}/{database}'.format(username=username, password=password, hostname=hostname, port=port, database=database)
 
-print("CONN STRING: "+conn_str)
+#print("CONN STRING: "+conn_str)
