@@ -47,7 +47,6 @@ Thumbs.db
 *.zip
 .idea/encodings.xml
 side-effect-incidence-rate.iml
-settings.py
 dist/
 .idea
 # Byte-compiled / optimized / DLL files
