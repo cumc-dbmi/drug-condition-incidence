@@ -4,21 +4,26 @@ pipeline {
   stages {
     stage ('Build') {
       steps {
-        sh 'docker build -t my-image .'
+        echo 'Building..'
+        #sh 'docker-compose build .'
       }
     }
 
     stage ('Archive') {
       steps {
-        sh 'docker push my-image'
+        echo 'Archiving..'
+        #sh 'docker push my-image'
       }
     }
 
     stage ('Deploy') {
       steps {
-        ssh "${USERNAME}@${MACHINE_NAME}" "
-          cd /opt/ohdsi/howoften && git fetch --all && git checkout master && git pull && sudo docker-compose up -d
-        "
+        echo 'Deploying..'
+        #ssh "${USERNAME}@${MACHINE_NAME}" "
+        #  cd /opt/ohdsi/howoften && git fetch --all && git checkout master && git pull && sudo docker-compose up -d
+        #"
+        #sh 'cd /opt/ohdsi/howoften && git fetch --all && git checkout feature/dbmi-cicd && git pull && sudo docker-compose up -d'
+        sh 'pwd'
       }
     }
   }
