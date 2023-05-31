@@ -40,7 +40,7 @@ def serialize_obj(obj):
     raise TypeError("Object of type '%s' is not JSON serializable" % type(obj).__name__)
 
 
-@app.route("/drug_condition", methods=['GET'])
+@app.route("/incidence-api/drug_condition", methods=['GET'])
 @timer_decorator
 def drug_condition_endpoint():
     concept_id = request.args.get('drug_concept_id', type=int)
@@ -49,7 +49,7 @@ def drug_condition_endpoint():
     return Response(response_body, mimetype=APPLICATION_JSON_CONTENT_TYPE)
 
 
-@app.route("/drug_list", methods=['GET'])
+@app.route("/incidence-api/drug_list", methods=['GET'])
 @timer_decorator
 def drug_list_endpoint():
     log.debug('GET /drug_list')
@@ -60,7 +60,7 @@ def drug_list_endpoint():
     except exc.SqlAlchemyError:
         log.exception('An exception occurred while retireving all drugs')
 
-@app.route("/condition_list", methods=['GET'])
+@app.route("/incidence-api/condition_list", methods=['GET'])
 @timer_decorator
 def condition_list_endpoint():
     log.debug('GET /condition_list')
@@ -73,7 +73,7 @@ def condition_list_endpoint():
         log.exception('An exception occurred while retireving condition list using provided drug concept id: ' + concept_id)
 
 
-@app.route("/incidence_rate", methods=['GET'])
+@app.route("/incidence-api/incidence_rate", methods=['GET'])
 @timer_decorator
 def incidence_rate_endpoint():
     log.debug('GET /incidence_rate')
@@ -91,7 +91,7 @@ def incidence_rate_endpoint():
         log.exception('An exception occurred while retireving incidence rate.')
 
 
-@app.route("/incidence_rate_source_details", methods=['GET'])
+@app.route("/incidence-api/incidence_rate_source_details", methods=['GET'])
 @timer_decorator
 def incidence_rate_source_endpoint():
     log.debug('GET /incidence_rate_source_details')
@@ -106,7 +106,7 @@ def incidence_rate_source_endpoint():
         log.exception('An exception occurred while retireving incidence rate source details.')    
 
 
-@app.route("/ops/health", methods=['GET'])
+@app.route("/incidence-api/ops/health", methods=['GET'])
 @timer_decorator
 def ops_health():
     log.debug('GET /ops/healt')
