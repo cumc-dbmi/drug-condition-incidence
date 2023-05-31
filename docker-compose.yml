@@ -9,6 +9,7 @@ services:
     ipc: none
     read_only: true
     command:
+      - "--api"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
@@ -23,11 +24,11 @@ services:
     container_name: howoften-frontend
     image: cumc-dbmi/howoften-frontend:latest
     build: ./client
-    restart: unless-stopped
+    #restart: unless-stopped
     ipc: none
     privileged: false
-    # environment:
-    #   API_URL: "http://${HOWOFTEN_HOST}/incidence-api/"
+    environment:
+      - API_URL="${INCIDENCE_API_BASE_URL}/incidence-api/"
     # depends_on:
     #   - howoften-backend
     labels:
@@ -38,17 +39,17 @@ services:
     container_name: howoften-backend
     image: cumc-dbmi/howoften-backend:latest
     build: ./incidence-api
-    restart: unless-stopped
+    #restart: unless-stopped
     ipc: none
     read_only: true
     privileged: false
     environment:
-      - DATASOURCE_USERNAME
-      - DATASOURCE_PASSWORD
-      - DATASOURCE_HOSTNAME
-      - DATASOURCE_PORT
-      - DATASOURCE_SCHEMA
-      - DATASOURCE_DATABASE
+      - DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
+      - DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
+      - DATASOURCE_HOSTNAME=${DATASOURCE_HOSTNAME}
+      - DATASOURCE_PORT=${DATASOURCE_PORT}
+      - DATASOURCE_SCHEMA=${DATASOURCE_SCHEMA}
+      - DATASOURCE_DATABASE=${DATASOURCE_DATABASE}
     # healthcheck:
     #   # Hit the local web app
     #   test: ["CMD", "curl", "-f", "http://howoften-backend/incidence-api/ops/health"]
