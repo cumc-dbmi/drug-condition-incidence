@@ -19,13 +19,11 @@ pipeline {
     stage ('Deploy') {
       steps {
         echo 'Deploying..'
-        sh 'cd /opt/ohdsi/howoften && \
-        [ -d .git ] || git clone https://github.com/t-abdul-basser/drug-condition-incidence.git && \
-        cd drug-condition-incidence && \
-        git fetch --all && \
-        git checkout feature/dbmi-cicd && \
-        git pull && \
-        sudo docker-compose up -d'
+        ssh "${USERNAME}@${HOSTNAME}" "
+          cd ~/drug-condition-incidence
+          git checkout feature/dbmi-cicd
+          docker-compose up -d
+        "
       }
     }
   }
