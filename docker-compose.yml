@@ -54,7 +54,7 @@ services:
       - DATASOURCE_DATABASE=${DATASOURCE_DATABASE}
     # healthcheck:
     #   # Hit the local web app
-    #   test: ["CMD", "curl", "-f", "http://howoften-backend/incidence-api/ops/health"]
+    #   test: ["CMD", "curl", "-f", "http://${HOWOFTEN_HOST}/incidence-api/ops/health"]
     #   interval: 5s
     #   timeout: 5s
     #   retries: 10
@@ -62,3 +62,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence-api`)"
       - "traefik.http.routers.howoften-backend.entrypoints=web"
+      - "traefik.http.services.myapp.loadbalancer.server.port=5000"
+    expose:
+      - 5000
