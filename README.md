@@ -35,5 +35,5 @@ docker compose up -d
 
 ## Open application
 ```sh
-Open browser and visit http://127.0.0.1
+Open browser and visit http://127.0.0.1:9999
 ```
