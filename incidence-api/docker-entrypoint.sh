@@ -76,7 +76,8 @@ print_datasource_info(){
 }
 print_datasource_info
 
-ping_database_server
+# TOD: ping might requires sudo access on server it is deployed too 
+# ping_database_server
 
 python ./incidence.py
 
