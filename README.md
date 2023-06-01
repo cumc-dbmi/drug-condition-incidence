@@ -14,8 +14,7 @@ To get this application up and running you will need to know the following:
 ## Create environment file
 Copy the .env_template to a .env file and edit it accordingly.
 ```
-INCIDENCE_API_BASE_URL='http://localhost:8080'
-VACAB_BASE_URL='http://api.ohdsi.org/WebAPI/vocabulary/1PCT'
+VOCAB_BASE_URL='http://api.ohdsi.org/WebAPI/vocabulary/1PCT'
 DATASOURCE_USERNAME='YOUR_USERNAME'
 DATASOURCE_PASSWORD='YOUR_PASWORD'
 DATASOURCE_HOSTNAME='YOUR_HOST'
