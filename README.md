@@ -31,7 +31,7 @@ docker compose build
 ```
 ## Launch containers
 ```sh 
-docker compose up
+docker compose up -d
 ```
 
 ## Open application

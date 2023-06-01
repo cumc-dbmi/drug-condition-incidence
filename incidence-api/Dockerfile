@@ -41,26 +41,3 @@ RUN pip install gunicorn==19.9.0
 
 ENV PATH="/usr/app/venv/bin/python2:/usr/app/venv/bin:$PATH"
 ENTRYPOINT ["/usr/app/docker-entrypoint.sh"]
-
-# LINKS
-# https://snyk.io/blog/best-practices-containerizing-python-docker/?_gl=1*15siglz*_ga*Mjc0NTgyMjQ4LjE2ODQ2ODQ5NDA.*_ga_X9SH3KP7B4*MTY4NDY4NDk4NC4xLjEuMTY4NDY4NTAzMS4wLjAuMA..
-
-# BUILD DOCKER IMAGE NO CACHE
-# docker build --no-cache -t cumc-dbmi/howoften-backend .
-
-# BUILD DOCKER IMAGE
-# export DOCKER_BUILDKIT=1
-# docker build -t  cumc-dbmi/howoften-backend --cache-from  cumc-dbmi/howoften-backend --build-arg BUILDKIT_INLINE_CACHE=1 .
-
-
-# START DOCKER CONTAINER
-# docker run -p 8080:5000 cumc-dbmi/howoften-backend
-
-# GET CONTAINER NAME 
-# docker ps
-
-# SSH INTO CONTAINER
-# docker exec -it <CONTAINER> /bin/bash
-
-# EXECUTE COMMAND IN CONTAINER
-# docker exec -it <container name> <command>
