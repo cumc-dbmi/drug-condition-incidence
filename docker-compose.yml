@@ -9,7 +9,8 @@ services:
     ipc: none
     read_only: true
     command:
-      - "--api.dashboard=true"
+      #- "--log.level=DEBUG"
+      - "--api"
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
@@ -21,7 +22,6 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
   howoften-frontend:
     container_name: howoften-frontend
     image: cumc-dbmi/howoften-frontend:latest
@@ -29,8 +29,6 @@ services:
     restart: unless-stopped
     ipc: none
     privileged: false
-    environment:
-      - API_URL="${INCIDENCE_API_BASE_URL}/incidence-api/"
     depends_on:
       - howoften-backend
     labels:
@@ -52,12 +50,12 @@ services:
       - DATASOURCE_PORT=${DATASOURCE_PORT}
       - DATASOURCE_SCHEMA=${DATASOURCE_SCHEMA}
       - DATASOURCE_DATABASE=${DATASOURCE_DATABASE}
-    # healthcheck:
-    #   # Hit the local web app
-    #   test: ["CMD", "curl", "-f", "http://${HOWOFTEN_HOST}/incidence-api/ops/health"]
-    #   interval: 5s
-    #   timeout: 5s
-    #   retries: 10
+    healthcheck:
+       # Hit the local web app
+      test: ["CMD", "curl", "-f", "http://${HOWOFTEN_HOST}/incidence-api/ops/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence-api`)"
