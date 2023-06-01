@@ -4,7 +4,7 @@ services:
 
   traefik:
     image: docker.io/library/traefik:v2.9.4@sha256:4c388f477f5b7aa48420694d90db0ecb96b4ecede60b9b7589c87858abf87b60
-    container_name: traefik
+    container_name: howoften-reverse-proxy
     restart: unless-stopped
     ipc: none
     read_only: true
@@ -26,13 +26,13 @@ services:
     container_name: howoften-frontend
     image: cumc-dbmi/howoften-frontend:latest
     build: ./client
-    #restart: unless-stopped
+    restart: unless-stopped
     ipc: none
     privileged: false
     environment:
       - API_URL="${INCIDENCE_API_BASE_URL}/incidence-api/"
-    # depends_on:
-    #   - howoften-backend
+    depends_on:
+      - howoften-backend
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.howoften-frontend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`)"
@@ -41,7 +41,7 @@ services:
     container_name: howoften-backend
     image: cumc-dbmi/howoften-backend:latest
     build: ./incidence-api
-    #restart: unless-stopped
+    restart: unless-stopped
     ipc: none
     read_only: true
     privileged: false
