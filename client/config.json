@@ -1,4 +1,4 @@
 {
-    "ApiBaseUrl": "http://127.0.0.1:9999/incidence-api",
+    "ApiBaseUrl": "http://127.0.0.1:8080/api/incidence-api",
     "VocabBaseUrl": "http://api.ohdsi.org/WebAPI/vocabulary/1PCT"
 }
