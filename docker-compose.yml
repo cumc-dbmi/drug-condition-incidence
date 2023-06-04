@@ -6,7 +6,7 @@ services:
     build: backend-proxy
     image: cumc-dbmi/howoften/backendproxy
     ports:
-    - "8080:80"
+    - "9999:80"
 
   backend:
     build: incidence-api
@@ -18,11 +18,11 @@ services:
       - DATASOURCE_PORT=${DATASOURCE_PORT}
       - DATASOURCE_SCHEMA=${DATASOURCE_SCHEMA}
       - DATASOURCE_DATABASE=${DATASOURCE_DATABASE}
-    ports:
-    - "8085:5000"
+    # ports:
+    # - "8085:5000"
 
   frontend:
     build: client
     image: cumc-dbmi/howoften/frontend
-    ports:
-     - "80:80"
+    # ports:
+    #  - "80:80"
