@@ -109,7 +109,7 @@ def incidence_rate_source_endpoint():
 @app.route("/incidence-api/ops/health", methods=['GET'])
 @timer_decorator
 def ops_health():
-    log.debug('GET /ops/healt')
+    log.debug('GET /ops/health')
     return Response(json.dumps({"status": "up"}), mimetype="application/json")    
 
   

@@ -67,6 +67,7 @@ print_datasource_info(){
   echo ""
   echo "ENVIRONNMENT VARIABLES"
   echo "------------------------------------------"
+  echo "DATASOURCE_DRIVER: "$DATASOURCE_DRIVER
   echo "DATASOURCE_USERNAME: "$DATASOURCE_USERNAME
   echo "DATASOURCE_HOSTNAME: "$DATASOURCE_HOSTNAME
   echo "DATASOURCE_PORT: "$DATASOURCE_PORT

@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:2.7.18-slim as build
+FROM python:2.7.18-slim AS build
 
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends build-essential gcc libc6-x32
