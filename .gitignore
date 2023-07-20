@@ -154,3 +154,5 @@ venv.bak/
 # VSCode
 .devcontainer/
 .vscode/
+
+data
