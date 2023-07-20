@@ -1,0 +1,13 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <include file="version-1.0/create-tables.sql"/>
+    <include file="version-1.0/test/dbo__drug_list.sql" />
+    <include file="version-1.0/test/dbo__drug_condition_filtered.sql" />
+    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_overall.sql" />
+    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_full.sql" /> 
+</databaseChangeLog>
