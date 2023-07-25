@@ -1,20 +1,20 @@
+DRUG_LIST_QUERY = """
+SELECT drug_list.drug_concept_id, drug_list.drug_concept_name 
+FROM dbo.drug_list
+"""
+
 DRUG_CONDITION_QUERY = """
 SELECT DISTINCT condition_concept_id AS outcome_concept_id, 
   condition AS outcome_concept_name,
   f.incidence_proportion_range_low,
   f.incidence_proportion_range_high 
 FROM dbo.drug_condition_filtered d
-JOIN dbo.IR_all_exposure_outcome_summary_overall f
+JOIN dbo.ir_all_exposure_outcome_summary_overall f
   ON d.condition_concept_id = f.outcome_concept_id 
   AND d.ingredient_concept_id = f.drug_concept_id
 WHERE ingredient_concept_id = :drug_concept_id AND time_at_risk_id = 365
 AND cohort_type = 'First diagnosis of'
 ORDER BY condition
-"""
-
-DRUG_LIST_QUERY = """
-SELECT drug_list.drug_concept_id, drug_list.drug_concept_name 
-FROM dbo.drug_list
 """
 
 CONDITION_LIST_QUERY = """
@@ -47,7 +47,7 @@ SELECT source_short_name,
 	WHEN requires_full_time_at_risk = 1  THEN 'Yes'
 	ELSE 'No'
   END as requires_full_time_at_risk 
-FROM dbo.IR_all_exposure_outcome_summary_full
+FROM dbo.ir_all_exposure_outcome_summary_full
 WHERE drug_concept_id = :drug_concept_id 
 AND outcome_concept_id = :outcome_concept_id  
 AND time_at_risk_id = :time_at_risk_id

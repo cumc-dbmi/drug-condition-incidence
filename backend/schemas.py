@@ -70,6 +70,44 @@ class IRAllExposureOutcomeSummaryFullModel(BaseModel):
         from_attributes=True
     )
 
-class DrugConditionsResModel(BaseModel):
+
+class DrugConditionResModel(BaseModel):
+    condition_concept_id: int
+    condition: str
+    incidence_proportion_range_low: Decimal
+    incidence_proportion_range_high: Decimal
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
+
+class ExposureOutcomeResModel(BaseModel):
     outcome_concept_id: int
     outcome_concept_name: str
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
+
+class ExposureOutcomeRateResModel(BaseModel):
+    incidence_proportion_range_low: Decimal
+    incidence_proportion_range_high: Decimal
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+
+
+class ExposureOutcomeSourceResModel(BaseModel):
+    source_short_name: str
+    source_country: str
+    incidence_proportion: Decimal
+    incidence_rate: Decimal
+    num_persons_at_risk: int
+    requires_full_time_at_risk: str
+
+    model_config = ConfigDict(
+        from_attributes=True
+    )

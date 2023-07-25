@@ -5,6 +5,7 @@ from pydantic import BaseConfig
 
 load_dotenv()
 
+
 class GlobalConfig(BaseConfig):
     title: str = os.environ.get("TITLE")
     version: str = "1.0.0"
