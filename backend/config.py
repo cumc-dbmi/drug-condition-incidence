@@ -11,16 +11,16 @@ class GlobalConfig(BaseConfig):
     version: str = "1.0.0"
     description: str = os.environ.get("DESCRIPTION")
     openapi_prefix: str = "/"
-    docs_url: str = "/ops/api/v2/docs"
-    redoc_url: str = "/ops/api/v2/redoc"
-    openapi_url: str = "/ops/api/v2/openapi.json"
-    api_prefix: str = "/api"
+    docs_url: str = "/ops/incidence/v2/docs"
+    redoc_url: str = "/ops/incidence/v2/redoc"
+    openapi_url: str = "/ops/incidence/v2/openapi.json"
+    api_prefix: str = "/api/incidence/v2"
     debug: bool = os.environ.get("DEBUG")
-    postgres_user: str = os.environ.get("POSTGRES_USER")
-    postgres_password: str = os.environ.get("POSTGRES_PASSWORD")
-    postgres_server: str = os.environ.get("POSTGRES_SERVER")
-    postgres_port: int = int(os.environ.get("POSTGRES_PORT"))
-    postgres_db: str = os.environ.get("POSTGRES_DB")
+    postgres_user: str = os.environ.get("DATASOURCE_USERNAME")
+    postgres_password: str = os.environ.get("DATASOURCE_PASSWORD")
+    postgres_server: str = os.environ.get("DATASOURCE_HOSTNAME")
+    postgres_port: int = int(os.environ.get("DATASOURCE_PORT"))
+    postgres_db: str = os.environ.get("DATASOURCE_DATABASE")
     db_echo_log: bool = True if os.environ.get("DEBUG") == "True" else False
 
     @property

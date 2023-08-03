@@ -1,20 +1,11 @@
-# Drug Condition Incidence Rate
+# How Often APP
 
-## Directory Structure
+## Getting Started
 
-* `client`: HTML5 app using angular
-* `incidence-api`: RESTful API using Python flask
-
-## Getting started
-To get this application up and running you will need to know the following:
-* DATASOURCE_USERNAME
-* DATASOURCE_PASSWORD
-* DATASOURCE_HOSTNAME
-
-## Create environment file
-Copy the .env_template to a .env file and edit it accordingly.
+#### CREATE ENVIRONMENT FILE
+On base of project use the .env_template to create .env file that contains the required environment variables.
 ```
-INCIDENCE_API_BASE_URL='http://localhost:8080'
+INCIDENCE_API_BASE_URL='http://localhost/api/incidence/v2'
 VACAB_BASE_URL='http://api.ohdsi.org/WebAPI/vocabulary/1PCT'
 DATASOURCE_USERNAME='YOUR_USERNAME'
 DATASOURCE_PASSWORD='YOUR_PASWORD'
@@ -25,16 +16,34 @@ DATASOURCE_SCHEMA='dbo'
 ```
 
 
-## Build images
+#### BUILD IMAGES
 ```sh
 docker compose build
 ```
-## Launch containers
+#### LAUNCH CONTAINERS
 ```sh 
 docker compose up -d
 ```
 
-## Open application
-```sh
-Open browser and visit http://127.0.0.1
-```
+#### USER INTERFACES
+
+**Traefik:**  [http://127.0.0.1:8080/dashboard/#/](http://127.0.0.1:8080/dashboard/#/)
+
+**Swagger UI:** [http://127.0.0.1/ops/incidence/v2/docs](http://127.0.0.1/ops/incidence/v2/docs)
+
+**Redoc UI:** [http://127.0.0.1/ops/incidence/v2/redoc](http://127.0.0.1/ops/incidence/v2/redoc)
+
+**Application:** [http://127.0.0.1](http://127.0.0.1)
+
+#### REST ENDPOINTS
+
+**Open API:** [http://127.0.0.1/ops/incidence/v2/openapi.json](http://127.0.0.1/ops/incidence/v2/openapi.json)
+
+**Application API Base URL:** [http://127.0.0.1/api/incidence/v2](http://127.0.0.1/api/incidence/v2)
+
+#### TEST DRIVE APPLICATION
+The test data set include the drug "atorvastatin".
+
+Which drug are you interested in?
+ENTER: atorvastatin
+

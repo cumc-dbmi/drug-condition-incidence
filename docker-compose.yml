@@ -29,9 +29,9 @@ services:
   postgres:
     container_name: ${DOCKER_PREFIX}-database
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${DATASOURCE_DATABASE}
+      POSTGRES_USERNAME: ${DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD}
     image: postgres
     shm_size: 1024MB
     labels:
@@ -49,37 +49,13 @@ services:
     shm_size: 1024MB
     volumes:
       - ./database/liquibase/changelog:/liquibase/changelog
-    command: liquibase --url="jdbc:postgresql://postgres:${POSTGRES_PORT}/${POSTGRES_DB}" --searchPath=/liquibase/changelog --changeLogFile=./changelog.xml --username=${POSTGRES_USERNAME} --password=${POSTGRES_PASSWORD} update
+    command: liquibase --url="jdbc:postgresql://postgres:${DATASOURCE_PORT}/${DATASOURCE_DATABASE}" --searchPath=/liquibase/changelog --changeLogFile=./changelog.xml --username=${DATASOURCE_USERNAME} --password=${DATASOURCE_PASSWORD} update
     depends_on:
       - postgres
 
   howoften-backend:
     container_name: ${DOCKER_PREFIX}-backend
     image: cumc-dbmi/howoften-backend:latest
-    build: ./incidence-api
-    restart: unless-stopped
-    ipc: none
-    read_only: true
-    privileged: false
-    environment:
-      - DATASOURCE_DRIVER
-      - DATASOURCE_USERNAME
-      - DATASOURCE_PASSWORD
-      - DATASOURCE_HOSTNAME
-      - DATASOURCE_PORT
-      - DATASOURCE_SCHEMA
-      - DATASOURCE_DATABASE
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence-api`)"
-      - "traefik.http.routers.howoften-backend.entrypoints=web"
-      - "traefik.http.services.howoften-backend.loadbalancer.server.port=5000"
-    depends_on: 
-      - liquibase
-
-  howoften-backendv2:
-    container_name: ${DOCKER_PREFIX}-backendv2
-    image: cumc-dbmi/howoften-backendv2:latest
     build: ./backend
     restart: unless-stopped
     ipc: none
@@ -95,9 +71,10 @@ services:
       - DATASOURCE_DATABASE
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.howoften-backendv2.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/api/incidence/v2`)"
-      - "traefik.http.routers.howoften-backendv2.entrypoints=web"
-      - "traefik.http.services.howoften-backendv2.loadbalancer.server.port=5001"
+      - "traefik.http.routers.howoften-backend-app.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/api/incidence/v2`)"
+      - "traefik.http.routers.howoften-backend-ops.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/ops/incidence/v2`)"
+      - "traefik.http.routers.howoften-backend.entrypoints=web"
+      - "traefik.http.services.howoften-backend.loadbalancer.server.port=5001"
     ports:
       - 5001:80
     depends_on: 
@@ -110,13 +87,55 @@ services:
   howoften-frontend:
     container_name: howoften-frontend
     image: cumc-dbmi/howoften-frontend:latest
-    build: ./client
+    build: ./frontend
     restart: unless-stopped
     ipc: none
     privileged: false
     depends_on:
-      - howoften-backend
+    - howoften-backend
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.howoften-frontend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`)"
       - "traefik.http.routers.howoften-frontend.entrypoints=web"
+
+  # howoften-backend-legacy:
+  #     container_name: ${DOCKER_PREFIX}-backend
+  #     image: cumc-dbmi/howoften-backend:latest
+  #     build: ./incidence-api
+  #     restart: unless-stopped
+  #     ipc: none
+  #     read_only: true
+  #     privileged: false
+  #     environment:
+  #       - DATASOURCE_DRIVER
+  #       - DATASOURCE_USERNAME
+  #       - DATASOURCE_PASSWORD
+  #       - DATASOURCE_HOSTNAME
+  #       - DATASOURCE_PORT
+  #       - DATASOURCE_SCHEMA
+  #       - DATASOURCE_DATABASE
+  #     labels:
+  #       - "traefik.enable=true"
+  #       - "traefik.http.routers.howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence-api`)"
+  #       - "traefik.http.routers.howoften-backend.entrypoints=web"
+  #       - "traefik.http.services.howoften-backend.loadbalancer.server.port=5000"
+  #     depends_on: 
+  #       - liquibase
+  #     volumes:
+  #       - type: bind
+  #         source: /var/tmp
+  #         target: /var/tmp           
+
+  #   howoften-frontend-legacy:
+  #   container_name: howoften-frontend
+  #   image: cumc-dbmi/howoften-frontend:latest
+  #   build: ./client
+  #   restart: unless-stopped
+  #   ipc: none
+  #   privileged: false
+  #  depends_on:
+  #    - howoften-backend-legacy
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.howoften-frontend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`)"
+  #     - "traefik.http.routers.howoften-frontend.entrypoints=web"

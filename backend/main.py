@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI, APIRouter
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
+import config
 from config import settings
 from db import engine
 from repository import Repository
@@ -100,7 +101,7 @@ async def get_exposure_outcome_sources(drug_concept_id: int, outcome_concept_id:
     return [ExposureOutcomeSourceResModel(**row) for row in result]
 
 
-app.include_router(router, prefix="/api")
+app.include_router(router, prefix="/api/incidence/v2")
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

@@ -2,12 +2,13 @@ angular.module('services', ['config'])
     .service('ohdsiService', ['$http', '$q', 'ApiBaseUrl', function ($http, $q, ApiBaseUrl) {
         var self = this;
 
-        self.getIncidentRate = function (targetId, outcomeId, timeAtRisk) {
+        self.getIncidentRate = function (drugConceptId, outcomeConceptId, timeAtRiskId) {
             var deferred = $q.defer();
-            var url = ApiBaseUrl + "/incidence_rate?"
-                + 'drug_concept_id=' + targetId
-                + '&outcome_concept_id=' + outcomeId
-                + '&time_at_risk_id=' + timeAtRisk;
+            var url = `${ApiBaseUrl}/exposure-outcomes/${drugConceptId}/rates/${outcomeConceptId}/${timeAtRiskId}`;
+            // var url = ApiBaseUrl + "/incidence_rate?"
+            //     + 'drug_concept_id=' + targetId
+            //     + '&outcome_concept_id=' + outcomeId
+            //     + '&time_at_risk_id=' + timeAtRisk;
             $http.get(url)
                 .then(function (resp) {
                     deferred.resolve(resp.data);
@@ -17,13 +18,14 @@ angular.module('services', ['config'])
             return deferred.promise;
         };
 
-        self.getIncidentRateSource = function (targetId, outcomeId, timeAtRisk) {
+        self.getIncidentRateSource = function (drugConceptId, outcomeConceptId, timeAtRiskId) {
             var deferred = $q.defer();
             var res = [];
-            var url = ApiBaseUrl + "/incidence_rate_source?"
-                + 'drug_concept_id=' + targetId
-                + '&outcome_concept_id=' + outcomeId
-                + '&time_at_risk_id=' + timeAtRisk;
+            var url = `${ApiBaseUrl}/exposure-outcomes/${drugConceptId}/sources/${outcomeConceptId}/${timeAtRiskId}`;
+            // var url = ApiBaseUrl + "/incidence_rate_source?"
+            //     + 'drug_concept_id=' + targetId
+            //     + '&outcome_concept_id=' + outcomeId
+            //     + '&time_at_risk_id=' + timeAtRisk;
             $http.get(url)
                 .then(function (resp) {
                     //console.log(resp);
@@ -44,8 +46,9 @@ angular.module('services', ['config'])
 
         self.getEvidence = function (drugConceptId) {
             var deferred = $q.defer();
-            var url = ApiBaseUrl + "/drug_condition?"
-                + 'drug_concept_id=' + drugConceptId;
+            var url = `${ApiBaseUrl}/exposure-outcomes/${drugConceptId}`;
+            // var url = ApiBaseUrl + "/drug_condition?"
+            //     + 'drug_concept_id=' + drugConceptId;
             if (drugCache.hasOwnProperty(drugConceptId)) {
                 deferred.resolve(drugCache[drugConceptId]);
             } else {
@@ -63,7 +66,8 @@ angular.module('services', ['config'])
         // TODO cache this
         self.getDrugList = function () {
             var deferred = $q.defer();
-            var url = ApiBaseUrl + "/drug_list";
+            var url = `${ApiBaseUrl}/drugs`;
+            // var url = ApiBaseUrl + "/drugs_list";
             $http.get(url)
                 .then(function (response) {
                     deferred.resolve(response.data);
@@ -76,8 +80,9 @@ angular.module('services', ['config'])
         // TODO cache this
         self.getConditionList = function (drugConceptId) {
             var deferred = $q.defer();
-            var url = ApiBaseUrl + "/condition_list?"
-                + 'drug_concept_id=' + drugConceptId;
+            var url = `${ApiBaseUrl}/drug-conditions/${drugConceptId}`;
+            // var url = ApiBaseUrl + "/conditions?"
+            //     + 'drug_concept_id=' + drugConceptId;
             $http.get(url)
                 .then(function (response) {
                     deferred.resolve(response.data);
