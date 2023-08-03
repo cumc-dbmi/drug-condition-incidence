@@ -1,0 +1,86 @@
+<div class="main-content">
+    <div class="row question-section">
+        <img src="img/pill.png" alt="Pill" width="100">
+        <img src="img/graph.png" alt="Graph" width="100">
+        <div class="col-xs-12">
+            <h1>How Often...</h1>
+            <h3>How often do patients get a condition after starting a drug?</h3>
+        </div>
+        <div class="col-xs-offset-3 col-xs-6">
+            <h4>Which drug are you interested in?</h4>
+            <input type="text"
+                   class="form-control"
+                   ng-model="appModel.treatment"
+                   typeahead-min-length="5"
+                   typeahead-editable="false"
+                   uib-typeahead="drug as drug.drug_concept_name for drug in appModel.drugList | filter:$viewValue"
+                   typeahead-no-results="noResultsDrug"
+                   placeholder="Enter generic drug name"
+                   typeahead-on-select="selectDrug($item, $model, $label)">
+            <div ng-show="noResultsDrug" class="text-warning">
+                No drugs match the search term entered
+            </div>
+            <h4>Which condition are you interested in?</h4>
+            <input type="text"
+                   class="form-control"
+                   typeahead-min-length="4"
+                   ng-model="appModel.outcome"
+                   typeahead-editable="false"
+                   uib-typeahead="condition as condition.outcome_concept_name for condition in appModel.conditionList | filter:$viewValue"
+                   typeahead-no-results="noResultsCondition"
+                   placeholder="Leave blank for conditions on product label">
+            <div ng-show="noResultsCondition" class="text-warning">
+                No conditions match the search term entered
+            </div>
+        </div>
+    </div>
+    <div ng-if="!!appModel.treatment" class="row buttons-section">
+        <div class="col-xs-offset-4 col-xs-2">
+            <a ng-if="!!!appModel.outcome"
+               class="btn btn-warning btn-block"
+               ui-sref="app.drug({ drugConceptId: appModel.treatment.drug_concept_id })">
+                Go
+            </a>
+            <a ng-if="!!appModel.outcome"
+               class="btn btn-warning btn-block"
+               ui-sref="app.drug_condition({ drugConceptId: appModel.treatment.drug_concept_id, conditionConceptId: appModel.outcome.outcome_concept_id })">
+                Go
+            </a>
+        </div>
+        <div class="col-xs-2">
+            <button class="btn btn-default btn-block" ng-click="clear()">Clear</button>
+        </div>
+    </div>
+    <div class="row info-section">
+        <div class="col-xs-offset-1 col-xs-5">
+            <h3>What this does</h3>
+            <p>
+                Use this tool to look up the proportion of people taking a drug who are newly diagnosed with a
+                condition within 1 year of starting the drug. You can search for a specific drug-condition
+                incidence by entering your drug and condition of interest in the fields above. Or, you can browse a
+                list of conditions of potential interest by leaving the condition field blank, and you'll be shown
+                conditions listed on the drug's product label.
+            </p>
+        </div>
+        <div class="col-xs-5">
+            <h3>What this does not do</h3>
+            <p>
+                This tool <b>does not</b> demonstrate that a drug causes a condition (i.e., that the condition is a
+                side effect of the drug). Instead, for example, the condition may be part of the reason you are
+                taking the drug, or the condition may just be common in the population.
+            </p>
+        </div>
+    </div>
+    <div class="row disclaimer">
+        <div class="col-xs-offset-1 col-xs-10 alert alert-info">
+            <small>
+                This tool provides the overall observed risk in a population, but does not provide the attributable
+                risk due to drug exposure. The results provided are raw unadjusted numbers for each diagnosis. The
+                data made available through this site are for informational purposes only and are not a substitute
+                for professional medical advice or services. You should not use this information for comparing drugs
+                or making decisions related to diagnosing or treating a medical or health condition; instead, please
+                consult a physician or healthcare professional in all matters related to your health.
+            </small>
+        </div>
+    </div>
+</div>

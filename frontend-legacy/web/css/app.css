@@ -1,0 +1,58 @@
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    line-height: 1.7;
+}
+
+a {
+    cursor: pointer;;
+}
+
+.main-container {
+    margin-top: 10px;
+    margin-bottom: 24px;
+}
+
+.main-row {
+}
+
+.main-content {
+    background-color: #20425A;
+}
+
+.patient-info {
+    background-color: #f1f1f1;
+    float: left;
+}
+
+.question-section {
+    text-align: center;
+}
+
+.question-section, .info-section, .buttons-section, .disclaimer {
+    padding-top: 24px;
+    color: #FFFFFF;
+}
+
+ul {
+    max-height:250px;
+    overflow: auto;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+
+.github-fork-ribbon.right-top:before {
+    background-color: #f80;
+}
+
+.github-fork-ribbon.right-top:before,
+.github-fork-ribbon.right-top:after {
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+}
+
+.ir-popover-toggle:hover {
+    cursor: pointer;
+}
