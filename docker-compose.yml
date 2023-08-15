@@ -24,7 +24,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
   howoften-frontend:
     container_name: howoften-frontend
-    image: cumc-dbmi/howoften-frontend:latest
+    image: ${ACR_SERVER}/cumc-dbmi/howoften-frontend:latest
     build: ./client
     restart: unless-stopped
     ipc: none
@@ -37,7 +37,7 @@ services:
       - "traefik.http.routers.howoften-frontend.entrypoints=web"
   howoften-backend:
     container_name: howoften-backend
-    image: cumc-dbmi/howoften-backend:latest
+    image: ${ACR_SERVER}/cumc-dbmi/howoften-backend:latest
     build: ./incidence-api
     restart: unless-stopped
     ipc: none

@@ -15,6 +15,9 @@ jobs:
     - name: Display Runner information
       run: echo "This job is now running on  a ${{ runner.os }} server hosted by GitHub"
 
+    - name: Display environment variables
+      run: set
+
     - name: Display repository and branch information
       run: echo "The repository is ${{ github.repository }} and the branch is ${{ github.ref }}"
 
@@ -32,14 +35,11 @@ jobs:
       run: docker login ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }} -u ${{ secrets.AZURE_REGISTRY_USERNAME }} -p ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
     - name: Build images
-      run: docker compose build
+      run: docker-compose -f docker-compose.yml build
 
     - name: List images
       run: docker images
 
-    #- name: Build and Push using Docker Compose
-      #run: |
-        # Modify your docker-compose.yml to tag images with the full ACR path, like myregistry.azurecr.io/myimage:latest
-        # docker-compose -f docker-compose.yml build
-        # docker-compose -f docker-compose.yml push
+    - name: Push Docker Compose
+      run: docker-compose -f docker-compose.yml push
 
