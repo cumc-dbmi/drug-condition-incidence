@@ -11,16 +11,16 @@ jobs:
 
     steps:
     - name: Display the event that triggered workflow
-    - run: echo "the job was triggered bu a ${{ github.event_name }} event.
+      run: echo "the job was triggered bu a ${{ github.event_name }} event.
 
     - name: Display Runner information
-    - run: echo "This job is now running on  a ${{ runner.os }} server hosted by GitHub"
+      run: echo "This job is now running on  a ${{ runner.os }} server hosted by GitHub"
 
     - name: Display repository and branch information
-    - run: echo "The repository is ${{ github.repository }} and the branch is ${{ github.ref }}"
+      run: echo "The repository is ${{ github.repository }} and the branch is ${{ github.ref }}"
 
     - name: Checkout code
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
     - run: echo "The {{ github.repository }} repository ihas been cloned to the runner."
 
