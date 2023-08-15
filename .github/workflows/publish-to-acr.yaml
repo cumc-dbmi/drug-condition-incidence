@@ -4,18 +4,6 @@ on:
   push:
     branches:
     - dbmi-cicd
-  workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
-        # The data type of the input
-        type: string
 
 jobs:
   build-and-push:
@@ -43,12 +31,3 @@ jobs:
         ls ${{ github.workspace }}
         ls ${{ github.workspace }}/client
         ls ${{ github.workspace }}/incidence-api
-
-    #- name: Log in to Azure Container Registry
-     # run: docker login ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }} -u ${{ secrets.AZURE_REGISTRY_USERNAME }} -p ${{ secrets.AZURE_REGISTRY_PASSWORD }}
-
-    #- name: Build and Push using Docker Compose
-      #run: |
-        # Modify your docker-compose.yml to tag images with the full ACR path, like myregistry.azurecr.io/myimage:latest
-        # docker-compose -f docker-compose.yml build
-        # docker-compose -f docker-compose.yml push
