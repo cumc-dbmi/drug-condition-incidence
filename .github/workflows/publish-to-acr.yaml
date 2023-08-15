@@ -2,8 +2,7 @@ name: Docker Compose and Publish to ACR
 
 on:
   push:
-    branches:
-    - dbmi-cicd
+    branches: ["dbmi-cicd"]
 
 jobs:
   build-and-push:
