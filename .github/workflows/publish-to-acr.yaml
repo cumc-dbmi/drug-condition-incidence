@@ -3,7 +3,7 @@ name: Docker Compose and Publish to ACR
 on:
   push:
     branches:
-      - dbmi-cicd
+    - dbmi-cicd
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
