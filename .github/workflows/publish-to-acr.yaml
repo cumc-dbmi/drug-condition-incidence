@@ -26,7 +26,4 @@ jobs:
     - run: echo "The workflow is now ready to test your code on the runner."
 
     - name: List files in repository
-      run: |
-        ls ${{ github.workspace }}
-        ls ${{ github.workspace }}/client
-        ls ${{ github.workspace }}/incidence-api
+      run: ls ${{ github.workspace }}
