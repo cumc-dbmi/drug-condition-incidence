@@ -100,8 +100,8 @@ angular.module('controllers', [])
             };
 
             var onGetIncidentRate = function (success) {
-                $scope.incidenceRate = success;
-                $scope.incidenceRateSource = success['source_details'];
+                $scope.incidenceRate = success["rates"];
+                $scope.incidenceRateSource = success["sources"];
 
                 var proportionsData = [];
                 $.each($scope.incidenceRateSource, function (index, value) {
