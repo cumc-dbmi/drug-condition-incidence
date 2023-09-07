@@ -53,7 +53,11 @@ class Repository:
                 {"drug_concept_id": drug_concept_id}
             )
             # Explicitly list out the expected column names
-            column_names: list[str] = ["outcome_concept_id", "outcome_concept_name","incidence_proportion_range_low","incidence_proportion_range_high"]
+            column_names: list[str] = [
+                "outcome_concept_id",
+                "outcome_concept_name",
+                "incidence_proportion_range_low",
+                "incidence_proportion_range_high"]
             return convertToRowsfDictionary(result, column_names)
 
     async def get_exposure_outcomes(self, async_session: async_sessionmaker[AsyncSession], drug_concept_id: int):
@@ -76,7 +80,7 @@ class Repository:
                  "time_at_risk_id": time_at_risk_id}
             )
             # Explicitly list out the expected column names
-            column_names: list[str] = ["incidence_proportion_range_low", "incidence_proportion_range_high"]
+            column_names: list[str] = ["incidence_proportion_range_low","incidence_proportion_range_high"]
             return convertToRowsfDictionary(result, column_names)
 
     async def get_exposure_outcomes_sources(self, async_session: async_sessionmaker[AsyncSession],

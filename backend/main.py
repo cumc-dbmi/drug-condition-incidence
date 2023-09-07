@@ -1,3 +1,4 @@
+import json
 from typing import List
 
 import uvicorn
@@ -11,7 +12,7 @@ from repository import Repository
 from schemas import DrugModel, DrugConditionFilteredModel, IRAllExposureOutcomeSummaryOverallModel, \
     IRAllExposureOutcomeSummaryFullModel, DrugConditionResModel, \
     ExposureOutcomeRateResModel, \
-    ExposureOutcomeResModel, ExposureOutcomeSourceResModel
+    ExposureOutcomeResModel, ExposureOutcomeSourceResModel, CombinedExposureOutcomeResModel
 
 # REFERENCED THIS VIDEO
 # https://www.youtube.com/watch?v=nC9ob8xM3AM
@@ -86,19 +87,27 @@ async def get_exposure_outcomes(drug_concept_id: int):
     result = await repository.get_exposure_outcomes(session, drug_concept_id)
     return [ExposureOutcomeResModel(**row) for row in result]
 
-
 @router.get("/exposure-outcomes/{drug_concept_id}/rates/{outcome_concept_id}/{time_at_risk_id}",
             response_model=List[ExposureOutcomeRateResModel])
-async def get_exposure_outcome_rates(drug_concept_id: int, outcome_concept_id: int, time_at_risk_id: str):
+async def get_exposure_outcome_rates(drug_concept_id: int, outcome_concept_id: int, time_at_risk_id: int):
     result = await repository.get_exposure_outcomes_rates(session, drug_concept_id, outcome_concept_id, time_at_risk_id)
     return [ExposureOutcomeRateResModel(**row) for row in result]
 
 
 @router.get("/exposure-outcomes/{drug_concept_id}/sources/{outcome_concept_id}/{time_at_risk_id}",
             response_model=List[ExposureOutcomeSourceResModel])
-async def get_exposure_outcome_sources(drug_concept_id: int, outcome_concept_id: int, time_at_risk_id: str):
+async def get_exposure_outcome_sources(drug_concept_id: int, outcome_concept_id: int, time_at_risk_id: int):
     result = await repository.get_exposure_outcomes_sources(session, drug_concept_id, outcome_concept_id, time_at_risk_id)
     return [ExposureOutcomeSourceResModel(**row) for row in result]
+
+@router.get("/exposure-outcomes/{drug_concept_id}/rates_and_sources/{outcome_concept_id}/{time_at_risk_id}",
+            response_model=CombinedExposureOutcomeResModel)
+async def get_combined_exposure_outcome_data(drug_concept_id: int, outcome_concept_id: int, time_at_risk_id: int):
+    rates_result = await repository.get_exposure_outcomes_rates(session, drug_concept_id, outcome_concept_id, time_at_risk_id)
+    rates = [ExposureOutcomeRateResModel(**row) for row in rates_result]
+    sources_result = await repository.get_exposure_outcomes_sources(session, drug_concept_id, outcome_concept_id, time_at_risk_id)
+    sources = [ExposureOutcomeSourceResModel(**row) for row in sources_result]
+    return CombinedExposureOutcomeResModel(rates=rates, sources=sources)
 
 
 app.include_router(router, prefix="/api/incidence/v2")

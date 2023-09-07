@@ -1,6 +1,5 @@
 from decimal import Decimal
-
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_serializer
 
 
 # This file contains the models sent in responses to browser as json
@@ -72,10 +71,18 @@ class IRAllExposureOutcomeSummaryFullModel(BaseModel):
 
 
 class DrugConditionResModel(BaseModel):
-    condition_concept_id: int
-    condition: str
+    outcome_concept_id: int
+    outcome_concept_name: str
     incidence_proportion_range_low: Decimal
     incidence_proportion_range_high: Decimal
+
+    @field_serializer('incidence_proportion_range_low')
+    def serialize_low(self, field: Decimal, _info):
+        return float(round(field, 4))
+
+    @field_serializer('incidence_proportion_range_high')
+    def serialize_high(self, field: Decimal, _info):
+        return float(round(field, 4))
 
     model_config = ConfigDict(
         from_attributes=True
@@ -95,6 +102,14 @@ class ExposureOutcomeRateResModel(BaseModel):
     incidence_proportion_range_low: Decimal
     incidence_proportion_range_high: Decimal
 
+    @field_serializer('incidence_proportion_range_low')
+    def serialize_low(self, field: Decimal, _info):
+        return float(round(field, 4))
+
+    @field_serializer('incidence_proportion_range_high')
+    def serialize_high(self, field: Decimal, _info):
+        return float(round(field, 4))
+
     model_config = ConfigDict(
         from_attributes=True
     )
@@ -108,6 +123,18 @@ class ExposureOutcomeSourceResModel(BaseModel):
     num_persons_at_risk: int
     requires_full_time_at_risk: str
 
+    @field_serializer('incidence_proportion')
+    def serialize_low(self, field: Decimal, _info):
+        return float(round(field, 4))
+
+    @field_serializer('incidence_rate')
+    def serialize_high(self, field: Decimal, _info):
+        return float(round(field, 4))
+
     model_config = ConfigDict(
         from_attributes=True
     )
+
+class CombinedExposureOutcomeResModel(BaseModel):
+    rates: list[ExposureOutcomeRateResModel]
+    sources: list[ExposureOutcomeSourceResModel]
