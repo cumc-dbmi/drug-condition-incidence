@@ -1,28 +1,45 @@
-name: Build and Publish to Repository
-on: push
+name: Docker Compose and Publish to ACR
+
+on:
+  push:
+    branches: ["feature/dbmi-cicd"]
+
 jobs:
-  name: Build
-  runs-on: ubuntu-latest
-  steps:
-    # Display the event that triggered workflow
-    - run: echo "the job was triggered bu a ${{ github.event_name }} event.
+  build-and-push:
+    runs-on: ubuntu-latest
+    env:
+      ACR_SERVER: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
 
-    # Runner information
-    - run: echo "This job is now running on  a ${{ runner.os }} server hosted by GitHub"
+    steps:
+      - name: Display the event that triggered workflow
+        run: echo "the job was triggered bu a ${{ github.event_name }} event."
 
-    # Information abou tthe repository and branch
-    - run: echo "The repository is ${{ github.repository }} and the branch is ${{ github.ref }}"
+      - name: Display Runner information
+        run: echo "This job is now running on  a ${{ runner.os }} server hosted by GitHub"
 
-    # Use Action located in https://github.com/actions
-    - uses: actions/checkout@v3
+      - name: Display environment variables
+        run: set
 
-    - run: echo "The {{ github.repository }} repository ihas been cloned to the runner."
+      - name: Display repository and branch information
+        run: echo "The repository is ${{ github.repository }} and the branch is ${{ github.ref }}"
 
-    - run: echo "The workflow is now ready to test your code on the runner."
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: List files in repository
-      run: |
-        ls ${{ github.workspace }}
-        ls ${{ github.workspace }}/src
-    
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+
+      - name: List files in repository
+        run: ls ${{ github.workspace }}
+
+      - name: Log in to Azure Container Registry
+        run: docker login ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }} -u ${{ secrets.AZURE_REGISTRY_USERNAME }} -p ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+
+      - name: Build images
+        run: docker-compose -f docker-compose.yml build
+
+      - name: List images
+        run: docker images
+
+      - name: Push Docker Compose
+        run: docker-compose -f docker-compose.yml push
 
