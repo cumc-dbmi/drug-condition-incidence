@@ -42,6 +42,14 @@ services:
       - traefik.tcp.services.${DOCKER_PREFIX}-service.loadbalancer.server.port=5432
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    volumes:
+      - ./database/liquibase/changelog/test:/test
+      - ./database/init-scripts/extract-test-files.sh:/docker-entrypoint-initdb.d//extract-test-files.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres && sleep 5"]
+      interval: 30s
+      timeout: 25s
+      retries: 5
 
   liquibase:
     container_name: ${DOCKER_PREFIX}-dbscm
@@ -49,9 +57,10 @@ services:
     shm_size: 1024MB
     volumes:
       - ./database/liquibase/changelog:/liquibase/changelog
-    command: liquibase --url="jdbc:postgresql://postgres:${DATASOURCE_PORT}/${DATASOURCE_DATABASE}" --searchPath=/liquibase/changelog --changeLogFile=./changelog.xml --username=${DATASOURCE_USERNAME} --password=${DATASOURCE_PASSWORD} update
+    command: liquibase --url="jdbc:postgresql://postgres:${DATASOURCE_PORT}/${DATASOURCE_DATABASE}" --contexts="test" --searchPath=/liquibase/changelog --changeLogFile=./changelog.xml --username=${DATASOURCE_USERNAME} --password=${DATASOURCE_PASSWORD} update
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   howoften-backend:
     container_name: ${DOCKER_PREFIX}-backend
@@ -77,12 +86,19 @@ services:
       - "traefik.http.services.howoften-backend.loadbalancer.server.port=5001"
     ports:
       - 5001:80
-    depends_on: 
-      - liquibase
+    depends_on:
+      liquibase:
+        condition: service_completed_successfully
     volumes:
       - type: bind
         source: /var/tmp
-        target: /var/tmp      
+        target: /var/tmp
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost || exit 1
+      interval: 10s
+      timeout: 8s
+      retries: 5
+
 
   howoften-frontend:
     container_name: howoften-frontend
@@ -92,7 +108,9 @@ services:
     ipc: none
     privileged: false
     depends_on:
-    - howoften-backend
+      howoften-backend:
+        condition: service_healthy
+
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.howoften-frontend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`)"

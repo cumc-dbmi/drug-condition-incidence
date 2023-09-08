@@ -8,14 +8,13 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
 
-<include file="version-1.0/create-tables.sql" contextFilter="DEV" />
-    <include file="test/dbo__drug_list.sql" contextFilter="DEV" />
-    <include file="test/dbo__drug_condition_filtered.sql" contextFilter="DEV" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_is365.sql" contextFilter="DEV" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_lt365.sql" contextFilter="DEV" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_gt365.sql" contextFilter="DEV" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_is365.sql" contextFilter="DEV" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_gt365.sql" contextFilter="DEV" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_lt365.sql" contextFilter="DEV" />
-
+<include file="version-1.0/create-tables.sql"/>
+    <include file="test/dbo__drug_list.sql" contextFilter="ide,local,test,ci,dev" />
+    <include file="test/dbo__drug_condition_filtered.sql" contextFilter="ide,local,test,ci,dev" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_is365.sql" contextFilter="ide,local,test,ci,dev" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_lt365.sql" contextFilter="ide,local,test,ci,dev" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_gt365.sql" contextFilter="ide,local,test,ci,dev" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_is365.sql" contextFilter="ide,local,test,ci,dev" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_gt365.sql" contextFilter="ide,local,test,ci,dev" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_lt365.sql" contextFilter="ide,local,test,ci,dev" />
 </databaseChangeLog>
