@@ -1,18 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
-        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
 
-    <include file="version-1.0/create-tables.sql" />
-    <include file="version-1.0/test/dbo__drug_list.sql" />
-    <include file="version-1.0/test/dbo__drug_condition_filtered.sql" />
-    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_overall_974166_is365.sql" />
-    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_overall_974166_lt365.sql" />
-    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_overall_974166_gt365.sql" />
-    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_full_974166_is365.sql" />
-    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_full_974166_gt365.sql" />
-    <include file="version-1.0/test/dbo__IR_all_exposure_outcome_summary_full_974166_lt365.sql" />
+<include file="version-1.0/create-tables.sql" contextFilter="DEV" />
+    <include file="test/dbo__drug_list.sql" contextFilter="DEV" />
+    <include file="test/dbo__drug_condition_filtered.sql" contextFilter="DEV" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_is365.sql" contextFilter="DEV" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_lt365.sql" contextFilter="DEV" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_gt365.sql" contextFilter="DEV" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_is365.sql" contextFilter="DEV" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_gt365.sql" contextFilter="DEV" />
+    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_lt365.sql" contextFilter="DEV" />
 
 </databaseChangeLog>
