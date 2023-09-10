@@ -11,5 +11,5 @@ COPY . .
 
 
 ENV PORT=5001
-ENV MAX_WORKERS=15
+ENV MAX_WORKERS=5
 ENV GUNICORN_CMD_ARGS="--worker-tmp-dir /var/tmp"

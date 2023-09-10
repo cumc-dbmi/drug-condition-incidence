@@ -12,9 +12,9 @@
     <include file="test/dbo__drug_list.sql" contextFilter="ide,local,test,ci,dev" />
     <include file="test/dbo__drug_condition_filtered.sql" contextFilter="ide,local,test,ci,dev" />
     <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_is365.sql" contextFilter="ide,local,test,ci,dev" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_lt365.sql" contextFilter="ide,local,test,ci,dev" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_gt365.sql" contextFilter="ide,local,test,ci,dev" />
+<!--    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_lt365.sql" contextFilter="ide,local,test,ci,dev" />-->
+<!--    <include file="test/dbo__IR_all_exposure_outcome_summary_overall_974166_gt365.sql" contextFilter="ide,local,test,ci,dev" />-->
     <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_is365.sql" contextFilter="ide,local,test,ci,dev" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_gt365.sql" contextFilter="ide,local,test,ci,dev" />
-    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_lt365.sql" contextFilter="ide,local,test,ci,dev" />
+<!--    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_gt365.sql" contextFilter="ide,local,test,ci,dev" />-->
+<!--    <include file="test/dbo__IR_all_exposure_outcome_summary_full_974166_lt365.sql" contextFilter="ide,local,test,ci,dev" />-->
 </databaseChangeLog>

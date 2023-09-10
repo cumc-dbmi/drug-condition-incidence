@@ -6,10 +6,8 @@ version: '3'
 services:
 
   traefik:
-    image: docker.io/library/traefik:v2.9.4@sha256:4c388f477f5b7aa48420694d90db0ecb96b4ecede60b9b7589c87858abf87b60
+    image: traefik:latest
     container_name: howoften-proxy
-    restart: unless-stopped
-    ipc: none
     read_only: true
     command:
       - "--api.insecure=true"
@@ -18,13 +16,13 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.postgres.address=:5432" # PostgreSQL endpoint
     labels:
-      - "traefik.enable=true"
+      - traefik.enable=true
     ports:
-      - "${HOWOFTEN_HOST}:80:80"
-      - "8080:8080" # Traefik dashboard
-      - "${HOWOFTEN_HOST}:5432:5432" # PostgreSQL port
+      - ${HOWOFTEN_HOST}:80:80
+      - 8080:8080
+      - ${HOWOFTEN_HOST}:5432:5432
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   postgres:
     container_name: ${DOCKER_PREFIX}-database
@@ -41,23 +39,22 @@ services:
       - traefik.tcp.routers.${DOCKER_PREFIX}-database.service=${DOCKER_PREFIX}-service
       - traefik.tcp.services.${DOCKER_PREFIX}-service.loadbalancer.server.port=5432
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - host.docker.internal:host-gateway
     volumes:
       - ./database/liquibase/changelog/test:/test
-      - ./database/init-scripts/extract-test-files.sh:/docker-entrypoint-initdb.d//extract-test-files.sh
+      - ./database/init-scripts/extract-test-files.sh:/docker-entrypoint-initdb.d/extract-test-files.sh
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres && sleep 5"]
-      interval: 30s
+      interval: 20s
       timeout: 25s
       retries: 5
 
   liquibase:
     container_name: ${DOCKER_PREFIX}-dbscm
     image: liquibase/liquibase
-    shm_size: 1024MB
     volumes:
       - ./database/liquibase/changelog:/liquibase/changelog
-    command: liquibase --url="jdbc:postgresql://postgres:${DATASOURCE_PORT}/${DATASOURCE_DATABASE}" --contexts="test" --searchPath=/liquibase/changelog --changeLogFile=./changelog.xml --username=${DATASOURCE_USERNAME} --password=${DATASOURCE_PASSWORD} update
+    command: liquibase --url="jdbc:postgresql://postgres:${DATASOURCE_PORT}/${DATASOURCE_DATABASE}" --contexts="${ENV}" --searchPath=/liquibase/changelog --changeLogFile=./changelog.xml --username=${DATASOURCE_USERNAME} --password=${DATASOURCE_PASSWORD} update
     depends_on:
       postgres:
         condition: service_healthy
@@ -66,10 +63,6 @@ services:
     container_name: ${DOCKER_PREFIX}-backend
     image: cumc-dbmi/howoften-backend:latest
     build: ./backend
-    restart: unless-stopped
-    ipc: none
-    read_only: true
-    privileged: false
     environment:
       - DATASOURCE_DRIVER
       - DATASOURCE_USERNAME
@@ -79,42 +72,31 @@ services:
       - DATASOURCE_SCHEMA
       - DATASOURCE_DATABASE
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.howoften-backend-app.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/api/incidence/v2`)"
-      - "traefik.http.routers.howoften-backend-ops.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/ops/incidence/v2`)"
-      - "traefik.http.routers.howoften-backend.entrypoints=web"
-      - "traefik.http.services.howoften-backend.loadbalancer.server.port=5001"
-    ports:
-      - 5001:80
+      - traefik.enable=true
+      - traefik.http.routers.${DOCKER_PREFIX}-howoften-backend.rule=Host(`${HOWOFTEN_HOST}`) && (PathPrefix(`/api/incidence/v2`) || PathPrefix(`/ops/incidence/v2`))
+      - traefik.http.routers.${DOCKER_PREFIX}-howoften-backend.entrypoints=web
+      - traefik.http.services.${DOCKER_PREFIX}-backend-service.loadbalancer.server.port=5001
     depends_on:
       liquibase:
-        condition: service_completed_successfully
+        condition: service_started
     volumes:
       - type: bind
         source: /var/tmp
         target: /var/tmp
-    healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://localhost || exit 1
-      interval: 10s
-      timeout: 8s
-      retries: 5
 
 
   howoften-frontend:
     container_name: howoften-frontend
     image: cumc-dbmi/howoften-frontend:latest
     build: ./frontend
-    restart: unless-stopped
-    ipc: none
-    privileged: false
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${DOCKER_PREFIX}-frontend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`)
+      - traefik.http.routers.${DOCKER_PREFIX}-frontend.entrypoints=web
     depends_on:
       howoften-backend:
-        condition: service_healthy
+        condition: service_started
 
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.howoften-frontend.rule=Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`)"
-      - "traefik.http.routers.howoften-frontend.entrypoints=web"
 
   # howoften-backend-legacy:
   #     container_name: ${DOCKER_PREFIX}-backend
