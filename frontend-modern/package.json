@@ -6,20 +6,35 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "json-server --watch ./src/mocks/index.js --routes ./src/mocks/routes.json --port 3001"
   },
   "dependencies": {
+    "@mui/base": "^5.0.0-beta.14",
+    "@nextui-org/react": "^2.1.12",
+    "@nextui-org/table": "^2.0.22",
+    "@radix-ui/themes": "^1.1.2",
+    "@react-stately/data": "^3.10.2",
+    "axios": "^1.5.0",
+    "d3": "^7.8.5",
+    "eslint": "8.48.0",
+    "eslint-config-next": "13.4.19",
+    "highcharts": "^11.1.0",
+    "highcharts-react-official": "^3.2.1",
+    "next": "13.4.19",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-query": "^3.39.3",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.2.2"
+  },
+  "devDependencies": {
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "eslint": "8.48.0",
-    "eslint-config-next": "13.4.19",
-    "next": "13.4.19",
-    "postcss": "8.4.29",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.2.2"
+    "json-server": "^0.17.3",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
   }
 }

@@ -1,0 +1,178 @@
+[
+  {
+    "source_short_name": "Premier",
+    "source_country": "US",
+    "incidence_proportion": 0.4568,
+    "incidence_rate": 0.6241,
+    "num_persons_at_risk": 729,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "Premier",
+    "source_country": "US",
+    "incidence_proportion": 0.1112,
+    "incidence_rate": 0.2788,
+    "num_persons_at_risk": 2994,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "MDCR",
+    "source_country": "US",
+    "incidence_proportion": 0.1016,
+    "incidence_rate": 0.1079,
+    "num_persons_at_risk": 450728,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "NYP",
+    "source_country": "US",
+    "incidence_proportion": 0.0927,
+    "incidence_rate": 0.1,
+    "num_persons_at_risk": 22689,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "MDCR",
+    "source_country": "US",
+    "incidence_proportion": 0.0809,
+    "incidence_rate": 0.0947,
+    "num_persons_at_risk": 565972,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "MDCD",
+    "source_country": "US",
+    "incidence_proportion": 0.0703,
+    "incidence_rate": 0.0733,
+    "num_persons_at_risk": 149164,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "NYP",
+    "source_country": "US",
+    "incidence_proportion": 0.0653,
+    "incidence_rate": 0.0909,
+    "num_persons_at_risk": 32181,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "Optum EHR",
+    "source_country": "US",
+    "incidence_proportion": 0.0575,
+    "incidence_rate": 0.0597,
+    "num_persons_at_risk": 526122,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "Optum Extended SES",
+    "source_country": "US",
+    "incidence_proportion": 0.0562,
+    "incidence_rate": 0.0581,
+    "num_persons_at_risk": 1331540,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "MDCD",
+    "source_country": "US",
+    "incidence_proportion": 0.0465,
+    "incidence_rate": 0.0583,
+    "num_persons_at_risk": 225403,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "IMS Germany",
+    "source_country": "Germany",
+    "incidence_proportion": 0.0463,
+    "incidence_rate": 0.0476,
+    "num_persons_at_risk": 206747,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "Optum EHR",
+    "source_country": "US",
+    "incidence_proportion": 0.0454,
+    "incidence_rate": 0.0537,
+    "num_persons_at_risk": 666331,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "Optum Extended SES",
+    "source_country": "US",
+    "incidence_proportion": 0.0408,
+    "incidence_rate": 0.049,
+    "num_persons_at_risk": 1832829,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "IMS Germany",
+    "source_country": "Germany",
+    "incidence_proportion": 0.0368,
+    "incidence_rate": 0.0433,
+    "num_persons_at_risk": 260201,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "CCAE",
+    "source_country": "US",
+    "incidence_proportion": 0.0367,
+    "incidence_rate": 0.0375,
+    "num_persons_at_risk": 1915119,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "CCAE",
+    "source_country": "US",
+    "incidence_proportion": 0.0261,
+    "incidence_rate": 0.0312,
+    "num_persons_at_risk": 2693984,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "IMS France",
+    "source_country": "France",
+    "incidence_proportion": 0.0211,
+    "incidence_rate": 0.0214,
+    "num_persons_at_risk": 10315,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "JMDC",
+    "source_country": "Japan",
+    "incidence_proportion": 0.0205,
+    "incidence_rate": 0.0208,
+    "num_persons_at_risk": 4437,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "JMDC",
+    "source_country": "Japan",
+    "incidence_proportion": 0.0173,
+    "incidence_rate": 0.019,
+    "num_persons_at_risk": 5272,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "IMS Australia",
+    "source_country": "Australia",
+    "incidence_proportion": 0.0117,
+    "incidence_rate": 0.0117,
+    "num_persons_at_risk": 3004,
+    "requires_full_time_at_risk": "Yes"
+  },
+  {
+    "source_short_name": "IMS France",
+    "source_country": "France",
+    "incidence_proportion": 0.0098,
+    "incidence_rate": 0.0153,
+    "num_persons_at_risk": 22203,
+    "requires_full_time_at_risk": "No"
+  },
+  {
+    "source_short_name": "IMS Australia",
+    "source_country": "Australia",
+    "incidence_proportion": 0.0067,
+    "incidence_rate": 0.0084,
+    "num_persons_at_risk": 5212,
+    "requires_full_time_at_risk": "No"
+  }
+]

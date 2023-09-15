@@ -1,0 +1,4 @@
+{
+  "/api/incidence/v2/drugs": "/drugs",
+  "/api/incidence/v2/drug-conditions/:id": "/drug-conditions"
+}
