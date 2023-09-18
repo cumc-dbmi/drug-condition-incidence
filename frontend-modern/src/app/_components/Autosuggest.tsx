@@ -1,13 +1,14 @@
 "use client";
-import {useEffect, useRef} from "react"
-import {Card, CardBody, Input, Listbox, ListboxItem} from "@nextui-org/react"
+
+import {useEffect, useRef} from "react";
+import {Card, CardBody, Input, Listbox, ListboxItem} from "@nextui-org/react";
 
 
-import useAutocomplete from "@/app/_hooks/useAutosuggest";
-import classes from "./Autosuggest.module.css"
-import {Country} from "@/app/_interfaces/Drug.interface";
+import useAutosuggest from "@/app/_hooks/useAutosuggest";
+import classes from "./Autosuggest.module.css";
+
 interface Props {
-    data: Country[]
+    data: any[];
 }
 
 export const Autosuggest = ({data}: Props) => {
@@ -15,12 +16,12 @@ export const Autosuggest = ({data}: Props) => {
 
     useEffect(() => {
         if (inputSearchRef.current) {
-            inputSearchRef.current.focus()
+            inputSearchRef.current.focus();
         }
     }, [])
 
     const {searchedValue, suggestions, selectedSuggestion, activeSuggestion, handleChange, handleKeyDown, handleClick} =
-        useAutocomplete(data, inputSearchRef.current)
+        useAutosuggest(data, inputSearchRef.current);
 
     return (
 
@@ -43,7 +44,7 @@ export const Autosuggest = ({data}: Props) => {
                             <p>Nothing to show :(</p>
                         </ListboxItem>
                         ) : (
-                            suggestions.map(({name, flags}: Country, index: string | number) => (
+                            suggestions.map(({name, flags}: any, index: string | number) => (
                             <ListboxItem
                                 key={index}
                                 className={`${classes.itemList} ${index === activeSuggestion - 1 ? classes.activeItem : ""}`}
