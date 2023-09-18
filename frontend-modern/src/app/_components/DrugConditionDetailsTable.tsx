@@ -7,7 +7,7 @@ function fetchData() {
 
 }
 
-export default function DrugConditionDetailsTable()  {
+export const DrugConditionDetailsTable = () => {
 
     const [isLoading, setIsLoading] = React.useState(true);
 
@@ -26,7 +26,7 @@ export default function DrugConditionDetailsTable()  {
         },
         async sort({items, sortDescriptor}) {
             return {
-                items: items.sort((a: DrugConditionDetail, b:DrugConditionDetail) => {
+                items: items.sort((a, b) => {
                     let first = a[sortDescriptor.column];
                     let second = b[sortDescriptor.column];
                     let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
@@ -48,16 +48,16 @@ export default function DrugConditionDetailsTable()  {
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
             classNames={{
-                table: "min-h-[800px]",
+                table: "min-h-[400px]",
             }}
         >
             <TableHeader>
                 <TableColumn key="source_short_name" allowsSorting> Source </TableColumn>
                 <TableColumn key="source_country" allowsSorting> Country </TableColumn>
-                <TableColumn key="incidence_proportion" allowsSorting> Condition </TableColumn>
+                <TableColumn key="requires_full_time_at_risk" allowsSorting> Requires Full Time at Risk </TableColumn>
                 <TableColumn key="incidence_rate" allowsSorting> Incidence(%) </TableColumn>
                 <TableColumn key="num_persons_at_risk" allowsSorting> Patients at Risk </TableColumn>
-                <TableColumn key="requires_full_time_at_risk" allowsSorting> Requires Full Time at Risk </TableColumn>
+
             </TableHeader>
             <TableBody
                 items={list.items}
@@ -66,7 +66,10 @@ export default function DrugConditionDetailsTable()  {
             >
                 {(item) => (
                     <TableRow key={item.incidence_rate}>
-                        {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+                        {(columnKey) => <TableCell>{isNaN(getKeyValue(item, columnKey))
+                            ? getKeyValue(item, columnKey)
+                            : (getKeyValue(item, columnKey)==0? "~0.0": getKeyValue(item, columnKey)*100)
+                        }</TableCell>}
                     </TableRow>
                 )}
             </TableBody>

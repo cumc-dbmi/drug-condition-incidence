@@ -1,7 +1,6 @@
-import DrugConditionsTable from "@/app/_components/DrugConditionsTable";
 import React from "react";
-import DrugConditionDetailsTable from "@/app/_components/DrugConditionDetailsTable";
-import DrugConditionDetailsStackedBarChart from "@/app/_components/DrugConditionDetailsStackedBarChart";
+import {DrugConditionDetailsTable} from "@/app/_components/DrugConditionDetailsTable";
+import {DrugConditionDetailsStackedBarChart} from "@/app/_components/DrugConditionDetailsStackedBarChart";
 
 export default function SideEffects() {
 
