@@ -4,32 +4,34 @@ import React, { useState } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
-export default function  DrugConditionDetailsStackedBarChart() {
+export const DrugConditionDetailsStackedBarChart = () => {
     const [hoverData, setHoverData] = useState(null);
     const [chartOptions, setChartOptions] = useState({
         chart: {
             type: 'column'
-        },xAxis: {
-            categories: ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester United']
+        },
+        title: {
+            text: 'Major trophies for some English teams',
+            align: 'center'
+        },
+        xAxis: {
+            categories: ['US', 'Germany', 'Japan', 'France', 'Australia']
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'Count trophies'
+                text: 'Patents at Risk'
             },
             stackLabels: {
                 enabled: true
             }
         },
         series: [{
-            name: 'BPL',
-            data: [3, 5, 1, 13]
+            name: 'Required Full Time at Risk',
+            data: [729+1331540+22689+149164+526122+1331540+1915119, 206747, 4437, 10315,3004]
         }, {
-            name: 'FA Cup',
-            data: [14, 8, 8, 12]
-        }, {
-            name: 'CL',
-            data: [0, 2, 6, 3]
+            name: 'Out Patient',
+            data: [2994+565972+32181+225403+666331+1832829+2693984, 260201, 5272, 22203, 5212]
         }],    tooltip: {
             headerFormat: '<b>{point.x}</b><br/>',
             pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
@@ -43,27 +45,12 @@ export default function  DrugConditionDetailsStackedBarChart() {
             }
         },
     });
-
-    const updateSeries = () => {
-        setChartOptions({
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Major trophies for some English teams',
-                align: 'left'
-            },
-        });
-    }
-
     return (
         <div className="w-full">
             <HighchartsReact
                 highcharts={Highcharts}
                 options={chartOptions}
             />
-            <h3>Hovering over {hoverData}</h3>
-            <button onClick={updateSeries}>Update Series</button>
         </div>
     )
 }

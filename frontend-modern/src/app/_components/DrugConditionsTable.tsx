@@ -2,7 +2,6 @@
 import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
-import Link from 'next/link';
 import {useRouter} from "next/navigation";
 
  function fetchData(drugName: string, signal) {
@@ -15,7 +14,7 @@ import {useRouter} from "next/navigation";
     return drugConditions;
 }
 
-export default function DrugConditionsTable() {
+export const DrugConditionsTable = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = React.useState(true);
 
@@ -34,7 +33,7 @@ export default function DrugConditionsTable() {
         },
         async sort({items, sortDescriptor}) {
             return {
-                items: items.sort((a: DrugCondition, b:DrugCondition) => {
+                items: items.sort((a, b) => {
                     let first = a[sortDescriptor.column];
                     let second = b[sortDescriptor.column];
                     let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
@@ -51,11 +50,12 @@ export default function DrugConditionsTable() {
 
     return (
         <Table
+            isStriped
             aria-label="Example table with client side sorting"
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
             classNames={{
-                table: "min-h-[800px]",
+                table: "min-h-[400px]",
             }}
             onRowAction={(key) =>router.push(`/974166/${key}`) }
         >
@@ -71,7 +71,10 @@ export default function DrugConditionsTable() {
             >
                 {(item) => (
                     <TableRow key={item.outcome_concept_id}>
-                        {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+                        {(columnKey) => <TableCell>{isNaN(getKeyValue(item, columnKey))
+                            ? getKeyValue(item, columnKey)
+                            : (getKeyValue(item, columnKey)==0? "~0.0": getKeyValue(item, columnKey)*100)
+                        }</TableCell>}
                     </TableRow>
                 )}
             </TableBody>

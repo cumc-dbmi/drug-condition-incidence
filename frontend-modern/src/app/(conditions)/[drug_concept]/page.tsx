@@ -1,7 +1,7 @@
 
 import React from "react";
-import DrugConditionsTable from "@/app/_components/DrugConditionsTable";
-import DrugConditionsChart from "@/app/_components/DrugConditionsChart";
+import {DrugConditionsTable} from "@/app/_components/DrugConditionsTable";
+import {DrugConditionsChart} from "@/app/_components/DrugConditionsChart";
 
 
 

@@ -7,34 +7,40 @@ import Highcharts from 'highcharts';
 
 // Initialize highcharts-more module
 HighchartsMore(Highcharts);
-export default function  DrugConditionsChart() {
+export const DrugConditionsChart = () => {
     const [hoverData, setHoverData] = useState(null);
     const [chartOptions, setChartOptions] = useState({
         chart: {
             type: 'columnrange',
             inverted: false  // Changed to false to make the chart vertical
         },
-
-        accessibility: {
-            description: '...'
-        },
-
         title: {
-            text: 'Temperature variation by month'
+            text: 'Highest Drug Conditions Incidence Rate ',
+            align: 'center'
         },
-
         subtitle: {
-            text: 'Observed in Vik i Sogn, Norway, 2021 | Source: Vikjavev'
+            text: 'Drug Condition Incidence Rate',
         },
 
         xAxis: {  // Corrected from "Axis" to "xAxis"
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: [
+                'Cardiac arrhythmia',
+                'Kidney disease',
+                'Hypokalemia',
+                'Renal impairment',
+                'Renal failure syndrome',
+                'Pneumonitis',
+                'Constipation',
+                'Nausea',
+                'Diabetes mellitus',
+                'Dizziness',
+                'Vomiting',
+                'Headache']
         },
 
         yAxis: {
             title: {
-                text: 'Temperature ( °C )'
+                text: 'Incidence Rate( % )'
             }
         },
 
@@ -47,7 +53,7 @@ export default function  DrugConditionsChart() {
                 borderRadius: '50%',
                 dataLabels: {
                     enabled: true,
-                    format: '{y}°C'
+                    format: '{y}°%'
                 }
             }
         },
@@ -57,45 +63,29 @@ export default function  DrugConditionsChart() {
         },
 
         series: [{
-            name: 'Temperatures',
+            name: 'Incidence Rate',
             data: [
-                [-13.9, 5.2],
-                [-16.7, 10.6],
-                [-4.7, 11.6],
-                [-4.4, 16.8],
-                [-2.1, 27.2],
-                [5.9, 29.4],
-                [6.5, 29.1],
-                [4.7, 25.4],
-                [4.3, 21.6],
-                [-3.5, 15.1],
-                [-9.8, 12.5],
-                [-11.5, 8.4]
+                [45.68, 0.67],
+                [42.11, 0.88],
+                [37.16, 0.2],
+                [35.87, 0.53],
+                [33.23, 0.39],
+                [27.43, 0.34],
+                [25.03, 0.85],
+                [23.10, 0.45],
+                [21.45, 1.62],
+                [18.55, 0.4],
+                [18.39, 0.46],
+                [15.97, 0.68]
             ]
         }]
     });
-
-    const updateSeries = () => {
-        setChartOptions({
-            chart: {
-                type: 'columnrange',
-                inverted: false  // Changed to false to make the chart vertical
-            },
-            title: {
-                text: 'Major trophies for some English teams',
-                align: 'left'
-            },
-        });
-    }
-
     return (
         <div className="w-full">
             <HighchartsReact
                 highcharts={Highcharts}
                 options={chartOptions}
             />
-            <h3>Hovering over {hoverData}</h3>
-            <button onClick={updateSeries}>Update Series</button>
         </div>
     )
 }
