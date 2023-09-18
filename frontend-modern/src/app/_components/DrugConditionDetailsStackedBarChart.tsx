@@ -11,7 +11,7 @@ export const DrugConditionDetailsStackedBarChart = () => {
             type: 'column'
         },
         title: {
-            text: 'Major trophies for some English teams',
+            text: 'Patients at Risk by Country',
             align: 'center'
         },
         xAxis: {

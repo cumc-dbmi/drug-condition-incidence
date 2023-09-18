@@ -64,7 +64,7 @@ export const DrugConditionsTable = ({className}: DrugConditionsTableProps) => {
     return (
         <Table
             isStriped
-            aria-label="Example table with client side sorting"
+            aria-label="List of drug conditions."
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
             className="w-full max-w-screen-xl"
