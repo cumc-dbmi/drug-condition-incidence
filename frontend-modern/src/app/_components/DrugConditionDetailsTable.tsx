@@ -47,9 +47,7 @@ export const DrugConditionDetailsTable = () => {
             aria-label="Example table with client side sorting"
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
-            classNames={{
-                table: "min-h-[400px]",
-            }}
+            className="w-full max-w-screen-xl"
         >
             <TableHeader>
                 <TableColumn key="source_short_name" allowsSorting> Source </TableColumn>

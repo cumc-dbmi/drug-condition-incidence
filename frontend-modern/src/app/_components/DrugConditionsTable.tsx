@@ -14,7 +14,11 @@ import {useRouter} from "next/navigation";
     return drugConditions;
 }
 
-export const DrugConditionsTable = () => {
+interface DrugConditionsTableProps {
+    className: string
+}
+
+export const DrugConditionsTable = ({className}: DrugConditionsTableProps) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = React.useState(true);
 
@@ -54,9 +58,7 @@ export const DrugConditionsTable = () => {
             aria-label="Example table with client side sorting"
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
-            classNames={{
-                table: "min-h-[400px]",
-            }}
+            className="w-full max-w-screen-xl"
             onRowAction={(key) =>router.push(`/974166/${key}`) }
         >
             <TableHeader>
