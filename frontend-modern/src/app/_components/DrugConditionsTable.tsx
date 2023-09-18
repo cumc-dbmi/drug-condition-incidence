@@ -5,14 +5,17 @@ import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHea
 import {useAsyncList} from "@react-stately/data";
 import {useRouter} from "next/navigation";
 
- function fetchData(drugName: string, signal) {
-    console.log(drugName);
-    const drugList =  fetchDrugs()
-    console.log("DrugList:" + drugList);
-    const drugConceptId = findDrugId(drugList, "Hydrochlorothiazide");
-    console.log("DRUG CONCEPT:" + drugConceptId);
-    let drugConditions =  fetchDrugConditions(drugConceptId, signal);
-    return drugConditions;
+function fetchData(drugName: string, signal: RequestInit | undefined) {
+     return fetchDrugs()
+         .then((drugList) => {
+             return findDrugIdByDrugName(drugList, "Hydrochlorothiazide");
+         })
+         .then((drugConceptId) => {
+             return fetchDrugConditionsById(drugConceptId, signal);
+         })
+         .catch((error) => {
+             console.error(error);
+         });
 }
 
 interface DrugConditionsTableProps {
