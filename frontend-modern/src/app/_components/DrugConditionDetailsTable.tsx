@@ -3,7 +3,6 @@
 import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
-import ErrorBoundary from "@/app/_components/ErrorBoundary";
 
 interface DrugConditionDetailsTableProps {
     className: string
@@ -48,7 +47,6 @@ export const DrugConditionDetailsTable = ({className}: DrugConditionDetailsTable
     });
 
     return (
-        <ErrorBoundary>
         <Table
             isStriped
             aria-label="Example table with client side sorting"
@@ -79,6 +77,5 @@ export const DrugConditionDetailsTable = ({className}: DrugConditionDetailsTable
                 )}
             </TableBody>
         </Table>
-        </ErrorBoundary>
     );
 }
