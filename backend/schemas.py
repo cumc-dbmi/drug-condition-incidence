@@ -78,11 +78,11 @@ class DrugConditionResModel(BaseModel):
 
     @field_serializer('incidence_proportion_range_low')
     def serialize_low(self, field: Decimal, _info):
-        return float(round(field, 4))
+        return float(round(field*100, 2))
 
     @field_serializer('incidence_proportion_range_high')
     def serialize_high(self, field: Decimal, _info):
-        return float(round(field, 4))
+        return float(round(field*100, 2))
 
     model_config = ConfigDict(
         from_attributes=True
@@ -104,11 +104,11 @@ class ExposureOutcomeRateResModel(BaseModel):
 
     @field_serializer('incidence_proportion_range_low')
     def serialize_low(self, field: Decimal, _info):
-        return float(round(field, 4))
+        return float(round(field*100, 2))
 
     @field_serializer('incidence_proportion_range_high')
     def serialize_high(self, field: Decimal, _info):
-        return float(round(field, 4))
+        return float(round(field*100, 2))
 
     model_config = ConfigDict(
         from_attributes=True
@@ -125,11 +125,11 @@ class ExposureOutcomeSourceResModel(BaseModel):
 
     @field_serializer('incidence_proportion')
     def serialize_low(self, field: Decimal, _info):
-        return float(round(field, 4))
+        return float(round(field*100, 2))
 
     @field_serializer('incidence_rate')
     def serialize_high(self, field: Decimal, _info):
-        return float(round(field, 4))
+        return float(round(field*100, 2))
 
     model_config = ConfigDict(
         from_attributes=True

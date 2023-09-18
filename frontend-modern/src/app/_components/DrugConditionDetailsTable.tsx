@@ -1,13 +1,15 @@
 "use client"
+
+import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
-import React from "react";
+import ErrorBoundary from "@/app/_components/ErrorBoundary";
 
-function fetchData() {
-
+interface DrugConditionDetailsTableProps {
+    className: string
 }
 
-export const DrugConditionDetailsTable = () => {
+export const DrugConditionDetailsTable = ({className}: DrugConditionDetailsTableProps) => {
 
     const [isLoading, setIsLoading] = React.useState(true);
 
@@ -21,14 +23,18 @@ export const DrugConditionDetailsTable = () => {
             setIsLoading(false);
             console.log(json);
             return {
-                items: json,
+                items: json.sources,
             };
         },
         async sort({items, sortDescriptor}) {
             return {
                 items: items.sort((a, b) => {
-                    let first = a[sortDescriptor.column];
-                    let second = b[sortDescriptor.column];
+                    const columnA: any  = sortDescriptor.column;
+                    const columnB: any = sortDescriptor.column;
+                    // @ts-ignore
+                    let first = a[columnA];
+                    // @ts-ignore
+                    let second = b[columnB];
                     let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
 
                     if (sortDescriptor.direction === "descending") {
@@ -42,6 +48,7 @@ export const DrugConditionDetailsTable = () => {
     });
 
     return (
+        <ErrorBoundary>
         <Table
             isStriped
             aria-label="Example table with client side sorting"
@@ -63,14 +70,15 @@ export const DrugConditionDetailsTable = () => {
                 loadingContent={<Spinner label="Loading..." />}
             >
                 {(item) => (
-                    <TableRow key={item.incidence_rate}>
+                    <TableRow key={item.source_short_name + item.num_persons_at_risk}>
                         {(columnKey) => <TableCell>{isNaN(getKeyValue(item, columnKey))
                             ? getKeyValue(item, columnKey)
-                            : (getKeyValue(item, columnKey)==0? "~0.0": getKeyValue(item, columnKey)*100)
+                            : (getKeyValue(item, columnKey)==0 ? "~0.0": getKeyValue(item, columnKey))
                         }</TableCell>}
                     </TableRow>
                 )}
             </TableBody>
         </Table>
+        </ErrorBoundary>
     );
 }

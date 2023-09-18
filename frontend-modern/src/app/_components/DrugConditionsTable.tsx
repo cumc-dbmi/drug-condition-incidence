@@ -1,4 +1,5 @@
 "use client"
+
 import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
@@ -38,8 +39,13 @@ export const DrugConditionsTable = ({className}: DrugConditionsTableProps) => {
         async sort({items, sortDescriptor}) {
             return {
                 items: items.sort((a, b) => {
-                    let first = a[sortDescriptor.column];
-                    let second = b[sortDescriptor.column];
+                    const columnA: any  = sortDescriptor.column;
+                    const columnB: any = sortDescriptor.column;
+                    // @ts-ignore
+                    let first = a[columnA];
+                    // @ts-ignore
+                    let second = b[columnB];
+
                     let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
 
                     if (sortDescriptor.direction === "descending") {
@@ -75,7 +81,7 @@ export const DrugConditionsTable = ({className}: DrugConditionsTableProps) => {
                     <TableRow key={item.outcome_concept_id}>
                         {(columnKey) => <TableCell>{isNaN(getKeyValue(item, columnKey))
                             ? getKeyValue(item, columnKey)
-                            : (getKeyValue(item, columnKey)==0? "~0.0": getKeyValue(item, columnKey)*100)
+                            : (getKeyValue(item, columnKey)==0 ? "~0.0": getKeyValue(item, columnKey))
                         }</TableCell>}
                     </TableRow>
                 )}
