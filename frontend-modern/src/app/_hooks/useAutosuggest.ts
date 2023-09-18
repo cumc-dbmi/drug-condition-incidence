@@ -1,11 +1,8 @@
 import { SetStateAction, useEffect, useState } from "react"
-import {Country} from "@/app/_interfaces/Drug.interface";
 
-
-
-const useAutocomplete = (data: Country[], inputSearchRef: HTMLInputElement | null) => {
+const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) => {
     const [searchedValue, setSearchedValue] = useState("")
-    const [suggestions, setSuggestions] = useState<Country[]>([])
+    const [suggestions, setSuggestions] = useState<any[]>([])
     const [selectedSuggestion, setSelectedSuggestion] = useState("")
     const [activeSuggestion, setActiveSuggestion] = useState(0)
 
@@ -57,4 +54,4 @@ const useAutocomplete = (data: Country[], inputSearchRef: HTMLInputElement | nul
     return { searchedValue, suggestions, selectedSuggestion, activeSuggestion, handleChange, handleKeyDown, handleClick }
 }
 
-export default useAutocomplete
+export default useAutosuggest
