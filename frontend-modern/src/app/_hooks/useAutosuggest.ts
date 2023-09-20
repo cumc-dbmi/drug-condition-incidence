@@ -1,10 +1,10 @@
 import { SetStateAction, useEffect, useState } from "react"
 import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 
-const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) => {
+const useAutosuggest = (data: AutosuggestListboxItem[], inputSearchRef: HTMLInputElement | null) => {
     const [searchedValue, setSearchedValue] = useState("")
-    const [suggestions, setSuggestions] = useState<any[]>([])
-    const [selectedSuggestion, setSelectedSuggestion] = useState("")
+    const [suggestions, setSuggestions] = useState<AutosuggestListboxItem[]>([])
+    const [selectedSuggestion, setSelectedSuggestion] = useState<AutosuggestListboxItem>({label: "", value: 0})
     const [activeSuggestion, setActiveSuggestion] = useState(0)
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) =>
         } else {
             setSearchedValue("")
             setSuggestions([])
-            setSelectedSuggestion("")
+            setSelectedSuggestion({label: "", value: 0})
             setActiveSuggestion(0)
         }
     }
@@ -38,7 +38,7 @@ const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) =>
             setActiveSuggestion(activeSuggestion - 1)
         } else if (event.key === "Enter") {
             setSearchedValue(suggestions[activeSuggestion - 1].label)
-            setSelectedSuggestion(suggestions[activeSuggestion - 1].label)
+            setSelectedSuggestion(suggestions[activeSuggestion - 1])
             setSuggestions([])
             setActiveSuggestion(0)
         }
@@ -47,7 +47,7 @@ const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) =>
     const handleClick = (selected: AutosuggestListboxItem) => {
         setSearchedValue(selected.label)
         setSuggestions([])
-        setSelectedSuggestion(selected.label)
+        setSelectedSuggestion(selected)
         setActiveSuggestion(0)
         //do something else
     }

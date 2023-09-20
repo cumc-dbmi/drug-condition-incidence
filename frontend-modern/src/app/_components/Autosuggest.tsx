@@ -9,10 +9,11 @@ import classes from "./Autosuggest.module.css";
 import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 
 interface Props {
-    data: AutosuggestListboxItem[];
+    data: AutosuggestListboxItem[],
+    onSelectHandler: (value: (((prevState: AutosuggestListboxItem) => AutosuggestListboxItem) | AutosuggestListboxItem)) => void
 }
 
-export const Autosuggest = ({data}: Props) => {
+export const Autosuggest = ({data,onSelectHandler}: Props) => {
     const inputSearchRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -30,34 +31,35 @@ export const Autosuggest = ({data}: Props) => {
             <Input isRequired isClearable
                    id="drugName"
                    name="drugName"
-                   size="lg" variant="bordered" className="md:rt-r-w-max-content"
+                   size="lg" variant="bordered"
+                   className="md:rt-r-w-max-content"
                    label="Enter generic drup name"
-
                    value={searchedValue}
                    autoComplete='off'
-                   onChange={handleChange}
+                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                       handleChange(e)
+                   }}
                    onKeyDown={handleKeyDown}
                    ref={inputSearchRef}
-                   color='secondary'
             />
             <Card className="m-0">
                 <CardBody className="p-0 ">
                     <Listbox  className="p-0">
-                       {!suggestions.length && searchedValue.length && !selectedSuggestion.length ? (
-                        <ListboxItem key={""}
-                                     className={classes.itemListNot}>
-                            <p>Nothing to show :(</p>
-                        </ListboxItem>
-                        ) : (
+                       {!suggestions.length && searchedValue.length && !selectedSuggestion.label?.length ?
+                           (<ListboxItem key={""} className={classes.itemListNot}><p>Drug not found!</p></ListboxItem>)
+                           :
+                           (
                             suggestions.map(({label, value}: any, index: string | number) => (
                             <ListboxItem
                                 key={index}
                                 className={`${classes.itemList} ${index === activeSuggestion - 1 ? classes.activeItem : ""}`}
-                                onClick={() => handleClick({label, value})}>
+                                onClick={() =>{
+                                    handleClick({label, value})
+                                    onSelectHandler({label, value})
+                                }}>
                                 {label}
-                            </ListboxItem>
-                            ))
-                        )
+                            </ListboxItem>))
+                           )
                        }
                     </Listbox>
                 </CardBody>
