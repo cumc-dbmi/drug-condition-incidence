@@ -1,4 +1,5 @@
 import { SetStateAction, useEffect, useState } from "react"
+import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 
 const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) => {
     const [searchedValue, setSearchedValue] = useState("")
@@ -15,10 +16,10 @@ const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) =>
     const handleChange = (event: { target: { value: SetStateAction<string> } }): void => {
         if (event.target.value !== "") {
             const filteredSuggestions = data.filter(itemData => {
-                const value = event.target.value.toString().toUpperCase()
-                const name = itemData.name.common.toUpperCase()
-
-                return value && name.startsWith(value) && name !== value
+                const enteredValue =event.target.value.toString().toUpperCase()
+                const listItemLabel = itemData.label.toUpperCase()
+                // maybe improve this ot show starts with option first then includes
+                return listItemLabel && listItemLabel.startsWith(enteredValue) && listItemLabel !== enteredValue
             })
             setSearchedValue(event.target.value)
             setSuggestions(filteredSuggestions)
@@ -36,17 +37,17 @@ const useAutosuggest = (data: any[], inputSearchRef: HTMLInputElement | null) =>
         } else if (event.key === "ArrowUp" && activeSuggestion > 1) {
             setActiveSuggestion(activeSuggestion - 1)
         } else if (event.key === "Enter") {
-            setSearchedValue(suggestions[activeSuggestion - 1].name.common)
-            setSelectedSuggestion(suggestions[activeSuggestion - 1].name.common)
+            setSearchedValue(suggestions[activeSuggestion - 1].label)
+            setSelectedSuggestion(suggestions[activeSuggestion - 1].label)
             setSuggestions([])
             setActiveSuggestion(0)
         }
     }
 
-    const handleClick = (value: string) => {
-        setSearchedValue(value)
+    const handleClick = (selected: AutosuggestListboxItem) => {
+        setSearchedValue(selected.label)
         setSuggestions([])
-        setSelectedSuggestion(value)
+        setSelectedSuggestion(selected.label)
         setActiveSuggestion(0)
         //do something else
     }

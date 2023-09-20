@@ -1,4 +1,4 @@
-.autocomplete {
+.autosuggest {
     display: flex;
     flex-Direction: column;
     justify-content: center;
@@ -21,16 +21,4 @@
 
 .activeItem {
     background-color: #697177;
-}
-
-.autocompleteContainer {
-    width: 60%;
-    margin: auto;
-    padding: 1rem;
-}
-
-@media screen and (max-width: 768px) {
-    .autocompleteContainer {
-        width: 100%;
-    }
 }

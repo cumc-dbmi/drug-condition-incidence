@@ -6,9 +6,10 @@ import {Card, CardBody, Input, Listbox, ListboxItem} from "@nextui-org/react";
 
 import useAutosuggest from "@/app/_hooks/useAutosuggest";
 import classes from "./Autosuggest.module.css";
+import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 
 interface Props {
-    data: any[];
+    data: AutosuggestListboxItem[];
 }
 
 export const Autosuggest = ({data}: Props) => {
@@ -25,11 +26,15 @@ export const Autosuggest = ({data}: Props) => {
 
     return (
 
-        <div className={classes.autocomplete }>
+        <div className={classes.autosuggest }>
             <Input isRequired isClearable
+                   id="drugName"
+                   name="drugName"
                    size="lg" variant="bordered" className="md:rt-r-w-max-content"
                    label="Enter generic drup name"
+
                    value={searchedValue}
+                   autoComplete='off'
                    onChange={handleChange}
                    onKeyDown={handleKeyDown}
                    ref={inputSearchRef}
@@ -44,12 +49,12 @@ export const Autosuggest = ({data}: Props) => {
                             <p>Nothing to show :(</p>
                         </ListboxItem>
                         ) : (
-                            suggestions.map(({name, flags}: any, index: string | number) => (
+                            suggestions.map(({label, value}: any, index: string | number) => (
                             <ListboxItem
                                 key={index}
                                 className={`${classes.itemList} ${index === activeSuggestion - 1 ? classes.activeItem : ""}`}
-                                onClick={() => handleClick(name.common)}>
-                                {name.common}
+                                onClick={() => handleClick({label, value})}>
+                                {label}
                             </ListboxItem>
                             ))
                         )

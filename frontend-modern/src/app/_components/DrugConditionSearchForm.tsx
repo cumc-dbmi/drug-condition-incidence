@@ -3,25 +3,32 @@ import React, {useEffect, useState} from 'react'
 import {useRouter} from 'next/navigation';
 import {Button} from "@nextui-org/button";
 import {Input} from "@nextui-org/react";
-import {Country} from "@/app/_interfaces/Drug.interface";
 import axios from "axios";
 import {Autosuggest} from "@/app/_components/Autosuggest";
+import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 
 async function fetchDrugConditions(drugId: string) {
 
     const res = await fetch(
 //        `http://127.0.0.1/api/incidence/v2/drug-conditions/${drugId}`, {
-        ` http://localhost:3001/drug-conditions`, {
+        `http://localhost:3001/drug-conditions`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'}
         });
     return await res.json();
 }
 
+function convertToAutosuggestListboxItems(input: Drug[]): AutosuggestListboxItem[] {
+    return input.map(item => ({
+        label: `${item.drug_concept_name}`,
+        value: item.drug_concept_id
+    }));
+}
+
 export const DrugConditionSearchForm = () => {
-    const [data, setData] = useState<Country[]>([])
+    const [data, setData] = useState<AutosuggestListboxItem[]>([])
     useEffect(() => {
-        axios.get(`https://restcountries.com/v3.1/lang/eng`).then(resp => setData(resp.data))
+        axios.get(`http://localhost:3001/drugs`).then(resp => setData(convertToAutosuggestListboxItems(resp.data)))
     }, [])
 
 
