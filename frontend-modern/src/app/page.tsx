@@ -52,7 +52,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col items-center">
 
-                    <section className="bg-primary-200 p-6 m-6">
+                    <section className="bg-primary-100 p-6 m-6">
                         <p className="text-sm">
                             This tool provides the overall observed risk in a population, but does not provide the
                             attributable

@@ -26,25 +26,8 @@ const config: Config = {
             themes: {
                 light: {
                     colors: {
-                        background: "#FFFFFF", // the page background color
-                        foreground: "#333333", // the page text color
-                        divider: "#fcfcfc", // used for divider and single line border
-                        overlay: "#CCD8FFFF", // used for modal, popover, etc.
-                        focus: "#5a90ea", // used for focus state outline
-                        content1: "#fdfdfd", // used for card, modal, popover, etc.
-                        content2: "#dadada",
-                        content3: "#ffffcc",
-                        content4: "#ffffcc",
-                        default: "#ffffcc",
-                        primary: {              // used for main search button
-                            DEFAULT: "#1639ad",
-                            foreground: "#fcfcfc",
-                        },
-                        secondary: "#333333",  // text in autocomplete
-                        success: "#5FAD16FF",
-                        warning: "#e13e3e",
-                        danger: "#e13e3e",
-                    },
+                        content1: "#fcfcfc", // used for card, modal, popover, etc.
+                    }
                 },
                 "purple-dark": {
                     extend: "dark", // <- inherit default values from dark theme
