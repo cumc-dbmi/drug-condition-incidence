@@ -13,7 +13,10 @@ export const DrugConditionSearchForm = () => {
     const [isFormValid, setFormValid] = useState(false);
     const {data: drugListData} = useQuery("drugs", getDrugListAsListboxItems);
     const [selectedDrug, setSelectedDrug] = useState<AutosuggestListboxItem>({label: "", value: 0});
-    const {isIdle, data: drugConditionListData} = useQuery(["drugsConditions", selectedDrug.value], getDrugConditionAsListBoxItems, {enabled: selectedDrug.value > 0});
+    const {
+        isIdle,
+        data: drugConditionListData
+    } = useQuery(["drugsConditions", selectedDrug.value], getDrugConditionAsListBoxItems, {enabled: selectedDrug.value > 0});
     const [selectedCondition, setSelectedCondition] = useState<AutosuggestListboxItem>({label: "", value: 0});
 
     async function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -21,9 +24,9 @@ export const DrugConditionSearchForm = () => {
 
         try {
             console.log(selectedDrug + " " + selectedCondition);
-            if(selectedDrug.value>0 && selectedCondition.value>0)
+            if (selectedDrug.value > 0 && selectedCondition.value > 0)
                 router.push(`/${selectedDrug.value}/${selectedCondition.value}`);
-            else if(selectedDrug.value>0)
+            else if (selectedDrug.value > 0)
                 router.push(`/${selectedDrug.value}`);
         } catch (err) {
             console.log("Error fetching drug conditions")
@@ -41,6 +44,7 @@ export const DrugConditionSearchForm = () => {
                                  setSelectedDrug(e);
                                  setFormValid(true);
                              }}
+                             isRequied={true}
                              isDisabled={false}
                              isClearable
                              id="drugName"
@@ -54,16 +58,17 @@ export const DrugConditionSearchForm = () => {
             <h3 className="text-2xl">Which condition are you interested in?</h3>
             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
                 <Autosuggest data={drugConditionListData}
-                       onSelectHandler={(e) => {
-                           setSelectedCondition(e);
-                       }}
-                       isDisabled={!isFormValid}
-                       isClearable
-                       id="conditionName"
-                       name="conditionName"
-                       size="lg"
-                       variant="bordered"
-                       label="Enter condition name"
+                             onSelectHandler={(e) => {
+                                 setSelectedCondition(e);
+                             }}
+                             isRequied={false}
+                             isDisabled={!isFormValid}
+                             isClearable
+                             id="conditionName"
+                             name="conditionName"
+                             size="lg"
+                             variant="bordered"
+                             label="Enter condition name"
                 />
             </div>
 

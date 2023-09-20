@@ -10,10 +10,11 @@ import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface
 
 interface Props {
     data: AutosuggestListboxItem[],
-    onSelectHandler: (value: (((prevState: AutosuggestListboxItem) => AutosuggestListboxItem) | AutosuggestListboxItem)) => void
+    onSelectHandler: (value: (((prevState: AutosuggestListboxItem) => AutosuggestListboxItem) | AutosuggestListboxItem)) => void,
+    isRequired: boolean
 }
 
-export const Autosuggest = ({data,onSelectHandler}: Props) => {
+export const Autosuggest = ({ data, onSelectHandler, isRequired }: Props) => {
     const inputSearchRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -28,7 +29,9 @@ export const Autosuggest = ({data,onSelectHandler}: Props) => {
     return (
 
         <div className={classes.autosuggest }>
-            <Input isRequired isClearable
+            <Input
+                    isRequired={isRequired}
+                   isClearable
                    id="drugName"
                    name="drugName"
                    size="lg" variant="bordered"
