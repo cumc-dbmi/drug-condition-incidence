@@ -1,34 +1,34 @@
-"use client"
+"use client";
 
 import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
 
+
 interface DrugConditionDetailsTableProps {
-    className: string
+    id: number,
+    className: string,
+    data: Promise<DrugConditionDetail[]>
 }
 
-export const DrugConditionDetailsTable = ({className}: DrugConditionDetailsTableProps) => {
+export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDetailsTableProps) => {
 
+    console.log("Render DrugConditionDetailsTable");
     const [isLoading, setIsLoading] = React.useState(true);
 
     let list = useAsyncList<DrugConditionDetail>({
 
         async load({signal}) {
-            let res = await fetch(`http://localhost:3001/drug-condition-details`, {
-                signal,
-            });
-            let json = await res.json();
+            let json = await data;
             setIsLoading(false);
-            console.log(json);
             return {
-                items: json.sources,
+                items: json,
             };
         },
         async sort({items, sortDescriptor}) {
             return {
                 items: items.sort((a, b) => {
-                    const columnA: any  = sortDescriptor.column;
+                    const columnA: any = sortDescriptor.column;
                     const columnB: any = sortDescriptor.column;
                     // @ts-ignore
                     let first = a[columnA];
@@ -49,10 +49,11 @@ export const DrugConditionDetailsTable = ({className}: DrugConditionDetailsTable
     return (
         <Table
             isStriped
-            aria-label="Example table with client side sorting"
+            aria-label="List of drug condition details."
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
             className="w-full max-w-screen-xl"
+
         >
             <TableHeader>
                 <TableColumn key="source_short_name" allowsSorting> Source </TableColumn>
@@ -65,13 +66,13 @@ export const DrugConditionDetailsTable = ({className}: DrugConditionDetailsTable
             <TableBody
                 items={list.items}
                 isLoading={isLoading}
-                loadingContent={<Spinner label="Loading..." />}
+                loadingContent={<Spinner label="Loading..."/>}
             >
                 {(item) => (
                     <TableRow key={item.source_short_name + item.num_persons_at_risk}>
                         {(columnKey) => <TableCell>{isNaN(getKeyValue(item, columnKey))
                             ? getKeyValue(item, columnKey)
-                            : (getKeyValue(item, columnKey)==0 ? "~0.0": getKeyValue(item, columnKey))
+                            : (getKeyValue(item, columnKey) == 0 ? "~0.0" : getKeyValue(item, columnKey))
                         }</TableCell>}
                     </TableRow>
                 )}

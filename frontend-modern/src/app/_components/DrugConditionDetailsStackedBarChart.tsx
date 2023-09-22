@@ -17,7 +17,12 @@ function removeCategoryAndData(chart:any, categoryName:string) {
     chart.update({xAxis: {categories: filterdCategories}, series: {data: filteredData}})
 }
 
-export const DrugConditionDetailsStackedBarChart = () => {
+interface DrugConditionDetailsStackedBarChartProps {
+    data: Promise<DrugConditionDetail[]>
+}
+
+export const DrugConditionDetailsStackedBarChart = ({data}: DrugConditionDetailsStackedBarChartProps) => {
+    console.log("Render DrugConditionsChart");
     const [hoverData, setHoverData] = useState(null);
     const [chartOptions, setChartOptions] = useState({
         chart: {

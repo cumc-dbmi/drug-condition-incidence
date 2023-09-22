@@ -1,4 +1,5 @@
 "use client";
+
 import React, {useState} from 'react'
 import {useRouter} from 'next/navigation';
 import {Button} from "@nextui-org/button";
@@ -9,6 +10,7 @@ import {getDrugConditionAsListBoxItems, getDrugListAsListBoxItems} from "@/app/_
 
 
 export const DrugConditionSearchForm = () => {
+    console.log("Render DrugConditionSearchForm");
     const router = useRouter();
     const [isFormValid, setFormValid] = useState(false);
     const {data: drugListData=[]} = useQuery<AutosuggestListboxItem[]>("drugs", getDrugListAsListBoxItems);
@@ -20,10 +22,11 @@ export const DrugConditionSearchForm = () => {
         event.preventDefault();
 
         try {
-            console.log(selectedDrug + " " + selectedCondition);
-            if (selectedDrug.value > 0 && selectedCondition.value > 0)
+            console.log("selectedDrug: " + selectedDrug.label + ",  drugConceptId = "+ selectedDrug.value);
+            if (selectedDrug.value > 0 && selectedCondition.value > 0) {
+                console.log("selectedDrugCondition:  " + selectedCondition.label + ",  outcomeConceptId = "+ selectedCondition.value);
                 router.push(`/${selectedDrug.value}/${selectedCondition.value}`);
-            else if (selectedDrug.value > 0)
+            } else if (selectedDrug.value > 0)
                 router.push(`/${selectedDrug.value}`);
         } catch (err) {
             console.log("Error fetching drug conditions")
