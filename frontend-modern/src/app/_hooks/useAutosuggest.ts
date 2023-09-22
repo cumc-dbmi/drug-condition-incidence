@@ -11,7 +11,7 @@ const useAutosuggest = (data: AutosuggestListboxItem[], inputSearchRef: HTMLInpu
         if (inputSearchRef) {
             inputSearchRef.focus()
         }
-    }, [])
+    }, )
 
     const handleChange = (event: { target: { value: SetStateAction<string> } }): void => {
         if (event.target.value !== "") {
