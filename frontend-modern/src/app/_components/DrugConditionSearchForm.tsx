@@ -5,18 +5,15 @@ import {Button} from "@nextui-org/button";
 import {Autosuggest} from "@/app/_components/Autosuggest";
 import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 import {useQuery} from "react-query";
-import {getDrugConditionAsListBoxItems, getDrugListAsListboxItems} from "@/app/_services/services";
+import {getDrugConditionAsListBoxItems, getDrugListAsListBoxItems} from "@/app/_services/services";
 
 
 export const DrugConditionSearchForm = () => {
     const router = useRouter();
     const [isFormValid, setFormValid] = useState(false);
-    const {data: drugListData} = useQuery("drugs", getDrugListAsListboxItems);
+    const {data: drugListData=[]} = useQuery<AutosuggestListboxItem[]>("drugs", getDrugListAsListBoxItems);
     const [selectedDrug, setSelectedDrug] = useState<AutosuggestListboxItem>({label: "", value: 0});
-    const {
-        isIdle,
-        data: drugConditionListData
-    } = useQuery(["drugsConditions", selectedDrug.value], getDrugConditionAsListBoxItems, {enabled: selectedDrug.value > 0});
+    const { isIdle, data: drugConditionListData=[]} = useQuery<AutosuggestListboxItem[]>(["drugsConditions", selectedDrug.value], getDrugConditionAsListBoxItems, {enabled: selectedDrug.value > 0});
     const [selectedCondition, setSelectedCondition] = useState<AutosuggestListboxItem>({label: "", value: 0});
 
     async function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -44,11 +41,10 @@ export const DrugConditionSearchForm = () => {
                                  setSelectedDrug(e);
                                  setFormValid(true);
                              }}
-                             isRequied={true}
+                             isRequired={true}
                              isDisabled={false}
-                             isClearable
+                             isClearable={true}
                              id="drugName"
-                             name="drugName"
                              size="lg"
                              variant="bordered"
                              label="Enter generic drug name"
@@ -61,11 +57,10 @@ export const DrugConditionSearchForm = () => {
                              onSelectHandler={(e) => {
                                  setSelectedCondition(e);
                              }}
-                             isRequied={false}
+                             isRequired={false}
                              isDisabled={!isFormValid}
                              isClearable
                              id="conditionName"
-                             name="conditionName"
                              size="lg"
                              variant="bordered"
                              label="Enter condition name"

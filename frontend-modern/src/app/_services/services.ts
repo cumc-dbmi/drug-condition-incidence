@@ -1,5 +1,6 @@
 import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 import axios from "axios";
+import {QueryFunctionContext, QueryKey} from "react-query";
 
 async function fetchDrugs(): Promise<Drug[]> {
     console.log("fetchDrugs");
@@ -16,7 +17,7 @@ async function fetchDrugConditionsById(drugId: number , signal: RequestInit | un
     return res.json();
 }
 
-export async function getDrugListAsListboxItems(): Promise<AutosuggestListboxItem[]> {
+export async function getDrugListAsListBoxItems(): Promise<AutosuggestListboxItem[]> {
     const input: Drug[] = await fetchDrugList();
     return input.map(item => ({
         label: item.drug_concept_name,
@@ -29,15 +30,23 @@ export const fetchDrugList = async () => {
     return response.data;
 };
 
-export async function  getDrugConditionAsListBoxItems(drugConceptId:number): Promise<AutosuggestListboxItem[]> {
+export async function getDrugConditionAsListBoxItems(context: QueryFunctionContext<QueryKey>): Promise<AutosuggestListboxItem[]> {
+    const [type, drugConceptId] = context.queryKey;
+
+    if (type !== 'drugsConditions' || typeof drugConceptId !== 'number') {
+        throw new Error("Invalid query key");
+    }
+
     const input: DrugCondition[] = await fetchDrugConditionList(drugConceptId);
     return input.map(item => ({
         label: item.outcome_concept_name,
         value: item.outcome_concept_id
     }));
 }
+
 export const fetchDrugConditionList = async (drugConceptId: number) => {
     console.log("fetchDrugConditionList using drug concept id: "+ drugConceptId);
     const response = await axios.get('http://localhost:3001/drug-conditions');
     return response.data;
 };
+

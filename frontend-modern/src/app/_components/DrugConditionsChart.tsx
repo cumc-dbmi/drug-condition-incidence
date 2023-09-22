@@ -7,7 +7,12 @@ import Highcharts from 'highcharts';
 
 // Initialize highcharts-more module
 HighchartsMore(Highcharts);
-export const DrugConditionsChart = () => {
+interface DrugConditionsChartProps {
+    message: { message: string }
+}
+
+export const DrugConditionsChart = ({message}: DrugConditionsChartProps) => {
+    alert(message);
     const [hoverData, setHoverData] = useState(null);
     const [chartOptions, setChartOptions] = useState({
         chart: {

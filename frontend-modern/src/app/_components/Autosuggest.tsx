@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import {Card, CardBody, Input, Listbox, ListboxItem} from "@nextui-org/react";
 
 
@@ -11,10 +11,16 @@ import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface
 interface Props {
     data: AutosuggestListboxItem[],
     onSelectHandler: (value: (((prevState: AutosuggestListboxItem) => AutosuggestListboxItem) | AutosuggestListboxItem)) => void,
-    isRequired: boolean
+    isRequired: boolean,
+    isDisabled: boolean,
+    isClearable: boolean,
+    id: string,
+    size: "sm" | "md" | "lg",
+    label: React.ReactNode,
+    variant: "flat" | "faded" | "bordered" | "underlined"
 }
 
-export const Autosuggest = ({ data, onSelectHandler, isRequired }: Props) => {
+export const Autosuggest = ({ data, onSelectHandler, isRequired, isDisabled, isClearable, id, size, label, variant }: Props) => {
     const inputSearchRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -23,20 +29,21 @@ export const Autosuggest = ({ data, onSelectHandler, isRequired }: Props) => {
         }
     }, [])
 
-    const {searchedValue, suggestions, selectedSuggestion, activeSuggestion, handleChange, handleKeyDown, handleClick} =
+    const {searchedValue, suggestions=[], selectedSuggestion, activeSuggestion, handleChange, handleKeyDown, handleClick} =
         useAutosuggest(data, inputSearchRef.current);
 
     return (
 
         <div className={classes.autosuggest }>
             <Input
-                    isRequired={isRequired}
-                   isClearable
-                   id="drugName"
-                   name="drugName"
-                   size="lg" variant="bordered"
+                   isRequired={isRequired}
+                   isDisabled={isDisabled}
+                   isClearable={isClearable}
+                   id={id}
+                   size={size}
+                   variant={variant}
+                   label={label}
                    className="md:rt-r-w-max-content"
-                   label="Enter generic drup name"
                    value={searchedValue}
                    autoComplete='off'
                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

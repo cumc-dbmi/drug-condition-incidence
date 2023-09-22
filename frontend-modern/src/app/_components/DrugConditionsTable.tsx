@@ -4,19 +4,7 @@ import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
 import {useRouter} from "next/navigation";
-
-function fetchData(drugName: string, signal: RequestInit | undefined) {
-     return fetchDrugs()
-         .then((drugList) => {
-             return findDrugIdByDrugName(drugList, "Hydrochlorothiazide");
-         })
-         .then((drugConceptId) => {
-             return fetchDrugConditionsById(drugConceptId, signal);
-         })
-         .catch((error) => {
-             console.error(error);
-         });
-}
+import {fetchDrugList} from "@/app/_services/services";
 
 interface DrugConditionsTableProps {
     className: string

@@ -5,13 +5,13 @@ import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
 
-function removeCategoryAndData(chart, categoryName) {
+function removeCategoryAndData(chart:any, categoryName:string) {
     const {categories} = chart.xAxis[0]
     const categoryIndex = categories.indexOf(categoryName)
     const {data} = chart.series[0]
     // Filter data and categories
-    const filteredData = data.map((p) => p.y).filter((v, i) => i !== categoryIndex)
-    const filterdCategories = categories.filter((v, i) => i !== categoryIndex)
+    const filteredData = data.map((p:any) => p.y).filter((v:any, i:number) => i !== categoryIndex)
+    const filterdCategories = categories.filter((v:any, i:number) => i !== categoryIndex)
 
     // Update chart with filtered data and categories
     chart.update({xAxis: {categories: filterdCategories}, series: {data: filteredData}})
@@ -25,12 +25,15 @@ export const DrugConditionDetailsStackedBarChart = () => {
             events: {
                 load: function() {
                     var chart = this;
+                    // @ts-ignore
                     var axis = this.xAxis[0]
                     var ticks = axis.ticks
+                    // @ts-ignore
                     var points = this.series[0].points
+                    // @ts-ignore
                     var tooltip = this.tooltip
 
-                    points.forEach(function(point, i) {
+                    points.forEach(function(point:any, i:number) {
                         if (ticks[i]) {
                             var label = ticks[i].label.element
 
