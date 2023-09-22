@@ -3,7 +3,8 @@
 import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
-
+import {Breadcrumb, Breadcrumbs, Link} from "react-aria-components";
+import BreadcrumbsClasses from "./Breadcrumbs.module.css";
 
 interface DrugConditionDetailsTableProps {
     id: number,
@@ -47,7 +48,15 @@ export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDe
     });
 
     return (
-        <Table
+
+        <><Breadcrumbs className={BreadcrumbsClasses.Breadcrumbs}>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a
+                href="/">Home</a></Link></Breadcrumb>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a href="/">Drug
+                Name</a></Link></Breadcrumb>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}>Drug
+                Condition</Link></Breadcrumb>
+        </Breadcrumbs><Table
             isStriped
             aria-label="List of drug condition details."
             sortDescriptor={list.sortDescriptor}
@@ -58,7 +67,8 @@ export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDe
             <TableHeader>
                 <TableColumn key="source_short_name" allowsSorting> Source </TableColumn>
                 <TableColumn key="source_country" allowsSorting> Country </TableColumn>
-                <TableColumn key="requires_full_time_at_risk" allowsSorting> Requires Full Time at Risk </TableColumn>
+                <TableColumn key="requires_full_time_at_risk" allowsSorting> Requires Full Time at
+                    Risk </TableColumn>
                 <TableColumn key="incidence_rate" allowsSorting> Incidence(%) </TableColumn>
                 <TableColumn key="num_persons_at_risk" allowsSorting> Patients at Risk </TableColumn>
 
@@ -72,11 +82,11 @@ export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDe
                     <TableRow key={item.source_short_name + item.num_persons_at_risk}>
                         {(columnKey) => <TableCell>{isNaN(getKeyValue(item, columnKey))
                             ? getKeyValue(item, columnKey)
-                            : (getKeyValue(item, columnKey) == 0 ? "~0.0" : getKeyValue(item, columnKey))
-                        }</TableCell>}
+                            : (getKeyValue(item, columnKey) == 0 ? "~0.0" : getKeyValue(item, columnKey))}</TableCell>}
                     </TableRow>
                 )}
             </TableBody>
-        </Table>
+        </Table></>
+
     );
 }

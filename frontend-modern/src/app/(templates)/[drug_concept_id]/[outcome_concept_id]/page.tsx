@@ -38,8 +38,10 @@ export default async function Page({params}: { params: { drug_concept_id: number
                         during the 1 year after starting the drug</p>
                     <DrugConditionDetailsStackedBarChart data={data.then((v) => v.sources)}/>
                 </Card>
+                <Card className="w-full max-w-screen-xl p-16 text-center">
                 <DrugConditionDetailsTable id={drugConceptId} data={drugConceptDetailList}
                                            className="w-full max-w-screen-xl p-16"/>
+                </Card>
             </main>
         </PageWrapper>
     )

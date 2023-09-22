@@ -1,17 +1,18 @@
 "use client"
 
 import React, {useState} from 'react';
+import {Label, Slider, SliderOutput, SliderThumb, SliderTrack} from "react-aria-components";
+import SliderClasses from "./Slider.module.css";
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 
-
-function removeCategoryAndData(chart:any, categoryName:string) {
+function removeCategoryAndData(chart: any, categoryName: string) {
     const {categories} = chart.xAxis[0]
     const categoryIndex = categories.indexOf(categoryName)
     const {data} = chart.series[0]
     // Filter data and categories
-    const filteredData = data.map((p:any) => p.y).filter((v:any, i:number) => i !== categoryIndex)
-    const filterdCategories = categories.filter((v:any, i:number) => i !== categoryIndex)
+    const filteredData = data.map((p: any) => p.y).filter((v: any, i: number) => i !== categoryIndex)
+    const filterdCategories = categories.filter((v: any, i: number) => i !== categoryIndex)
 
     // Update chart with filtered data and categories
     chart.update({xAxis: {categories: filterdCategories}, series: {data: filteredData}})
@@ -28,7 +29,7 @@ export const DrugConditionDetailsStackedBarChart = ({data}: DrugConditionDetails
         chart: {
             type: 'column',
             events: {
-                load: function() {
+                load: function () {
                     var chart = this;
                     // @ts-ignore
                     var axis = this.xAxis[0]
@@ -38,20 +39,21 @@ export const DrugConditionDetailsStackedBarChart = ({data}: DrugConditionDetails
                     // @ts-ignore
                     var tooltip = this.tooltip
 
-                    points.forEach(function(point:any, i:number) {
+                    points.forEach(function (point: any, i: number) {
                         if (ticks[i]) {
                             var label = ticks[i].label.element
 
-                            label.onclick = function() {
-                           //     alert('clicked on ' + point.category)
+                            label.onclick = function () {
+                                //     alert('clicked on ' + point.category)
                                 removeCategoryAndData(chart, point.category)
 //                                tooltip.getPosition(null, null, point)
-  //                              tooltip.refresh(point)
+                                //                              tooltip.refresh(point)
                             }
                         }
 
                     })
-                }}
+                }
+            }
         },
         title: {
             text: 'Patients at Risk by Country',
@@ -90,6 +92,16 @@ export const DrugConditionDetailsStackedBarChart = ({data}: DrugConditionDetails
     });
     return (
         <div className="w-full">
+            <Slider  minValue={1} maxValue={365}
+                defaultValue={365}
+                    className={SliderClasses.Slider}>
+                <Label className={SliderClasses.Label}> Time at Risk</Label>
+                <SliderOutput className={SliderClasses.SliderOutput}/>
+                <SliderTrack className={SliderClasses.SliderTrack}>
+                    <SliderThumb className={SliderClasses.SliderThumb}/>
+                </SliderTrack>
+            </Slider>
+
             <HighchartsReact
                 highcharts={Highcharts}
                 options={chartOptions}

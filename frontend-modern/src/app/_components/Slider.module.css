@@ -1,0 +1,124 @@
+.Slider {
+    --label-color: black;
+    --track-color: gray;
+    --thumb-color: slateblue;
+    --thumb-color-dragging: black;
+    --focus-ring-color: slateblue;
+
+    display: grid;
+    grid-template-areas: "label output"
+                       "track track";
+    grid-template-columns: 1fr auto;
+    max-width: 100%;
+    color: black;
+}
+
+.Slider .Label {
+    grid-area: label;
+}
+
+.Slider .SliderOutput {
+    grid-area: output;
+}
+
+.Slider .SliderTrack {
+    grid-area: track;
+    position: relative;
+}
+
+.Slider .SliderTrack:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background: var(--track-color);
+}
+
+.Slider .SliderThumb {
+    width: 1.429rem;
+    height: 1.429rem;
+    border-radius: 50%;
+    background: var(--thumb-color);
+    border: 2px solid var(--spectrum-alias-background-color-default);
+}
+
+.Slider .SliderThumb[data-dragging] {
+    background: var(--thumb-color-dragging);
+}
+
+.Slider .SliderThumb[data-focus-visible] {
+    box-shadow: 0 0 0 2px #0000ff;
+}
+
+.Slider[data-orientation=horizontal] {
+    flex-direction: column;
+    width: 100%;
+}
+
+.Slider[data-orientation=horizontal] .SliderTrack {
+    height: 30px;
+    width: 100%;
+}
+
+.Slider[data-orientation=horizontal] .SliderTrack:before {
+    height: 4px;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.Slider[data-orientation=horizontal] .SliderThumb {
+    top: 50%;
+}
+
+.Slider[data-orientation=vertical] {
+    height: 150px;
+    display: block;
+}
+
+.Slider[data-orientation=vertical] .Label,
+.Slider[data-orientation=vertical] .SliderOutput {
+    display: none;
+}
+
+.Slider[data-orientation=vertical] .SliderTrack {
+    width: 30px;
+    height: 100%;
+}
+
+.Slider[data-orientation=vertical] .SliderTrack:before {
+    width: 3px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.Slider[data-orientation=vertical] .SliderThumb {
+    left: 50%;
+}
+
+.Slider[data-disabled] .SliderTrack {
+    opacity: 0.4;
+}
+
+@media (forced-colors: active) {
+    .Slider {
+        forced-color-adjust: none;
+
+        --label-color: ButtonText;
+        --track-color: ButtonBorder;
+        --thumb-color: ButtonBorder;
+        --thumb-color-dragging: Highlight;
+        --focus-ring-color: Highlight;
+        --spectrum-alias-background-color-default: Canvas;
+    }
+
+    .Slider[data-disabled] {
+        --track-color: GrayText;
+        --thumb-color: GrayText;
+        --label-color: GrayText;
+    }
+
+    .Slider[data-disabled] .SliderTrack {
+        opacity: 1;
+    }
+}
