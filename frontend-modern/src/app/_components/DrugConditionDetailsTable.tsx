@@ -53,7 +53,7 @@ export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDe
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
             className="w-full max-w-screen-xl"
-
+            selectionMode="single"
         >
             <TableHeader>
                 <TableColumn key="source_short_name" allowsSorting> Source </TableColumn>

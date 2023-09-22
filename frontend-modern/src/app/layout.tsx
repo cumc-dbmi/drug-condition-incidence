@@ -4,7 +4,7 @@ import {Inter} from 'next/font/google'
 import Image from 'next/image'
 import Link from "next/link";
 import {Providers} from "./providers";
-import { FaGithub } from "react-icons/fa";
+import {FaGithub} from "react-icons/fa";
 
 const inter = Inter({subsets: ['latin']})
 

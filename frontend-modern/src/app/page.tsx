@@ -2,11 +2,13 @@ import Image from "next/image";
 import {DrugConditionSearchForm} from "@/app/_components/DrugConditionSearchForm";
 import React from "react";
 import {Card} from "@nextui-org/card";
+import { PageWrapper } from "./_components/page.wrapper";
 
 export default function Home() {
 
     return (
         <main className="flex flex-col items-center pt-8 gap-8">
+            <PageWrapper>
             <Card className="max-w-screen-xl">
                 <div className="flex flex-col items-center p-12 gap-4">
                     <section className="flex flex-col items-center p-12 gap-4">
@@ -68,6 +70,7 @@ export default function Home() {
                     </section>
                 </div>
             </Card>
+            </PageWrapper>
         </main>
     )
 }

@@ -54,6 +54,7 @@ export const DrugConditionsTable = ({id, className, data}: DrugConditionsTablePr
             onSortChange={list.sort}
             className="w-full max-w-screen-xl"
             onRowAction={(key) => router.push(`/${id}/${key}`)}
+            selectionMode="single"
         >
             <TableHeader>
                 <TableColumn key="outcome_concept_name" allowsSorting> Condition </TableColumn>

@@ -4,6 +4,7 @@ import {DrugConditionDetailsStackedBarChart} from "@/app/_components/DrugConditi
 import {Card} from "@nextui-org/card";
 import {notFound} from "next/navigation";
 import {fetchDrugConditionDetailList} from "@/app/_services/services";
+import {PageWrapper} from "@/app/_components/page.wrapper";
 
 type DrugConditionDetailWrapper = {
     rates: any[]
@@ -28,15 +29,18 @@ export default async function Page({params}: { params: { drug_concept_id: number
 
     console.log("load page for: outcome_concept_id:" + params.outcome_concept_id);
     return (
-        <main className="flex flex-col items-center pt-8 gap-8">
-            <Card className="w-full max-w-screen-xl p-16 text-center">
-                <h1>Risk of cardiac arrhythmia with Hydrochlorothiazide</h1>
-                <p>Amongst patients taking Hydrochlorothiazide, onset of cardiac arrhythmia occurs in % to % of patients
-                    during the 1 year after starting the drug</p>
-                <DrugConditionDetailsStackedBarChart data={data.then((v) => v.sources)}/>
-            </Card>
-            <DrugConditionDetailsTable id={drugConceptId} data={drugConceptDetailList}
-                                       className="w-full max-w-screen-xl p-16"/>
-        </main>
+        <PageWrapper>
+            <main className="flex flex-col items-center pt-8 gap-8">
+                <Card className="w-full max-w-screen-xl p-16 text-center">
+                    <h1>Risk of cardiac arrhythmia with Hydrochlorothiazide</h1>
+                    <p>Amongst patients taking Hydrochlorothiazide, onset of cardiac arrhythmia occurs in % to % of
+                        patients
+                        during the 1 year after starting the drug</p>
+                    <DrugConditionDetailsStackedBarChart data={data.then((v) => v.sources)}/>
+                </Card>
+                <DrugConditionDetailsTable id={drugConceptId} data={drugConceptDetailList}
+                                           className="w-full max-w-screen-xl p-16"/>
+            </main>
+        </PageWrapper>
     )
 }
