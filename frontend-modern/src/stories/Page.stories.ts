@@ -3,6 +3,7 @@ import { within, userEvent } from '@storybook/testing-library';
 
 import { Page } from './Page';
 
+export default { component: Page };
 const meta = {
   title: 'Example/Page',
   component: Page,
@@ -12,7 +13,6 @@ const meta = {
   },
 } satisfies Meta<typeof Page>;
 
-export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const LoggedOut: Story = {};
@@ -21,7 +21,7 @@ export const LoggedOut: Story = {};
 export const LoggedIn: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const loginButton = await canvas.getByRole('button', {
+    const loginButton = canvas.getByRole('button', {
       name: /Log in/i,
     });
     await userEvent.click(loginButton);
