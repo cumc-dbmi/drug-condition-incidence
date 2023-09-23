@@ -52,10 +52,8 @@ export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDe
         <><Breadcrumbs className={BreadcrumbsClasses.Breadcrumbs}>
             <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a
                 href="/">Home</a></Link></Breadcrumb>
-            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a href="/">Drug
-                Name</a></Link></Breadcrumb>
-            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}>Drug
-                Condition</Link></Breadcrumb>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a href="/974166">Hydrochlorothiazide Drug Conditions</a></Link></Breadcrumb>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}>Cardiac arrhythmia Rates & Sources</Link></Breadcrumb>
         </Breadcrumbs><Table
             isStriped
             aria-label="List of drug condition details."

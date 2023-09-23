@@ -4,6 +4,8 @@ import React from "react";
 import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
 import {useAsyncList} from "@react-stately/data";
 import {useRouter} from "next/navigation";
+import {Breadcrumb, Breadcrumbs, Link} from "react-aria-components";
+import BreadcrumbsClasses from "@/app/_components/Breadcrumbs.module.css";
 
 interface DrugConditionsTableProps {
     id: number,
@@ -47,14 +49,19 @@ export const DrugConditionsTable = ({id, className, data}: DrugConditionsTablePr
     });
 
     return (
+        <><Breadcrumbs className={BreadcrumbsClasses.Breadcrumbs}>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a
+                href="/">Home</a></Link></Breadcrumb>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}>Hydrochlorothiazide Drug Conditions</Link></Breadcrumb>
+        </Breadcrumbs>
         <Table
             isStriped
             aria-label="List of drug conditions."
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
             className="w-full max-w-screen-xl"
-            onRowAction={(key) => router.push(`/${id}/${key}`)}
             selectionMode="single"
+            onRowAction={(key) => router.push(`/${id}/${key}`)}
         >
             <TableHeader>
                 <TableColumn key="outcome_concept_name" allowsSorting> Condition </TableColumn>
@@ -78,6 +85,6 @@ export const DrugConditionsTable = ({id, className, data}: DrugConditionsTablePr
                     </TableRow>
                 )}
             </TableBody>
-        </Table>
+        </Table></>
     );
 }
