@@ -59,17 +59,15 @@ export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDe
             aria-label="List of drug condition details."
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
-            className="w-full max-w-screen-xl"
+            className="w-full"
             selectionMode="single"
         >
             <TableHeader>
-                <TableColumn key="source_short_name" allowsSorting> Source </TableColumn>
-                <TableColumn key="source_country" allowsSorting> Country </TableColumn>
-                <TableColumn key="requires_full_time_at_risk" allowsSorting> Requires Full Time at
-                    Risk </TableColumn>
-                <TableColumn key="incidence_rate" allowsSorting> Incidence(%) </TableColumn>
-                <TableColumn key="num_persons_at_risk" allowsSorting> Patients at Risk </TableColumn>
-
+                <TableColumn allowsSorting={true} align={"start"}  key="source_short_name" > Source </TableColumn>
+                <TableColumn allowsSorting={true} align={"center"} key="source_country" > Country </TableColumn>
+                <TableColumn allowsSorting={true} align={"center"} key="requires_full_time_at_risk" > Requires Full Time at Risk </TableColumn>
+                <TableColumn allowsSorting={true} align={"end"}    key="incidence_rate" > Incidence(%) </TableColumn>
+                <TableColumn allowsSorting={true} align={"end"} key="num_persons_at_risk" > Patients at Risk </TableColumn>
             </TableHeader>
             <TableBody
                 items={list.items}

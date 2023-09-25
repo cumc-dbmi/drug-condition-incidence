@@ -50,8 +50,9 @@ export const DrugConditionsTable = ({id, className, data}: DrugConditionsTablePr
 
     return (
         <><Breadcrumbs className={BreadcrumbsClasses.Breadcrumbs}>
-            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a
-                href="/">Home</a></Link></Breadcrumb>
+            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
+                <Link className={BreadcrumbsClasses.Link}>Home</Link>
+            </Breadcrumb>
             <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}>Hydrochlorothiazide Drug Conditions</Link></Breadcrumb>
         </Breadcrumbs>
         <Table
@@ -59,17 +60,14 @@ export const DrugConditionsTable = ({id, className, data}: DrugConditionsTablePr
             aria-label="List of drug conditions."
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.sort}
-            className="w-full max-w-screen-xl"
+            className="w-full"
             selectionMode="single"
             onRowAction={(key) => router.push(`/${id}/${key}`)}
         >
             <TableHeader>
-                <TableColumn key="outcome_concept_name" allowsSorting> Condition </TableColumn>
-                <TableColumn key="incidence_proportion_range_low" allowsSorting> Lowest Incidence (%) </TableColumn>
-                <TableColumn key="incidence_proportion_range_high" allowsSorting> Highest Incidence (%) </TableColumn>
-
-
-
+                <TableColumn allowsSorting align={"start"} key="outcome_concept_name" > Condition </TableColumn>
+                <TableColumn allowsSorting align={"end"}  key="incidence_proportion_range_low" > Lowest Incidence (%) </TableColumn>
+                <TableColumn allowsSorting align={"end"}  key="incidence_proportion_range_high"> Highest Incidence (%) </TableColumn>
             </TableHeader>
             <TableBody
                 items={list.items}
