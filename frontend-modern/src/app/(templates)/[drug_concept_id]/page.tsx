@@ -28,7 +28,7 @@ export default async function Page({params}: { params: { drug_concept_id: number
                         year after starting the drug</p>
                     <DrugConditionsChart data={data}/>
                 </Card>
-                <Card className="w-full max-w-screen-xl p-16 text-center">
+                <Card className="w-full max-w-screen-xl p-16">
                 <DrugConditionsTable id={drugConceptId} data={data} className="w-full max-w-screen-xl p-16"/>
                 </Card>
             </main>
