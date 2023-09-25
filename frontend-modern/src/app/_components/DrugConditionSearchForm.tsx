@@ -7,6 +7,7 @@ import {Autosuggest} from "@/app/_components/Autosuggest";
 import {AutosuggestListboxItem} from "@/app/_components/Autosuggestion.interface";
 import {useQuery} from "react-query";
 import {getDrugConditionAsListBoxItems, getDrugListAsListBoxItems} from "@/app/_services/services";
+import { motion } from 'framer-motion';
 
 
 export const DrugConditionSearchForm = () => {
@@ -71,8 +72,20 @@ export const DrugConditionSearchForm = () => {
             </div>
 
             <div>
+                <motion.h1
+
+                    transition={{
+                        duration: .3,
+                        delay: 0.1,
+                        ease: "easeInOut"}}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{  opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.25 }}
+
+                >
                 <Button type="submit"
-                        size="lg" color="primary">Search</Button>
+                        size="lg" color="primary"> Search</Button>
+                </motion.h1>
             </div>
 
         </form>
