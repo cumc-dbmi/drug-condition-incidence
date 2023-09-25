@@ -1,6 +1,6 @@
 .Slider {
     --label-color: black;
-    --track-color: gray;
+    --track-color: #cccccc;
     --thumb-color: slateblue;
     --thumb-color-dragging: black;
     --focus-ring-color: slateblue;
@@ -10,7 +10,8 @@
                        "track track";
     grid-template-columns: 1fr auto;
     max-width: 100%;
-    color: black;
+    color: #111111;
+
 }
 
 .Slider .Label {
@@ -38,7 +39,7 @@
     height: 1.429rem;
     border-radius: 50%;
     background: var(--thumb-color);
-    border: 2px solid var(--spectrum-alias-background-color-default);
+    border: 3px solid var(--spectrum-alias-background-color-default);
 }
 
 .Slider .SliderThumb[data-dragging] {
@@ -60,7 +61,7 @@
 }
 
 .Slider[data-orientation=horizontal] .SliderTrack:before {
-    height: 4px;
+    height: 2px;
     width: 100%;
     top: 50%;
     transform: translateY(-50%);

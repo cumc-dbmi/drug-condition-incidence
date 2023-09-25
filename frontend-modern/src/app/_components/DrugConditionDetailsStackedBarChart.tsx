@@ -5,6 +5,7 @@ import {Label, Slider, SliderOutput, SliderThumb, SliderTrack} from "react-aria-
 import SliderClasses from "./Slider.module.css";
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import {useRouter} from "next/navigation";
 
 function removeCategoryAndData(chart: any, categoryName: string) {
     const {categories} = chart.xAxis[0]
@@ -19,11 +20,14 @@ function removeCategoryAndData(chart: any, categoryName: string) {
 }
 
 interface DrugConditionDetailsStackedBarChartProps {
-    data: Promise<DrugConditionDetail[]>
+    data: Promise<DrugConditionDetail[]>,
 }
 
-export const DrugConditionDetailsStackedBarChart = ({data}: DrugConditionDetailsStackedBarChartProps) => {
+export const DrugConditionDetailsStackedBarChart = ({ data }: DrugConditionDetailsStackedBarChartProps) => {
     console.log("Render DrugConditionsChart");
+    const router = useRouter();
+    let [timeAtRiskInDays, setTimeAtRiskInDays] = React.useState(365);
+
     const [hoverData, setHoverData] = useState(null);
     const [chartOptions, setChartOptions] = useState({
         chart: {
@@ -91,17 +95,23 @@ export const DrugConditionDetailsStackedBarChart = ({data}: DrugConditionDetails
         },
     });
     return (
-        <div className="w-full">
+        <div className="w-full2">
+            <div className="p-8">
             <Slider  minValue={1} maxValue={365}
                 defaultValue={365}
-                    className={SliderClasses.Slider}>
-                <Label className={SliderClasses.Label}> Time at Risk</Label>
+                    className={SliderClasses.Slider} onChangeEnd={(num => {
+                        setTimeAtRiskInDays(num)
+                        router.push(`/974166/4183041?time_at_risk=${num}`,  { scroll: false })
+            })
+            }>
+                <Label className={SliderClasses.Label}>Time at Risk</Label>
                 <SliderOutput className={SliderClasses.SliderOutput}/>
                 <SliderTrack className={SliderClasses.SliderTrack}>
                     <SliderThumb className={SliderClasses.SliderThumb}/>
                 </SliderTrack>
+                <p>{timeAtRiskInDays} days</p>
             </Slider>
-
+            </div>
             <HighchartsReact
                 highcharts={Highcharts}
                 options={chartOptions}
