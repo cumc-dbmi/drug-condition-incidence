@@ -1,0 +1,5 @@
+src/stories/**
+
+/**/*.*
+!src/**/*.ts
+!src/**/*.tsx

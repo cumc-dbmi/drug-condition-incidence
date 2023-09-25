@@ -1,17 +1,22 @@
-"use client";
+'use client';
 
-import {motion, AnimatePresence} from "framer-motion";
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 
+// eslint-disable-next-line react/prop-types
 // @ts-ignore
-export const PageWrapper = ({ children })  => {
-    return (
-            <AnimatePresence>
-                <motion.div
-                    initial={{opacity: 0, y: 20}}
-                    animate={{opacity: 1, y: 0}}
-                    exit={{opacity: 0, y: 20}}
-                    transition={{duration: 0.50}}
-                >{children}</motion.div>
-            </AnimatePresence>
-    );
+export const PageWrapper = ({ children }) => {
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5 }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
 };

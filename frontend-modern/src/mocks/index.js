@@ -4,9 +4,8 @@ const drugConditionDetail = require('./drug-conditions-974144-details-44784217.j
 const demo = require('./demo.json');
 
 module.exports = () => ({
-    "drugs": drugs,
-    "drug-conditions": drugConditions,
-    "drug-condition-details": drugConditionDetail,
-    "demo": demo
+  drugs: drugs,
+  'drug-conditions': drugConditions,
+  'drug-condition-details': drugConditionDetail,
+  demo: demo,
 });
-

@@ -1,13 +1,13 @@
 export type Country = {
-    name: Name
-    flags: Flags
-}
+  name: Name;
+  flags: Flags;
+};
 
 type Name = {
-    common: string
-}
+  common: string;
+};
 
 type Flags = {
-    png: string
-    svg: string
-}
+  png: string;
+  svg: string;
+};

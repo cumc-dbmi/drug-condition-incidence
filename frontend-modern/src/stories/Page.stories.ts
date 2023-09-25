@@ -3,7 +3,6 @@ import { within, userEvent } from '@storybook/testing-library';
 
 import { Page } from './Page';
 
-export default { component: Page };
 const meta = {
   title: 'Example/Page',
   component: Page,
@@ -27,3 +26,4 @@ export const LoggedIn: Story = {
     await userEvent.click(loginButton);
   },
 };
+export default { component: Page };

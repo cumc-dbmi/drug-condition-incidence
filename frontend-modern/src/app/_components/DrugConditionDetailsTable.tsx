@@ -1,88 +1,149 @@
-"use client";
+'use client';
 
-import React from "react";
-import {getKeyValue, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/react";
-import {useAsyncList} from "@react-stately/data";
-import {Breadcrumb, Breadcrumbs, Link} from "react-aria-components";
-import BreadcrumbsClasses from "./Breadcrumbs.module.css";
+import React from 'react';
+import {
+  getKeyValue,
+  Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+} from '@nextui-org/react';
+import { useAsyncList } from '@react-stately/data';
+import { Breadcrumb, Breadcrumbs, Link } from 'react-aria-components';
+import BreadcrumbsClasses from './Breadcrumbs.module.css';
 
 interface DrugConditionDetailsTableProps {
-    id: number,
-    className: string,
-    data: Promise<DrugConditionDetail[]>
+  id: number;
+  className: string;
+  data: Promise<DrugConditionDetail[]>;
 }
 
-export const DrugConditionDetailsTable = ({id, className, data}: DrugConditionDetailsTableProps) => {
+export const DrugConditionDetailsTable = ({
+  id,
+  className,
+  data,
+}: DrugConditionDetailsTableProps) => {
+  console.log('Render DrugConditionDetailsTable');
+  const [isLoading, setIsLoading] = React.useState(true);
 
-    console.log("Render DrugConditionDetailsTable");
-    const [isLoading, setIsLoading] = React.useState(true);
+  let list = useAsyncList<DrugConditionDetail>({
+    async load({ signal }) {
+      let json = await data;
+      setIsLoading(false);
+      return {
+        items: json,
+      };
+    },
+    async sort({ items, sortDescriptor }) {
+      return {
+        items: items.sort((a, b) => {
+          const columnA: any = sortDescriptor.column;
+          const columnB: any = sortDescriptor.column;
+          // @ts-ignore
+          let first = a[columnA];
+          // @ts-ignore
+          let second = b[columnB];
+          let cmp =
+            (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
 
-    let list = useAsyncList<DrugConditionDetail>({
+          if (sortDescriptor.direction === 'descending') {
+            cmp *= -1;
+          }
 
-        async load({signal}) {
-            let json = await data;
-            setIsLoading(false);
-            return {
-                items: json,
-            };
-        },
-        async sort({items, sortDescriptor}) {
-            return {
-                items: items.sort((a, b) => {
-                    const columnA: any = sortDescriptor.column;
-                    const columnB: any = sortDescriptor.column;
-                    // @ts-ignore
-                    let first = a[columnA];
-                    // @ts-ignore
-                    let second = b[columnB];
-                    let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+          return cmp;
+        }),
+      };
+    },
+  });
 
-                    if (sortDescriptor.direction === "descending") {
-                        cmp *= -1;
-                    }
-
-                    return cmp;
-                }),
-            };
-        },
-    });
-
-    return (
-
-        <><Breadcrumbs className={BreadcrumbsClasses.Breadcrumbs}>
-            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a
-                href="/">Home</a></Link></Breadcrumb>
-            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}><a href="/974166">Hydrochlorothiazide Drug Conditions</a></Link></Breadcrumb>
-            <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}><Link className={BreadcrumbsClasses.Link}>Cardiac arrhythmia Rates & Sources</Link></Breadcrumb>
-        </Breadcrumbs><Table
-            isStriped
-            aria-label="List of drug condition details."
-            sortDescriptor={list.sortDescriptor}
-            onSortChange={list.sort}
-            className="w-full"
-            selectionMode="single"
+  return (
+    <>
+      <Breadcrumbs className={BreadcrumbsClasses.Breadcrumbs}>
+        <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
+          <Link className={BreadcrumbsClasses.Link}>
+            <a href='/'>Home</a>
+          </Link>
+        </Breadcrumb>
+        <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
+          <Link className={BreadcrumbsClasses.Link}>
+            <a href='/974166'>Hydrochlorothiazide Drug Conditions</a>
+          </Link>
+        </Breadcrumb>
+        <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
+          <Link className={BreadcrumbsClasses.Link}>
+            Cardiac arrhythmia Rates & Sources
+          </Link>
+        </Breadcrumb>
+      </Breadcrumbs>
+      <Table
+        isStriped
+        aria-label='List of drug condition details.'
+        sortDescriptor={list.sortDescriptor}
+        onSortChange={list.sort}
+        className='w-full'
+        selectionMode='single'
+      >
+        <TableHeader>
+          <TableColumn
+            allowsSorting={true}
+            align={'start'}
+            key='source_short_name'
+          >
+            {' '}
+            Source{' '}
+          </TableColumn>
+          <TableColumn
+            allowsSorting={true}
+            align={'center'}
+            key='source_country'
+          >
+            {' '}
+            Country{' '}
+          </TableColumn>
+          <TableColumn
+            allowsSorting={true}
+            align={'center'}
+            key='requires_full_time_at_risk'
+          >
+            {' '}
+            Requires Full Time at Risk{' '}
+          </TableColumn>
+          <TableColumn allowsSorting={true} align={'end'} key='incidence_rate'>
+            {' '}
+            Incidence(%){' '}
+          </TableColumn>
+          <TableColumn
+            allowsSorting={true}
+            align={'end'}
+            key='num_persons_at_risk'
+          >
+            {' '}
+            Patients at Risk{' '}
+          </TableColumn>
+        </TableHeader>
+        <TableBody
+          items={list.items}
+          isLoading={isLoading}
+          loadingContent={<Spinner label='Loading...' />}
         >
-            <TableHeader>
-                <TableColumn allowsSorting={true} align={"start"}  key="source_short_name" > Source </TableColumn>
-                <TableColumn allowsSorting={true} align={"center"} key="source_country" > Country </TableColumn>
-                <TableColumn allowsSorting={true} align={"center"} key="requires_full_time_at_risk" > Requires Full Time at Risk </TableColumn>
-                <TableColumn allowsSorting={true} align={"end"}    key="incidence_rate" > Incidence(%) </TableColumn>
-                <TableColumn allowsSorting={true} align={"end"} key="num_persons_at_risk" > Patients at Risk </TableColumn>
-            </TableHeader>
-            <TableBody
-                items={list.items}
-                isLoading={isLoading}
-                loadingContent={<Spinner label="Loading..."/>}
-            >
-                {(item) => (
-                    <TableRow key={item.source_short_name + item.num_persons_at_risk}>
-                        {(columnKey) => <TableCell>{isNaN(getKeyValue(item, columnKey))
-                            ? getKeyValue(item, columnKey)
-                            : (getKeyValue(item, columnKey) == 0 ? "~0.0" : getKeyValue(item, columnKey))}</TableCell>}
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table></>
-
-    );
-}
+          {(item) => (
+            <TableRow key={item.source_short_name + item.num_persons_at_risk}>
+              {(columnKey) => (
+                <TableCell>
+                  {isNaN(getKeyValue(item, columnKey))
+                    ? getKeyValue(item, columnKey)
+                    : getKeyValue(item, columnKey) == 0
+                    ? '~0.0'
+                    : getKeyValue(item, columnKey)}
+                </TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
+  );
+};
