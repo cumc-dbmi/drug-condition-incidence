@@ -17,9 +17,10 @@ export default function RootLayout({children}: {
     children: React.ReactNode
 }) {
     return (
+        <>
         <html lang="en">
         <title>How Often App - Observational Health Data Sciences and Informatics </title>
-        <body className="p-12">
+        <body className="p-12" >
         <Providers>
 
             <header className="mx-auto max-w-screen-xl flex">
@@ -31,6 +32,6 @@ export default function RootLayout({children}: {
 
         </Providers>
         </body>
-        </html>
+        </html></>
     );
 }

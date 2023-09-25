@@ -23,6 +23,13 @@ h2 {
   @apply bg-gray-400 hover:bg-blue-600 text-white font-bold py-2 px-5 rounded;
 }
 
+body {
+  background-image: linear-gradient(to bottom, #fff, #1ea7fd);
+  background-repeat:no-repeat;
+  background-size:100% 2080px;
+  background-color: #1ea7fd;
+  min-height: 100vh;
+}
 
 #container {
   height: 400px;
