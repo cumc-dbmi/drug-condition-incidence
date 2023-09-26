@@ -24,16 +24,6 @@ export const DrugConditionSearchForm = ({
 
   const [isFormValid, setFormValid] = useState(false);
 
-  // const list = useAsyncList<AutosuggestListboxItem>({
-  //   async load({ signal }) {
-  //     let json = await drugListData;
-  //     setIsLoading(false);
-  //     return {
-  //       items: json,
-  //     };
-  //   },
-  // });
-
   let list = useListData<AutosuggestListboxItem>({
     initialItems: drugListData,
     initialSelectedKeys: [],
