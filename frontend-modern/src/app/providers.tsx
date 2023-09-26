@@ -6,7 +6,10 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { setEnvironmentVariables } from '@/app/_services/services';
 
-setEnvironmentVariables(process.env.BACKEND_API_HOST);
+setEnvironmentVariables(
+  process.env.BACKEND_API_HOST,
+  process.env.BACKEND_API_CONTEXT_PATH
+);
 
 // https://medium.com/@aalam-info-solutions-llp/react-query-integration-from-the-scratch-in-next-js-and-react-js-91d585a0a65e
 export function Providers({ children }: { children: React.ReactNode }) {

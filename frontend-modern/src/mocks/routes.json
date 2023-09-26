@@ -1,6 +1,6 @@
 {
-  "/drugs": "/drugs",
-  "/drugs/:drug_concept_id": "/drugs/:drug_concept_id",
-  "/drug-conditions/974166":  "/drug-conditions-974166",
-  "/exposure-outcomes/974166/rates-and-sources/44784217/365": "/drug-conditions-974144-details-44784217"
+  "/api/incidence/v2/drugs": "/drugs",
+  "/api/incidence/v2/drugs/:drug_concept_id": "/drugs/:drug_concept_id",
+  "/api/incidence/v2/drug-conditions/974166":  "/drug-conditions-974166",
+  "/api/incidence/v2/exposure-outcomes/974166/rates-and-sources/44784217/365": "/drug-conditions-974144-details-44784217"
 }
