@@ -65,7 +65,9 @@ export const DrugConditionsTable = ({
     <>
       <Breadcrumbs className={BreadcrumbsClasses.Breadcrumbs}>
         <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
-          <Link className={BreadcrumbsClasses.Link}>Home</Link>
+          <Link className={BreadcrumbsClasses.Link}>
+            <a href='/'>Home</a>
+          </Link>
         </Breadcrumb>
         <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
           <Link className={BreadcrumbsClasses.Link}>
