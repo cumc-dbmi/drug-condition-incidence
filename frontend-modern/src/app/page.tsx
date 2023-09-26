@@ -3,8 +3,11 @@ import { DrugConditionSearchForm } from '@/app/_components/DrugConditionSearchFo
 import React from 'react';
 import { Card } from '@nextui-org/card';
 import { PageWrapper } from './_components/page.wrapper';
+import { getDrugListAsListBoxItems } from '@/app/_services/services';
 
-export default function Home() {
+export default async function Home() {
+  const drugListBoxItem = await getDrugListAsListBoxItems();
+
   return (
     <main className='flex flex-col items-center gap-8 pt-8'>
       <PageWrapper>
@@ -34,7 +37,7 @@ export default function Home() {
               </div>
             </section>
 
-            <DrugConditionSearchForm />
+            <DrugConditionSearchForm drugListData={drugListBoxItem} />
 
             <section className='grid grid-cols-2 gap-6 pt-8 '>
               <div>

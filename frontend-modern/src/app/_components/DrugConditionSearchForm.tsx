@@ -6,24 +6,45 @@ import { Button } from '@nextui-org/button';
 import { Autosuggest } from '@/app/_components/Autosuggest';
 import { AutosuggestListboxItem } from '@/app/_components/Autosuggestion.interface';
 import { useQuery } from 'react-query';
-import {
-  getDrugConditionAsListBoxItems,
-  getDrugListAsListBoxItems,
-} from '@/app/_services/services';
+import { getDrugConditionAsListBoxItems } from '@/app/_services/services';
 import { motion } from 'framer-motion';
+import { useListData } from '@react-stately/data';
 
-export const DrugConditionSearchForm = () => {
+interface DrugConditionSearchFormProps {
+  drugListData: AutosuggestListboxItem[];
+}
+
+export const DrugConditionSearchForm = ({
+  drugListData,
+}: DrugConditionSearchFormProps) => {
   console.log('Render DrugConditionSearchForm');
+
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const [isFormValid, setFormValid] = useState(false);
-  const { data: drugListData = [] } = useQuery<AutosuggestListboxItem[]>(
-    'drugs',
-    getDrugListAsListBoxItems
-  );
+
+  // const list = useAsyncList<AutosuggestListboxItem>({
+  //   async load({ signal }) {
+  //     let json = await drugListData;
+  //     setIsLoading(false);
+  //     return {
+  //       items: json,
+  //     };
+  //   },
+  // });
+
+  let list = useListData<AutosuggestListboxItem>({
+    initialItems: drugListData,
+    initialSelectedKeys: [],
+    getKey: (item) => item.label,
+  });
+
   const [selectedDrug, setSelectedDrug] = useState<AutosuggestListboxItem>({
     label: '',
     value: 0,
   });
+
   const { isIdle, data: drugConditionListData = [] } = useQuery<
     AutosuggestListboxItem[]
   >(['drugsConditions', selectedDrug.value], getDrugConditionAsListBoxItems, {
@@ -64,7 +85,7 @@ export const DrugConditionSearchForm = () => {
       <h3 className='text-2xl'>Which drug are you interested in?</h3>
       <div className='flex w-full flex-wrap gap-4 md:flex-nowrap'>
         <Autosuggest
-          data={drugListData}
+          data={list.items}
           onSelectHandler={(e) => {
             setSelectedDrug(e);
             setFormValid(true);
