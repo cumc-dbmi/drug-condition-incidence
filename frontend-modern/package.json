@@ -7,7 +7,7 @@
     "build:production": "NODE_ENV=production next build",
     "build-storybook": "storybook build",
     "dev": "next dev",
-    "dev:ngrok": "NODE_ENV=ngrok next dev",
+    "dev:ngrok": "NODE_ENV=development next dev",
     "lint": "npx eslint src test",
     "lint:fix": "npm run lint --fix",
     "prettier": "npx prettier src test --check",
