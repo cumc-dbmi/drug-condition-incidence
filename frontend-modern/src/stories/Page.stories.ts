@@ -26,4 +26,6 @@ export const LoggedIn: Story = {
     await userEvent.click(loginButton);
   },
 };
+
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { component: Page };

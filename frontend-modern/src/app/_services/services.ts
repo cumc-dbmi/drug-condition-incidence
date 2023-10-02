@@ -2,21 +2,11 @@ import { AutosuggestListboxItem } from '@/app/_components/Autosuggestion.interfa
 import axios from 'axios';
 import { QueryFunctionContext, QueryKey } from 'react-query';
 
-let apiHostname: string = 'https://laptop-api.edwincruz.com';
-let apiContextPath: string = '/api/incidence/v2';
-
-export function setEnvironmentVariables(
-  apiHostnameConfig: string = 'https://laptop-api.edwincruz.com0',
-  apiContextPathConfig: string = '/api/incidence/v2'
-) {
-  console.log('apiHostnameFromConfig: ' + apiHostnameConfig);
-  apiHostname = apiHostnameConfig;
-  apiContextPath = apiContextPathConfig;
-}
+const backApiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL;
 
 async function fetchDrugs(): Promise<Drug[]> {
-  console.log('fetchDrugs');
-  const res = await fetch(`${apiHostname}/drugs`);
+  console.log(`fetchDrugs: ${backApiBaseUrl}/drugs`);
+  const res = await fetch(`${backApiBaseUrl}/drugs`);
   console.log('fetchDrugs');
   return res.json();
 }
@@ -25,10 +15,7 @@ async function fetchDrugConditionsById(
   drugId: number,
   signal: RequestInit | undefined
 ): Promise<DrugCondition[]> {
-  const res = await fetch(
-    `${apiHostname}${apiContextPath}/drug-conditions`,
-    signal
-  );
+  const res = await fetch(`${backApiBaseUrl}/drug-conditions`, signal);
   return res.json();
 }
 
@@ -43,8 +30,7 @@ export const getDrugListAsListBoxItems = async (): Promise<
   }));
 };
 export const fetchDrugList = async (): Promise<Drug[]> => {
-  console.log('fetchDrugList:' + apiHostname);
-  const response = await axios.get(`${apiHostname}${apiContextPath}/drugs`);
+  const response = await axios.get(`${backApiBaseUrl}/drugs`);
   return response.data;
 };
 
@@ -67,8 +53,9 @@ export async function getDrugConditionAsListBoxItems(
 export const fetchDrugConditionList = async (drugConceptId: number) => {
   console.log('fetchDrugConditionList using drug concept id: ' + drugConceptId);
   const response = await axios.get(
-    `${apiHostname}${apiContextPath}/drug-conditions/${drugConceptId}`
+    `${backApiBaseUrl}/drug-conditions/${drugConceptId}`
   );
+  console.log(`${process.env.NEXT_PUBLIC_TEST}`);
   return response.data;
 };
 
@@ -83,7 +70,7 @@ export const fetchDrugConditionDetailList = async (
       outcomeConceptId
   );
   const response = await axios.get(
-    `${apiHostname}${apiContextPath}/exposure-outcomes/${drugConceptId}/rates-and-sources/${outcomeConceptId}/365`
+    `${backApiBaseUrl}/exposure-outcomes/${drugConceptId}/rates-and-sources/${outcomeConceptId}/365`
   );
   return response.data;
 };
