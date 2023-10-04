@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Card } from '@nextui-org/card';
 import { DrugConditionsChart } from '@/app/_components/DrugConditionsChart';
 import { DrugConditionsTable } from '@/app/_components/DrugConditionsTable';
-import { Breadcrumbs, Breadcrumb, Link } from 'react-aria-components';
+import { Breadcrumb, Breadcrumbs, Link } from 'react-aria-components';
 import BreadcrumbsClasses from './Breadcrumbs.module.css';
 import {
   fetchDrugById,
@@ -15,6 +15,41 @@ import { useAsyncList } from '@react-stately/data';
 
 interface DrugConditionsViewManagerProps {
   drugConceptId: number;
+}
+
+function sortByHighestIncidence(list: DrugCondition[]) {
+  let sortedList = list.sort((a, b) =>
+    a.incidence_proportion_range_high < b.incidence_proportion_range_high
+      ? 1
+      : a.incidence_proportion_range_high > b.incidence_proportion_range_high
+      ? -1
+      : 0
+  );
+  return sortedList;
+}
+
+function getTopDrugCondition(
+  itemsOrig: DrugCondition[],
+  numOfItems: number
+): DrugCondition[] {
+  const items = [...itemsOrig];
+  const sortedList = sortByHighestIncidence(items);
+  return sortedList.slice(0, numOfItems);
+}
+
+function extractChartData(topDrugConditions: DrugCondition[]): number[][] {
+  return topDrugConditions.map((val) => {
+    return [
+      val.incidence_proportion_range_high,
+      val.incidence_proportion_range_low,
+    ];
+  });
+}
+
+function extractChartCategories(topDrugConditions: DrugCondition[]): string[] {
+  return topDrugConditions.map((val) => {
+    return val.outcome_concept_name;
+  });
 }
 
 export const DrugConditionsViewManager = ({
@@ -75,6 +110,17 @@ export const DrugConditionsViewManager = ({
       };
     },
   });
+  const [chartCategories, setChartCategories] = useState<string[]>([]);
+  const [chartData, setChartData] = useState<number[][]>([]);
+  useEffect(() => {
+    if (!isLoading) {
+      const topDrugConditions = getTopDrugCondition(list.items, 12);
+      const chartCategories = extractChartCategories(topDrugConditions);
+      setChartCategories(chartCategories);
+      const chartData = extractChartData(topDrugConditions);
+      setChartData(chartData);
+    }
+  }, [isLoading, list.items]);
 
   if (!isLoading && !isValid) {
     return notFound();
@@ -88,7 +134,12 @@ export const DrugConditionsViewManager = ({
               Amongst patients taking {drug.drug_concept_name}, onset of the
               conditions occurs during the 1 year after starting the drug
             </p>
-            <DrugConditionsChart drug={drug} data={conditionList} />
+            <DrugConditionsChart
+              isLoading={isLoading}
+              drug={drug}
+              categories={chartCategories}
+              data={chartData}
+            />
           </div>
         </Card>
         <Card className='w-full max-w-screen-xl p-16'>
@@ -99,7 +150,7 @@ export const DrugConditionsViewManager = ({
               </Link>
             </Breadcrumb>
             <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
-              <Link className={BreadcrumbsClasses.Link} >
+              <Link className={BreadcrumbsClasses.Link}>
                 {drug.drug_concept_name + ' Drug Conditions'}
               </Link>
             </Breadcrumb>
