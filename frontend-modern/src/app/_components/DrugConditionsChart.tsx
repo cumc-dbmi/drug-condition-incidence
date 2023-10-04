@@ -8,10 +8,14 @@ import Highcharts from 'highcharts';
 // Initialize highcharts-more module
 HighchartsMore(Highcharts);
 interface DrugConditionsChartProps {
-  data: Promise<DrugCondition[]>;
+  drug: Drug,
+  data: DrugCondition[],
 }
 
-export const DrugConditionsChart = ({ data }: DrugConditionsChartProps) => {
+export const DrugConditionsChart = ({
+  drug,
+  data,
+}: DrugConditionsChartProps) => {
   console.log('Render DrugConditionsChart');
   const [hoverData, setHoverData] = useState(null);
   const [chartOptions, setChartOptions] = useState({

@@ -1,6 +1,7 @@
 import { AutosuggestListboxItem } from '@/app/_components/Autosuggestion.interface';
 import axios from 'axios';
 import { QueryFunctionContext, QueryKey } from 'react-query';
+import { notFound } from 'next/navigation';
 
 const backApiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE_URL;
 
@@ -31,6 +32,13 @@ export const getDrugListAsListBoxItems = async (): Promise<
   }));
 };
 
+export const fetchDrugById = async (drugConceptId: number): Promise<Drug> => {
+  const url = `${backApiBaseUrl}/drugs/${drugConceptId}`;
+  console.log(`fetchDrugById: ${url}`);
+  const response = await axios.get(`${url}`);
+  return response.data;
+};
+
 export const fetchDrugList = async (): Promise<Drug[]> => {
   const url = `${backApiBaseUrl}/drugs`;
   console.log(`fetchDrugList: ${url}`);
@@ -52,10 +60,15 @@ export async function getDrugConditionAsListBoxItems(
   }));
 }
 
-export const fetchDrugConditionList = async (drugConceptId: number) => {
+export const fetchDrugConditionList = async (
+  drugConceptId: number
+): Promise<DrugCondition[]> => {
   const url = `${backApiBaseUrl}/drug-conditions/${drugConceptId}`;
   console.log(`fetchDrugConditionList: ${url}`);
-  const response = await axios.get(`${url}`);
+  const response = await axios.get(`${url}`).catch((error) => {
+    console.log(error);
+    throw error;
+  });
   return response.data;
 };
 
