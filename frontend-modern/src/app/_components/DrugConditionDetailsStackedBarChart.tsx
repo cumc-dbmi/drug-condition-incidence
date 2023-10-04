@@ -48,15 +48,16 @@ export const DrugConditionDetailsStackedBarChart = ({
     chart: {
       type: 'column',
       events: {
+
         load: function () {
-          var chart = this;
+          const chart = this;
           // @ts-ignore
-          var axis = this.xAxis[0];
-          var ticks = axis.ticks;
+          const axis = this.xAxis[0];
+          const ticks = axis.ticks;
           // @ts-ignore
-          var points = this.series[0].points;
+          const points = this.series[0].points;
           // @ts-ignore
-          var tooltip = this.tooltip;
+          const tooltip = this.tooltip;
 
           points.forEach(function (point: any, i: number) {
             if (ticks[i]) {

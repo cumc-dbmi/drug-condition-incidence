@@ -18,14 +18,13 @@ interface DrugConditionsViewManagerProps {
 }
 
 function sortByHighestIncidence(list: DrugCondition[]) {
-  let sortedList = list.sort((a, b) =>
+  return list.sort((a, b) =>
     a.incidence_proportion_range_high < b.incidence_proportion_range_high
       ? 1
       : a.incidence_proportion_range_high > b.incidence_proportion_range_high
       ? -1
       : 0
   );
-  return sortedList;
 }
 
 function getTopDrugCondition(
@@ -61,17 +60,8 @@ export const DrugConditionsViewManager = ({
     drug_concept_id: drugConceptId,
     drug_concept_name: '',
   });
-  const [conditionList, setConditionList] = useState<DrugCondition[]>([]);
-
-  useEffect(() => {
-    fetchDrugById(drugConceptId)
-      .then((data) => {
-        setDrug(data);
-      })
-      .catch((error) => {
-        console.error(`Error occurred fetching drug for: ${drugConceptId}`);
-      });
-  }, [drugConceptId]);
+  const [chartCategories, setChartCategories] = useState<string[]>([]);
+  const [chartData, setChartData] = useState<number[][]>([]);
 
   let list = useAsyncList<DrugCondition>({
     async load({ signal }) {
@@ -110,8 +100,17 @@ export const DrugConditionsViewManager = ({
       };
     },
   });
-  const [chartCategories, setChartCategories] = useState<string[]>([]);
-  const [chartData, setChartData] = useState<number[][]>([]);
+
+  useEffect(() => {
+    fetchDrugById(drugConceptId)
+      .then((data) => {
+        setDrug(data);
+      })
+      .catch((error) => {
+        console.error(`Error occurred fetching drug for: ${drugConceptId}`);
+      });
+  }, [drugConceptId]);
+
   useEffect(() => {
     if (!isLoading) {
       const topDrugConditions = getTopDrugCondition(list.items, 12);

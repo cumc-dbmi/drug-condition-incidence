@@ -21,14 +21,31 @@ export const DrugConditionsChart = ({
   data,
 }: DrugConditionsChartProps) => {
   console.log('Render DrugConditionsChart');
-  const [hoverData, setHoverData] = useState(null);
   const [chartOptions, setChartOptions] = useState({});
   useEffect(() => {
     if (!isLoading) {
       let options = {
         chart: {
           type: 'columnrange',
-          inverted: false, // Changed to false to make the chart vertical
+          inverted: true,
+          events: {
+            load: function () {
+              const chart = this;
+              // @ts-ignore
+              const axis = this.xAxis[0];
+              const ticks = axis.ticks;
+              // @ts-ignore
+              const points = this.series[0].points;
+              points.forEach((point: any, i: number) => {
+                if (ticks[i]) {
+                  var label = ticks[i].label.element;
+                  label.onclick = function () {
+                    alert('clicked on ' + point.category);
+                  };
+                }
+              });
+            },
+          },
         },
         title: {
           text: 'Highest Drug Conditions Incidence Rate ',
@@ -37,22 +54,17 @@ export const DrugConditionsChart = ({
         subtitle: {
           text: 'Drug Condition Incidence Rate',
         },
-
         xAxis: {
-          // Corrected from "Axis" to "xAxis"
           categories: categories,
         },
-
         yAxis: {
           title: {
             text: 'Incidence Rate( % )',
           },
         },
-
         tooltip: {
           valueSuffix: '°C',
         },
-
         plotOptions: {
           columnrange: {
             borderRadius: '50%',
@@ -62,11 +74,9 @@ export const DrugConditionsChart = ({
             },
           },
         },
-
         legend: {
           enabled: false,
         },
-
         series: [
           {
             name: 'Incidence Rate',
