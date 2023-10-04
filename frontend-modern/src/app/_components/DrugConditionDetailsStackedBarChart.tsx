@@ -33,11 +33,11 @@ function removeCategoryAndData(chart: any, categoryName: string) {
 }
 
 interface DrugConditionDetailsStackedBarChartProps {
-  data: Promise<DrugConditionDetail[]>;
+  isLoading: boolean;
 }
 
 export const DrugConditionDetailsStackedBarChart = ({
-  data,
+  isLoading,
 }: DrugConditionDetailsStackedBarChartProps) => {
   console.log('Render DrugConditionsChart');
   const router = useRouter();

@@ -13,10 +13,6 @@ import {
 import { notFound } from 'next/navigation';
 import { useAsyncList } from '@react-stately/data';
 
-interface DrugConditionsViewManagerProps {
-  drugConceptId: number;
-}
-
 function sortByHighestIncidence(list: DrugCondition[]) {
   return list.sort((a, b) =>
     a.incidence_proportion_range_high < b.incidence_proportion_range_high
@@ -49,6 +45,10 @@ function extractChartCategories(topDrugConditions: DrugCondition[]): string[] {
   return topDrugConditions.map((val) => {
     return val.outcome_concept_name;
   });
+}
+
+interface DrugConditionsViewManagerProps {
+  drugConceptId: number;
 }
 
 export const DrugConditionsViewManager = ({

@@ -1,11 +1,4 @@
-{
-  "rates": [
-    {
-      "incidence_proportion_range_low": 0.67,
-      "incidence_proportion_range_high": 45.68
-    }
-  ],
-  "sources": [
+[
     {
       "source_short_name": "Premier",
       "source_country": "US",
@@ -182,5 +175,4 @@
       "num_persons_at_risk": 5212,
       "requires_full_time_at_risk": "No"
     }
-  ]
-}
+]
