@@ -48,7 +48,6 @@ export const DrugConditionDetailsStackedBarChart = ({
     chart: {
       type: 'column',
       events: {
-
         load: function () {
           const chart = this;
           // @ts-ignore

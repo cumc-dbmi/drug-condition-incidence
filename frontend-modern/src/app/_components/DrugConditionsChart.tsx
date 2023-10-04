@@ -32,13 +32,10 @@ export const DrugConditionsChart = ({
             load: function () {
               const chart = this;
               // @ts-ignore
-              const axis = this.xAxis[0];
-              const ticks = axis.ticks;
-              // @ts-ignore
-              const points = this.series[0].points;
-              points.forEach((point: any, i: number) => {
-                if (ticks[i]) {
-                  var label = ticks[i].label.element;
+              const categories = this.xAxis[0].categories;
+              categories.forEach((point: any, i: number) => {
+                if (categories[i]) {
+                  var label = categories[i].label.element;
                   label.onclick = function () {
                     alert('clicked on ' + point.category);
                   };
