@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Label,
   Slider,
@@ -34,96 +34,101 @@ function removeCategoryAndData(chart: any, categoryName: string) {
 
 interface DrugConditionDetailsStackedBarChartProps {
   isLoading: boolean;
+  drug: Drug;
+  drugCondition: DrugCondition;
+  chartCategories: string[];
+  chartDataGroup1: number[];
+  chartDataGroup2: number[];
 }
 
 export const DrugConditionDetailsStackedBarChart = ({
   isLoading,
+  drug,
+  drugCondition,
+  chartCategories,
+  chartDataGroup1,
+  chartDataGroup2,
 }: DrugConditionDetailsStackedBarChartProps) => {
   console.log('Render DrugConditionsChart');
   const router = useRouter();
   let [timeAtRiskInDays, setTimeAtRiskInDays] = React.useState(365);
 
   const [hoverData, setHoverData] = useState(null);
-  const [chartOptions, setChartOptions] = useState({
-    chart: {
-      type: 'column',
-      events: {
-        load: function () {
-          const chart = this;
-          // @ts-ignore
-          const axis = this.xAxis[0];
-          const ticks = axis.ticks;
-          // @ts-ignore
-          const points = this.series[0].points;
-          // @ts-ignore
-          const tooltip = this.tooltip;
+  const [chartOptions, setChartOptions] = useState({});
 
-          points.forEach(function (point: any, i: number) {
-            if (ticks[i]) {
-              var label = ticks[i].label.element;
+  useEffect(() => {
+    if (!isLoading) {
+      let options = {
+        chart: {
+          type: 'column',
+          events: {
+            load: function () {
+              const chart = this;
+              // @ts-ignore
+              const axis = this.xAxis[0];
+              const ticks = axis.ticks;
+              // @ts-ignore
+              const points = this.series[0].points;
+              // @ts-ignore
+              const tooltip = this.tooltip;
 
-              label.onclick = function () {
-                //     alert('clicked on ' + point.category)
-                removeCategoryAndData(chart, point.category);
-                //                                tooltip.getPosition(null, null, point)
-                //                              tooltip.refresh(point)
-              };
-            }
-          });
+              points.forEach(function (point: any, i: number) {
+                if (ticks[i]) {
+                  var label = ticks[i].label.element;
+
+                  label.onclick = function () {
+                    //     alert('clicked on ' + point.category)
+                    removeCategoryAndData(chart, point.category);
+                    //                                tooltip.getPosition(null, null, point)
+                    //                              tooltip.refresh(point)
+                  };
+                }
+              });
+            },
+          },
         },
-      },
-    },
-    title: {
-      text: 'Patients at Risk by Country',
-      align: 'center',
-    },
-    xAxis: {
-      categories: ['US', 'Germany', 'Japan', 'France', 'Australia'],
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Patents at Risk',
-      },
-      stackLabels: {
-        enabled: true,
-      },
-    },
-    series: [
-      {
-        name: 'Required Full Time at Risk',
-        data: [
-          729 + 1331540 + 22689 + 149164 + 526122 + 1331540 + 1915119,
-          206747,
-          4437,
-          10315,
-          3004,
-        ],
-      },
-      {
-        name: 'Out Patient',
-        data: [
-          2994 + 565972 + 32181 + 225403 + 666331 + 1832829 + 2693984,
-          260201,
-          5272,
-          22203,
-          5212,
-        ],
-      },
-    ],
-    tooltip: {
-      headerFormat: '<b>{point.x}</b><br/>',
-      pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
-    },
-    plotOptions: {
-      column: {
-        stacking: 'normal',
-        dataLabels: {
-          enabled: true,
+        title: {
+          text: 'Patients at Risk by Country',
+          align: 'center',
         },
-      },
-    },
-  });
+        xAxis: {
+          categories: chartCategories,
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Patents at Risk',
+          },
+          stackLabels: {
+            enabled: true,
+          },
+        },
+        series: [
+          {
+            name: 'Required Full Time at Risk: YES',
+            data: chartDataGroup1,
+          },
+          {
+            name: 'Required Full Time at Risk: NO',
+            data: chartDataGroup2,
+          },
+        ],
+        tooltip: {
+          headerFormat: '<b>{point.x}</b><br/>',
+          pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}',
+        },
+        plotOptions: {
+          column: {
+            stacking: 'normal',
+            dataLabels: {
+              enabled: true,
+            },
+          },
+        },
+      };
+      setChartOptions(options);
+    }
+  }, [isLoading, chartCategories, chartDataGroup1, chartDataGroup2]);
   return (
     <div className='w-full2'>
       <div className='p-8'>
@@ -134,9 +139,12 @@ export const DrugConditionDetailsStackedBarChart = ({
           className={SliderClasses.Slider}
           onChangeEnd={(num) => {
             setTimeAtRiskInDays(num);
-            router.push(`/974166/4183041?time_at_risk=${num}`, {
-              scroll: false,
-            });
+            router.push(
+              `/${drug.drug_concept_id}/${drugCondition.outcome_concept_id}?time_at_risk=${num}`,
+              {
+                scroll: false,
+              }
+            );
           }}
         >
           <Label className={SliderClasses.Label}>Time at Risk</Label>
