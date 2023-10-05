@@ -2,7 +2,6 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 import { PageWrapper } from '@/app/_components/page.wrapper';
 import { DrugConditionDetailsViewManager } from '@/app/_components/DrugConditionDetailsViewManager';
-import { DrugConditionsViewManager } from '@/app/_components/DrugConditionsViewManager';
 
 export default async function Page({
   params,

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Breadcrumbs, Breadcrumb, Link } from 'react-aria-components';
+import { Breadcrumb, Breadcrumbs, Link } from 'react-aria-components';
 import { DrugConditionDetailsStackedBarChart } from '@/app/_components/DrugConditionDetailsStackedBarChart';
 import { DrugConditionDetailsTable } from '@/app/_components/DrugConditionDetailsTable';
 import { Card } from '@nextui-org/card';

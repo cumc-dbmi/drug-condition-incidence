@@ -1,17 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import {
-  Label,
-  Slider,
-  SliderOutput,
-  SliderThumb,
-  SliderTrack,
-} from 'react-aria-components';
-import SliderClasses from './Slider.module.css';
+import React, {useEffect, useState} from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 function removeCategoryAndData(chart: any, categoryName: string) {
   const { categories } = chart.xAxis[0];

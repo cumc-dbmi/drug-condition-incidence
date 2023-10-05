@@ -1,17 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Card } from '@nextui-org/card';
-import { DrugConditionsChart } from '@/app/_components/DrugConditionsChart';
-import { DrugConditionsTable } from '@/app/_components/DrugConditionsTable';
-import { Breadcrumb, Breadcrumbs, Link } from 'react-aria-components';
+import React, {useEffect, useState} from 'react';
+import {Card} from '@nextui-org/card';
+import {DrugConditionsChart} from '@/app/_components/DrugConditionsChart';
+import {DrugConditionsTable} from '@/app/_components/DrugConditionsTable';
+import {Breadcrumb, Breadcrumbs, Link} from 'react-aria-components';
 import BreadcrumbsClasses from './Breadcrumbs.module.css';
-import {
-  fetchDrugById,
-  fetchDrugConditionList,
-} from '@/app/_services/services';
-import { notFound } from 'next/navigation';
-import { useAsyncList } from '@react-stately/data';
+import {fetchDrugById, fetchDrugConditionList,} from '@/app/_services/services';
+import {notFound} from 'next/navigation';
+import {useAsyncList} from '@react-stately/data';
 
 function sortByHighestIncidence(list: DrugCondition[]) {
   return list.sort((a, b) =>

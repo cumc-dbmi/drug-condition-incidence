@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import PropTypes from 'prop-types';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // eslint-disable-next-line react/prop-types
 // @ts-ignore
