@@ -12,6 +12,7 @@ interface DrugConditionsChartProps {
   isLoading: boolean;
   categories: string[];
   data: number[][];
+  className: string;
 }
 
 export const DrugConditionsChart = ({
@@ -19,6 +20,7 @@ export const DrugConditionsChart = ({
   isLoading,
   categories,
   data,
+  className,
 }: DrugConditionsChartProps) => {
   console.log('Render DrugConditionsChart');
   const [chartOptions, setChartOptions] = useState({});
@@ -85,7 +87,7 @@ export const DrugConditionsChart = ({
     }
   }, [isLoading, categories, data]);
   return (
-    <div className='w-full'>
+    <div className={className}>
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </div>
   );

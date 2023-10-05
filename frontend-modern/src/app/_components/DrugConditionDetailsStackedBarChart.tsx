@@ -39,6 +39,7 @@ interface DrugConditionDetailsStackedBarChartProps {
   chartCategories: string[];
   chartDataGroup1: number[];
   chartDataGroup2: number[];
+  className: string;
 }
 
 export const DrugConditionDetailsStackedBarChart = ({
@@ -48,6 +49,7 @@ export const DrugConditionDetailsStackedBarChart = ({
   chartCategories,
   chartDataGroup1,
   chartDataGroup2,
+  className,
 }: DrugConditionDetailsStackedBarChartProps) => {
   console.log('Render DrugConditionsChart');
   const router = useRouter();
@@ -130,31 +132,7 @@ export const DrugConditionDetailsStackedBarChart = ({
     }
   }, [isLoading, chartCategories, chartDataGroup1, chartDataGroup2]);
   return (
-    <div className='w-full2'>
-      <div className='p-8'>
-        <Slider
-          minValue={1}
-          maxValue={365}
-          defaultValue={365}
-          className={SliderClasses.Slider}
-          onChangeEnd={(num) => {
-            setTimeAtRiskInDays(num);
-            router.push(
-              `/${drug.drug_concept_id}/${drugCondition.outcome_concept_id}?time_at_risk=${num}`,
-              {
-                scroll: false,
-              }
-            );
-          }}
-        >
-          <Label className={SliderClasses.Label}>Time at Risk</Label>
-          <SliderOutput className={SliderClasses.SliderOutput} />
-          <SliderTrack className={SliderClasses.SliderTrack}>
-            <SliderThumb className={SliderClasses.SliderThumb} />
-          </SliderTrack>
-          <p>{timeAtRiskInDays} days</p>
-        </Slider>
-      </div>
+    <div className={className}>
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </div>
   );

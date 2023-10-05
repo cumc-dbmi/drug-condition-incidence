@@ -129,11 +129,12 @@ export const DrugConditionsViewManager = ({
         <Card className='w-full max-w-screen-xl p-16 text-center'>
           <div>
             <h1>{drug.drug_concept_name} Condition List from Product Label</h1>
-            <p>
+            <p className='m-auto max-w-screen-md'>
               Amongst patients taking {drug.drug_concept_name}, onset of the
               conditions occurs during the 1 year after starting the drug
             </p>
             <DrugConditionsChart
+              className={'pt-8'}
               isLoading={isLoading}
               drug={drug}
               categories={chartCategories}

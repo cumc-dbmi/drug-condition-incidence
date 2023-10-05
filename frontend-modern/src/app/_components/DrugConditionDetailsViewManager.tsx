@@ -15,16 +15,6 @@ import { useAsyncList } from '@react-stately/data';
 
 import BreadcrumbsClasses from '@/app/_components/Breadcrumbs.module.css';
 
-interface TimeAtRiskSummary {
-  NO: number;
-  YES: number;
-}
-
-interface DrugConditionDetailsGroupedByCountryAndTimeAtRisk {
-  source_country: string;
-  requires_full_time_at_risk: TimeAtRiskSummary;
-}
-
 interface DrugConditionDetailsViewManagerProps {
   drugConceptId: number;
   outcomeConceptId: number;
@@ -41,17 +31,37 @@ function getSortedRateSources(itemsOrig: DrugConditionDetail[]) {
   );
 }
 
+interface DrugConditionDetail {
+  source_short_name: string;
+  source_country: string;
+  incidence_proportion: number;
+  incidence_rate: number;
+  num_persons_at_risk: number;
+  requires_full_time_at_risk: string;
+}
+interface TimeAtRiskSummary {
+  NO: number;
+  YES: number;
+}
+
+interface DrugConditionDetailsGroupedByCountryAndTimeAtRisk {
+  source_country: string;
+  requires_full_time_at_risk: TimeAtRiskSummary;
+}
 function groupByCountryAndRisk(
   arr: DrugConditionDetail[]
 ): DrugConditionDetailsGroupedByCountryAndTimeAtRisk[] {
-  const result = arr.reduce((acc, item) => {
+  const result: Record<string, TimeAtRiskSummary> = arr.reduce((acc, item) => {
+    // @ts-ignore
     if (!acc[item.source_country]) {
+      // @ts-ignore
       acc[item.source_country] = {
         NO: 0,
         YES: 0,
       };
     }
 
+    // @ts-ignore
     acc[item.source_country][item.requires_full_time_at_risk.toUpperCase()] +=
       item.num_persons_at_risk;
 
@@ -60,7 +70,7 @@ function groupByCountryAndRisk(
 
   return Object.entries(result).map(([country, riskData]) => ({
     source_country: country,
-    requires_full_time_at_risk: riskData,
+    requires_full_time_at_risk: riskData as TimeAtRiskSummary,
   }));
 }
 
@@ -179,12 +189,13 @@ export const DrugConditionDetailsViewManager = ({
       <>
         <Card className='w-full max-w-screen-xl p-16 text-center'>
           <h1>Risk of cardiac arrhythmia with {drug.drug_concept_name}</h1>
-          <p>
+          <p className='m-auto max-w-screen-md'>
             Amongst patients taking {drug.drug_concept_name}, onset of cardiac
             arrhythmia occurs in {lowerBoundRate}% to {upperBoundRate}% of
-            patients during the 365 days after starting the drug
+            patients during the 1 year after starting the drug
           </p>
           <DrugConditionDetailsStackedBarChart
+            className={'pt-8'}
             isLoading={isLoading}
             drug={drug}
             drugCondition={drugCondition}
