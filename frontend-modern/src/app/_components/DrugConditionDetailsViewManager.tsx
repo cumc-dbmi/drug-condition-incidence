@@ -220,7 +220,7 @@ export const DrugConditionDetailsViewManager = ({
             </Breadcrumb>
             <Breadcrumb className={BreadcrumbsClasses.Breadcrumb}>
               <Link className={BreadcrumbsClasses.Link}>
-                {drugCondition.outcome_concept_name + ' Rates and Conditions'}
+                {drugCondition.outcome_concept_name + ' Sources and Rates'}
               </Link>
             </Breadcrumb>
           </Breadcrumbs>
