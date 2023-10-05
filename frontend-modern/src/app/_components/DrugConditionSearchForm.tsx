@@ -1,14 +1,14 @@
 'use client';
 
-import React, {useState} from 'react';
-import {useRouter} from 'next/navigation';
-import {Button} from '@nextui-org/button';
-import {Autosuggest} from '@/app/_components/Autosuggest';
-import {AutosuggestListboxItem} from '@/app/_components/Autosuggestion.interface';
-import {useQuery} from 'react-query';
-import {getDrugConditionAsListBoxItems} from '@/app/_services/services';
-import {motion} from 'framer-motion';
-import {useListData} from '@react-stately/data';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@nextui-org/button';
+import { Autosuggest } from '@/app/_components/Autosuggest';
+import { AutosuggestListboxItem } from '@/app/_components/Autosuggestion.interface';
+import { useQuery } from 'react-query';
+import { getDrugConditionAsListBoxItems } from '@/app/_services/services';
+import { motion } from 'framer-motion';
+import { useListData } from '@react-stately/data';
 
 interface DrugConditionSearchFormProps {
   drugListData: AutosuggestListboxItem[];

@@ -1,9 +1,9 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
-import {useRouter} from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 function removeCategoryAndData(chart: any, categoryName: string) {
   const { categories } = chart.xAxis[0];
