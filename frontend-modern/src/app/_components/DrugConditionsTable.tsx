@@ -70,15 +70,21 @@ export const DrugConditionsTable = ({
       >
         {(item) => (
           <TableRow key={item.outcome_concept_id}>
-            {(columnKey) => (
-              <TableCell>
-                {isNaN(getKeyValue(item, columnKey))
-                  ? getKeyValue(item, columnKey)
-                  : getKeyValue(item, columnKey) == 0
-                  ? '~0.0'
-                  : getKeyValue(item, columnKey)}
-              </TableCell>
-            )}
+            <TableCell>{item.outcome_concept_name}</TableCell>
+            <TableCell className={'text-center'}>
+              {isNaN(item.incidence_proportion_range_low)
+                ? item.incidence_proportion_range_low
+                : item.incidence_proportion_range_low === 0
+                ? '~0.0'
+                : item.incidence_proportion_range_low}
+            </TableCell>
+            <TableCell className={'text-center'}>
+              {isNaN(item.incidence_proportion_range_high)
+                ? item.incidence_proportion_range_high
+                : item.incidence_proportion_range_high === 0
+                ? '~0.0'
+                : item.incidence_proportion_range_high}
+            </TableCell>
           </TableRow>
         )}
       </TableBody>
