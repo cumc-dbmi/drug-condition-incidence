@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Breadcrumb, Breadcrumbs, Link } from 'react-aria-components';
 import { DrugConditionDetailsStackedBarChart } from '@/app/_components/DrugConditionDetailsStackedBarChart';
 import { DrugConditionDetailsTable } from '@/app/_components/DrugConditionDetailsTable';
@@ -14,21 +14,12 @@ import { notFound } from 'next/navigation';
 import { useAsyncList } from '@react-stately/data';
 
 import BreadcrumbsClasses from '@/app/_components/Breadcrumbs.module.css';
+import { Input } from '@nextui-org/react';
+import { SearchIcon } from '@/app/_components/SearchIcon';
 
 interface DrugConditionDetailsViewManagerProps {
   drugConceptId: number;
   outcomeConceptId: number;
-}
-
-function getSortedRateSources(itemsOrig: DrugConditionDetail[]) {
-  const items = [...itemsOrig];
-  return items.sort((a, b) =>
-    a.incidence_rate < b.incidence_rate
-      ? 1
-      : a.incidence_rate > b.incidence_rate
-      ? -1
-      : 0
-  );
 }
 
 interface DrugConditionDetail {
@@ -48,6 +39,18 @@ interface DrugConditionDetailsGroupedByCountryAndTimeAtRisk {
   source_country: string;
   requires_full_time_at_risk: TimeAtRiskSummary;
 }
+
+function getSortedRateSources(itemsOrig: DrugConditionDetail[]) {
+  const items = [...itemsOrig];
+  return items.sort((a, b) =>
+    a.incidence_rate < b.incidence_rate
+      ? 1
+      : a.incidence_rate > b.incidence_rate
+      ? -1
+      : 0
+  );
+}
+
 function groupByCountryAndRisk(
   arr: DrugConditionDetail[]
 ): DrugConditionDetailsGroupedByCountryAndTimeAtRisk[] {
@@ -96,22 +99,29 @@ export const DrugConditionDetailsViewManager = ({
   const [chartCategories, setChartCategories] = useState<string[]>([]);
   const [chartDataGroup1, setChartDataGroup1] = useState<number[]>([]);
   const [chartDataGroup2, setChartDataGroup2] = useState<number[]>([]);
+  const [filterValue, setFilterValue] = useState<string>('');
+
   let list = useAsyncList<DrugConditionDetail>({
     async load({ signal }) {
-      let json = await fetchDrugConditionDetailList(
-        drugConceptId,
-        outcomeConceptId
-      )
+      let json = [];
+      json = await fetchDrugConditionDetailList(drugConceptId, outcomeConceptId)
         .then((data) => {
-          setIsLoading(false);
           setIsValid(true);
           return data;
         })
         .catch((error) => {
-          setIsLoading(false);
           setIsValid(false);
           return [];
         });
+      if (filterValue.length > 0) {
+        const itemsCopy = [...json];
+        json = itemsCopy.filter((item: DrugConditionDetail) =>
+          item.source_short_name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase())
+        );
+      }
+      setIsLoading(false);
       return {
         items: json,
       };
@@ -160,27 +170,34 @@ export const DrugConditionDetailsViewManager = ({
   }, [drugConceptId, outcomeConceptId]);
 
   useEffect(() => {
+    list.reload();
+  }, [filterValue]);
+
+  useEffect(() => {
     if (!isLoading) {
       const sortedItems = getSortedRateSources(list.items);
-      const lowerBoundRate = sortedItems[sortedItems.length - 1].incidence_rate;
-      setLowerBoundRate(lowerBoundRate);
-      const upperBoundRate = sortedItems[0].incidence_rate;
-      setUpperBoundRate(upperBoundRate);
-      const groupedByCountryAndRisk = groupByCountryAndRisk(sortedItems);
-      const countries = groupedByCountryAndRisk.map(
-        (item) => item.source_country
-      );
-      setChartCategories(countries);
-      const timeAtRiskNO = groupedByCountryAndRisk.map(
-        (item) => item.requires_full_time_at_risk.NO
-      );
-      setChartDataGroup1(timeAtRiskNO);
-      const timeAtRiskYES = groupedByCountryAndRisk.map(
-        (item) => item.requires_full_time_at_risk.YES
-      );
-      setChartDataGroup2(timeAtRiskYES);
+      if (sortedItems.length > 0) {
+        const lowerBoundRate =
+          sortedItems[sortedItems.length - 1].incidence_rate;
+        const upperBoundRate = sortedItems[0].incidence_rate;
+        const groupedByCountryAndRisk = groupByCountryAndRisk(sortedItems);
+        const countries = groupedByCountryAndRisk.map(
+          (item) => item.source_country
+        );
+        const timeAtRiskNO = groupedByCountryAndRisk.map(
+          (item) => item.requires_full_time_at_risk.NO
+        );
+        const timeAtRiskYES = groupedByCountryAndRisk.map(
+          (item) => item.requires_full_time_at_risk.YES
+        );
+        setLowerBoundRate(lowerBoundRate);
+        setUpperBoundRate(upperBoundRate);
+        setChartCategories(countries);
+        setChartDataGroup1(timeAtRiskNO);
+        setChartDataGroup2(timeAtRiskYES);
+      }
     }
-  }, [isLoading, list.items]);
+  }, [list.items]);
 
   if (!isLoading && !isValid) {
     return notFound();
@@ -224,6 +241,22 @@ export const DrugConditionDetailsViewManager = ({
               </Link>
             </Breadcrumb>
           </Breadcrumbs>
+          <div className='flex w-full'>
+            <Input
+              isClearable
+              classNames={{
+                base: 'w-full sm:max-w-[44%]',
+                inputWrapper: 'border-1',
+              }}
+              placeholder='Search by name...'
+              size='sm'
+              startContent={<SearchIcon className='text-default-300' />}
+              value={filterValue}
+              variant='bordered'
+              onClear={() => setFilterValue('')}
+              onValueChange={setFilterValue}
+            />
+          </div>
           <DrugConditionDetailsTable
             isLoading={isLoading}
             asyncDataList={list}
