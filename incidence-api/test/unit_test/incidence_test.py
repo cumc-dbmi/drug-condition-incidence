@@ -1,9 +1,9 @@
 import json
 import unittest
 
-from incidence_api import db
-from incidence_api import incidence
-from incidence_api.incidence import APPLICATION_JSON_CONTENT_TYPE
+from incidence-api import db
+from incidence-api import incidence
+from incidence-api.incidence import APPLICATION_JSON_CONTENT_TYPE
 
 SIMVASTATIN_DRUG_CONCEPT_ID = 1518133
 ALOPECIA_CONDITION_CONCEPT_ID = 133280
