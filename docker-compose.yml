@@ -1,48 +1,16 @@
 version: '3'
-
+    
 services:
 
-  traefik:
-    image: docker.io/library/traefik:v2.9.4@sha256:4c388f477f5b7aa48420694d90db0ecb96b4ecede60b9b7589c87858abf87b60
-    container_name: howoften-reverse-proxy
-    restart: unless-stopped
-    ipc: none
-    read_only: true
-    command:
-      - "--log.level=INFO"
-      - "--api"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    labels:
-      - "traefik.enable=true"
+  backendproxy:
+    build: backend-proxy
+    image: cumc-dbmi/howoften/backendproxy
     ports:
-      - "9999:80"
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-  howoften-frontend:
-    container_name: howoften-frontend
-    image: ${ACR_SERVER}/cumc-dbmi/howoften-frontend:latest
-    build: ./client
-    restart: unless-stopped
-    ipc: none
-    privileged: false
-    depends_on:
-      - howoften-backend
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.howoften-frontend.rule=(Host(`127.0.0.1`) && Path(`/`)) || (Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/`))"
-      - "traefik.http.routers.howoften-frontend.entrypoints=web"
-  howoften-backend:
-    container_name: howoften-backend
-    image: ${ACR_SERVER}/cumc-dbmi/howoften-backend:latest
-    build: ./incidence-api
-    restart: unless-stopped
-    ipc: none
-    read_only: true
-    privileged: false
+    - "9999:80"
+
+  backend:
+    build: incidence-api
+    image: cumc-dbmi/howoften/backend
     environment:
       - DATASOURCE_USERNAME=${DATASOURCE_USERNAME}
       - DATASOURCE_PASSWORD=${DATASOURCE_PASSWORD}
@@ -50,10 +18,11 @@ services:
       - DATASOURCE_PORT=${DATASOURCE_PORT}
       - DATASOURCE_SCHEMA=${DATASOURCE_SCHEMA}
       - DATASOURCE_DATABASE=${DATASOURCE_DATABASE}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.howoften-backend.rule=(Host(`127.0.0.1`) && Path(`/incidence-api`)) || (Host(`${HOWOFTEN_HOST}`) && PathPrefix(`/incidence-api`))"
-      - "traefik.http.routers.howoften-backend.entrypoints=web"
-      - "traefik.http.services.myapp.loadbalancer.server.port=5000"
-    expose:
-      - 5000
+    # ports:
+    # - "8085:5000"
+
+  frontend:
+    build: client
+    image: cumc-dbmi/howoften/frontend
+    # ports:
+    #  - "80:80"
