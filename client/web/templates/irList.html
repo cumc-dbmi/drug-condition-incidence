@@ -22,7 +22,14 @@
             <table class="table table-striped table-hover ">
                 <thead>
                 <tr>
-                    <th>Source</th>
+                    <th>Source
+                        <span uib-popover-template="'templates/source-popover.html'"
+                              popover-placement="auto bottom-right"
+                              popover-class="ir-popover-width"
+                              popover-is-open="showSourcePopover"
+                              ng-click="showSourcePopover = !showSourcePopover"
+                              class="small glyphicon glyphicon-info-sign ir-popover-toggle"></span>
+                    </th>
                     <th>Country</th>
                     <th>Condition</th>
                     <th>Incidence (%)</th>
